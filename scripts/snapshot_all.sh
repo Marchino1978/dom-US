@@ -16,11 +16,7 @@ dump_folder() {
     [[ "$nome_file" == *.zip ]] && continue
 
 # ESCLUDE FILE SPECIFICI DALLO SNAPSHOT .md
-    [[ "$nome_file" == "ETF.ino" ]] && continue
-    [[ "$nome_file" == "frame.stl" ]] && continue
-    [[ "$nome_file" == "README_FIRST.txt" ]] && continue
     [[ "$nome_file" == "README.md" ]] && continue
-    [[ "$nome_file" == "TODO.md" ]] && continue
 
     echo "# $file" >> "$output"
     echo "----------------------------------------" >> "$output"
@@ -41,7 +37,7 @@ for dir in */; do
   case "$foldername" in
 
 # ESCLUDE INTERAMENTE QUESTE CARTELLE DALLO SNAPSHOT .md
-    txt|.git|node_modules|data|public|old|gallery|img|backup_SQL|.venv|__pycache__) continue ;;
+    txt|.git|node_modules|data|public|old|gallery|img|.venv|__pycache__) continue ;;
     *) dump_folder "$dir" "$foldername" ;;
   esac
 done
