@@ -8,7 +8,7 @@
   <tr>
     <td width="50%" align="center">
       <img src="../img/work-in-progress.png" alt="xyz" width="50%">
-      <font color="gold"><br><b>XYZ/b></font>
+      <font color="gold"><br><b>XYZ</b></font>
     </td>
     <td width="50%" align="center">
       <img src="../img/work-in-progress.png" alt="xyz" width="50%">
@@ -23,13 +23,13 @@
 <table align="center" cellspacing="0" cellpadding="0">
   <tr>
     <td>
-      <a href="https://github.com/Marchino1978/dom-us>
-        <img src="https://capsule-render.vercel.app/api?type=pulse&height=600&width=600&color=0072ff&text=go%20%to%20HOME&fontSize=75&fontColor=FFD700" width="250">
+      <a href="https://github.com/Marchino1978/dom-us">
+        <img src="https://capsule-render.vercel.app/api?type=pulse&height=600&width=600&color=7928ca&text=go%20%to%20HOME&fontSize=75&fontColor=00f5ff" width="250">
       </a>
     </td>
     <td>
       <a href="../gallery/">
-        <img src="https://capsule-render.vercel.app/api?type=pulse&height=600&width=600&color=0072ff&text=go%20%to%20GALLERY&fontSize=75&fontColor=FFD700" width="250">
+        <img src="https://capsule-render.vercel.app/api?type=pulse&height=600&width=600&color=7928ca&text=go%20%to%20GALLERY&fontSize=75&fontColor=00f5ff" width="250">
       </a>
     </td>
   </tr>

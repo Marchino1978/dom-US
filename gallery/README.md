@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:00c6ff,100:0072ff&fontColor=FFD700&height=100&section=header&text=GALLERY&fontSize=50"
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:ff0080,100:7928ca&fontColor=00f5ff&height=100&section=header&text=GALLERY&fontSize=50"
   alt="GALLERY" />
 </p>
 
@@ -22,12 +22,12 @@
   <tr>
     <td>
       <a href="https://github.com/Marchino1978/dom-us">
-        <img src="https://capsule-render.vercel.app/api?type=pulse&height=600&width=600&color=0072ff&text=go%20%to%20HOME&fontSize=75&fontColor=FFD700" width="250">
+        <img src="https://capsule-render.vercel.app/api?type=pulse&height=600&width=600&color=7928ca&text=go%20%to%20HOME&fontSize=75&fontColor=00f5ff" width="250">
       </a>
     </td>
     <td>
       <a href="../esp32/">
-        <img src="https://capsule-render.vercel.app/api?type=pulse&height=600&width=600&color=0072ff&text=go%20%to%20ESP32&fontSize=75&fontColor=FFD700" width="250">
+        <img src="https://capsule-render.vercel.app/api?type=pulse&height=600&width=600&color=7928ca&text=go%20%to%20ESP32&fontSize=75&fontColor=00f5ff" width="250">
       </a>
     </td>
   </tr>
