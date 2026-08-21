@@ -6,9 +6,10 @@
 │   ├── README.md
 │   ├── snapshot_all.sh*
 │   └── zippa.sh*
+├── .gitignore
 ├── project-tree.txt
 └── README.md
 
-2 directories, 7 files
+2 directories, 8 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
