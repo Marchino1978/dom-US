@@ -1,7 +1,15 @@
 .
 ├── esp32/
 │   ├── config.example.h
-│   └── config.h
+│   ├── config.h
+│   └── README.md
+├── gallery/
+│   └── README.md
+├── img/
+│   ├── README.md
+│   ├── _splash_.png
+│   ├── splash.png
+│   └── work-in-progress.png
 ├── scripts/
 │   ├── push.sh*
 │   ├── README.md
@@ -11,6 +19,6 @@
 ├── project-tree.txt
 └── README.md
 
-2 directories, 9 files
+4 directories, 15 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
