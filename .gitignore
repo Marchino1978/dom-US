@@ -28,10 +28,6 @@ fly.toml.bak
 *.log
 logs/
 
-# Data locali
-data/*.csv.bak
-data/*.json.bak
-
 # IDE / Editor
 .vscode/
 .idea/
@@ -57,9 +53,17 @@ htmlcov/
 txt/
 
 # ESP32
+esp32/config.h
 
 # OLD
 old/
 
 # ZIP
 /*.zip
+
+# SQL backups
+backup_SQL/
+
+# Data locali
+data/*.csv.bak
+data/*.json.bak
