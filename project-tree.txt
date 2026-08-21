@@ -1,0 +1,14 @@
+.
+├── esp32/
+│   └── .gitkeep
+├── scripts/
+│   ├── push.sh*
+│   ├── README.md
+│   ├── snapshot_all.sh*
+│   └── zippa.sh*
+├── project-tree.txt
+└── README.md
+
+2 directories, 7 files
+
+*** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
