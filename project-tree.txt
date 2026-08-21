@@ -1,6 +1,7 @@
 .
 ├── esp32/
-│   └── .gitkeep
+│   ├── config.example.h
+│   └── config.h
 ├── scripts/
 │   ├── push.sh*
 │   ├── README.md
@@ -10,6 +11,6 @@
 ├── project-tree.txt
 └── README.md
 
-2 directories, 8 files
+2 directories, 9 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
