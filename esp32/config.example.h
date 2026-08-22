@@ -40,7 +40,7 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 
 // --- Display Addons (Uncomment ONLY ONE) ---
 //#define ADDON_IR_TE174            // IR Obstacle / Proximity sensor (Digital HIGH/LOW)
-#define ADDON_VL53L0X             // Time-of-Flight Laser sensor (I2C 3.3V)
+#define ADDON_LASER_VL53L0X       // Time-of-Flight Laser sensor (I2C 3.3V)
 //#define ADDON_PIR_HCSR501         // Passive Infrared (5V VCC, 3.3V Native Out)
 
 // --- SENSORS
