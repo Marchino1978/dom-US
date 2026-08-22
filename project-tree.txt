@@ -12,6 +12,8 @@
 │   ├── _splash_.png
 │   ├── splash.png
 │   └── work-in-progress.png
+├── public/
+│   └── README.md
 ├── scripts/
 │   ├── push.sh*
 │   ├── README.md
@@ -21,6 +23,6 @@
 ├── project-tree.txt
 └── README.md
 
-4 directories, 17 files
+5 directories, 18 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***

@@ -1,11 +1,11 @@
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:ff0080,100:7928ca&fontColor=00f5ff&height=100&section=header&text=IMG&fontSize=50"
-  alt="IMG" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:ff0080,100:7928ca&fontColor=00f5ff&height=100&section=header&text=PUBLIC&fontSize=50"
+  alt="PUBLIC" />
 </p>
 
 <div align="center">
 
-Pictures, Photos, Videos & Screenshots
+Personal web dashboard & utilities
 
 </div>
 
