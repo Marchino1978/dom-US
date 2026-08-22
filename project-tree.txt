@@ -24,8 +24,8 @@
 ├── gallery/
 │   └── README.md
 ├── img/
-│   ├── esp32-s3-zero-front.jpg
-│   ├── esp32-s3-zero-rear.jpg
+│   ├── esp32-c3-zero-front.jpg
+│   ├── esp32-c3-zero-rear.jpg
 │   ├── README.md
 │   ├── _splash_.png
 │   ├── splash.png

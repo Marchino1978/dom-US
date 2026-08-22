@@ -7,19 +7,19 @@
 
 Firmware ...
 <br><br>
-Built for the <strong>Waveshare ESP32-S3 MINI</strong>
+Built for the <strong>Waveshare ESP32-C3 MINI</strong>
 
 </div>
 
 <table width="100%">
-  <!-- ESP32-S3-MINI -->
+  <!-- ESP32-C3-MINI -->
   <tr>
     <td width="50%" align="center">
-      <img src="../img/esp32-s3-zero-front.jpg" alt="Vista frontale della scheda Waveshare ESP32-S3 mini | Front view of Waveshare ESP32-S3 mini board" width="50%">
+      <img src="../img/esp32-c3-zero-front.jpg" alt="Vista frontale della scheda Waveshare ESP32-S3 mini | Front view of Waveshare ESP32-C3 mini board" width="50%">
       <font color="gold"><br><b>front</b></font>
     </td>
     <td width="50%" align="center">
-      <img src="../img/esp32-s3-zero-rear.jpg" alt="Vista posteriore della scheda Waveshare ESP32-S3 mini | Rear view of Waveshare ESP32-S3 mini board" width="50%">
+      <img src="../img/esp32-c3-zero-rear.jpg" alt="Vista posteriore della scheda Waveshare ESP32-S3 mini | Rear view of Waveshare ESP32-C3 mini board" width="50%">
       <font color="gold"><br><b>rear</b></font>
     </td>
   </tr>
@@ -67,5 +67,5 @@ For more information, check the official <strong>Waveshare product page</strong>
 </table>
 
 <!-- 
-HTML, supabase, github, raspberry, esp32, telegram, dashboard, sql, charts, iot, smarthome-iot, home-automation, supabase-postgresql-integration, raspberry-pi-400-project, domotic, arduino-ide, data-logger, embedded-cpp, iot-dashboard, power-outage-monitoring, security-alarm, smart-home, telegram-bot, esp32-s3, esp32-s3-zero
+HTML, supabase, github, raspberry, esp32, telegram, dashboard, sql, charts, iot, smarthome-iot, home-automation, supabase-postgresql-integration, raspberry-pi-400-project, domotic, arduino-ide, data-logger, embedded-cpp, iot-dashboard, power-outage-monitoring, security-alarm, smart-home, telegram-bot, esp32-c3, esp32-c3-zero
 -->
