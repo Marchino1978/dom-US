@@ -6,6 +6,8 @@
 ├── gallery/
 │   └── README.md
 ├── img/
+│   ├── esp32-s3-zero-front.jpg
+│   ├── esp32-s3-zero-rear.jpg
 │   ├── README.md
 │   ├── _splash_.png
 │   ├── splash.png
@@ -19,6 +21,6 @@
 ├── project-tree.txt
 └── README.md
 
-4 directories, 15 files
+4 directories, 17 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***

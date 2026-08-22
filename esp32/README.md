@@ -4,6 +4,29 @@
 </p>
 
 <table width="100%">
+  <!-- ESP32-S3-MINI -->
+  <tr>
+    <td width="50%" align="center">
+      <img src="../img/esp32-s3-zero-front.jpg" alt="Vista frontale della scheda Waveshare ESP32-S3 mini | Front view of Waveshare ESP32-S3 mini board" width="50%">
+      <font color="gold"><br><b>front</b></font>
+    </td>
+    <td width="50%" align="center">
+      <img src="../img/esp32-s3-zero-rear.jpg" alt="Vista posteriore della scheda Waveshare ESP32-S3 mini | Rear view of Waveshare ESP32-S3 mini board" width="50%">
+      <font color="gold"><br><b>rear</b></font>
+    </td>
+  </tr>
+ 
+</table>
+
+<div align="center">
+
+For more information, check the official <strong>Waveshare product page</strong>
+
+</div>
+
+<br><br>
+
+<table width="100%">
   <!-- XYZ -->
   <tr>
     <td width="50%" align="center">
