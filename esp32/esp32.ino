@@ -1,7 +1,7 @@
 // ======================================================
 //  DEMO SKETCH Tested and fully working on: 
-//  Waveshare ESP32-S3 mini
-//  https://https://www.waveshare.com/esp32-s3-zero.htm
+//  Waveshare ESP32-C3 mini
+//  https://www.waveshare.com/esp32-c3-zero.htm
 // ======================================================
 #include <WiFi.h>
 #include <time.h>
