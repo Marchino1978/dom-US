@@ -63,7 +63,7 @@ old/
 /*.zip
 
 # SQL backups
-#backup_SQL/
+backup_SQL/
 
 # Data locali
 data/*.csv.bak
