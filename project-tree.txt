@@ -17,7 +17,8 @@
 │   ├── config.example.h
 │   ├── config.h
 │   ├── esp32.ino
-│   └── README.md
+│   ├── README.md
+│   └── TODO.md
 ├── gallery/
 │   └── README.md
 ├── img/
@@ -38,6 +39,6 @@
 ├── project-tree.txt
 └── README.md
 
-8 directories, 30 files
+8 directories, 31 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
