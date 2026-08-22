@@ -3,6 +3,14 @@
   alt="ESP32" />
 </p>
 
+<div align="center">
+
+Firmware ...
+<br><br>
+Built for the <strong>Waveshare ESP32-S3 MINI</strong>
+
+</div>
+
 <table width="100%">
   <!-- ESP32-S3-MINI -->
   <tr>
