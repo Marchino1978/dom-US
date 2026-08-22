@@ -54,6 +54,7 @@ txt/
 
 # ESP32
 esp32/config.h
+esp32/TODO.md
 
 # OLD
 old/
