@@ -5,7 +5,7 @@
 
 <div align="center">
 
-Personal scripts for workflow automation, GitHub push, auto-commit, Fly.io deployment, and repository mapping
+Personal scripts for workflow automation, GitHub push, auto-commit, and repository mapping
 
 </div>
 
