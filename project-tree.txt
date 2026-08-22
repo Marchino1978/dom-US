@@ -1,7 +1,21 @@
 .
 ├── esp32/
+│   ├── lib/
+│   │   ├── displays/
+│   │   │   ├── display_lcd.h
+│   │   │   ├── display_oled.h
+│   │   │   └── display_tft.h
+│   │   ├── sensors/
+│   │   │   ├── sensor_climate.h
+│   │   │   ├── sensor_distance.h
+│   │   │   ├── sensor_light.h
+│   │   │   └── sensor_motion.h
+│   │   ├── display.h
+│   │   ├── language.h
+│   │   └── sensors.h
 │   ├── config.example.h
 │   ├── config.h
+│   ├── esp32.ino
 │   └── README.md
 ├── gallery/
 │   └── README.md
@@ -23,6 +37,6 @@
 ├── project-tree.txt
 └── README.md
 
-5 directories, 18 files
+8 directories, 29 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
