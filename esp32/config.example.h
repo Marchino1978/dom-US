@@ -83,4 +83,19 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 #define PIN_ECHO         7        // Echo pin for Ultrasonic sensor
 #define PIN_ANALOG       1        // Analog input (LDR / MQ135)
 
+// #######################################################
+// 5. URL, TOKEN, SECTRET, PASSWORD, ID, ecc.
+// #######################################################
+
+// Telegram Config
+#define TELEGRAM_BOT_TOKEN "IL_TUO_BOT_TOKEN_REALE"
+#define TELEGRAM_CHAT_ID   "LA_TUA_CHAT_ID_REALE"
+
+// Supabase Config
+#define SUPABASE_URL       "https://tuo-project.supabase.co"
+#define SUPABASE_KEY       "la_tua_anon_key_o_service_key"
+
+// Heartbeat / Blackout Monitor Config
+#define HEARTBEAT_URL      "https://api.cron-job.org/ping-or-your-endpoint"
+
 #endif

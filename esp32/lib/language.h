@@ -1,7 +1,7 @@
 #ifndef LANGUAGE_H
 #define LANGUAGE_H
 
-#include "config.h"
+#include "../config.h"
 
 // ======================================================
 // 1. IT

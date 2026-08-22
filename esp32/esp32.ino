@@ -10,6 +10,14 @@
 #include "lib/language.h"
 #include "lib/display.h"
 #include "lib/sensors.h"
+#include "lib/notifications.h"
+#include "lib/storage_cloud.h"
+
+// ======================================================
+//  GLOBAL ALARM & SYSTEM VARIABLES
+// ======================================================
+bool alarmEnabled = false;
+bool alarmTriggered = false;
 
 // ======================================================
 //  WIFI STATE MACHINE AND TIMERS
@@ -28,13 +36,6 @@ unsigned long wifiAttemptStart = 0;
 unsigned long lastWifiRetry    = 0;
 const unsigned long wifiTimeoutMs    = 15000;
 const unsigned long wifiRetryDelayMs = 30000;
-
-unsigned long lastTelemetryUpdate = 0;
-const unsigned long telemetryInterval = 5000;
-
-bool alarmEnabled = true;
-bool alarmTriggered = false;
-unsigned long lastAlarmCheck = 0;
 
 // ======================================================
 //  NTP SYNCHRONIZATION
@@ -114,7 +115,7 @@ void wifiUpdateState() {
     case WIFI_CONNECTING_OFFICE:
       if (st == WL_CONNECTED) {
         wifiState = WIFI_CONNECTED;
-        showMessage(TXT_WIFI_CONN, TXT_WIFI_OK_OFFICE);
+        showMessage(TXT_WIFI_OK_OFFICE, "");
         delay(2000);
         syncNtp();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
@@ -152,6 +153,33 @@ void wifiUpdateState() {
 }
 
 // ======================================================
+//  HOURLY TELEMETRY TASK
+// ======================================================
+void checkHourlyTask(struct tm* timeinfo) {
+  static int lastExecutedHour = -1;
+
+  if (timeinfo->tm_min == 0 && timeinfo->tm_sec == 0 && timeinfo->tm_hour != lastExecutedHour) {
+    lastExecutedHour = timeinfo->tm_hour;
+
+    float temp = readTemperature();
+    float hum  = readHumidity();
+    float lux  = readAmbientLux();
+
+    if (!alarmEnabled) {
+      triggerDisplayWake();
+
+      char riga1[20];
+      char riga2[20];
+      snprintf(riga1, sizeof(riga1), "T:%.1fC H:%.0f%%", temp, hum);
+      snprintf(riga2, sizeof(riga2), "Lux: %.0f", lux);
+      showMessage(riga1, riga2);
+    }
+
+    saveTelemetryData(timeinfo, temp, hum);
+  }
+}
+
+// ======================================================
 //  ALARM VERIFICATION LOGIC
 // ======================================================
 void checkAlarmSystem() {
@@ -163,28 +191,9 @@ void checkAlarmSystem() {
 
     if (distance > 0 && distance < 200.0) {
       alarmTriggered = true;
-      showMessage("ALARM TRIGGERED", "Motion Confirmed");
+      
+      sendTelegramMessage("🚨 *ALLARME INTRUSIONE!*\nRilevato movimento sospetto!");
     }
-  }
-}
-
-// ======================================================
-//  TELEMETRY PROCESSING
-// ======================================================
-void updateTelemetry() {
-  if (millis() - lastTelemetryUpdate < telemetryInterval) return;
-  lastTelemetryUpdate = millis();
-
-  float temp = readTemperature();
-  float hum = readHumidity();
-  float lux = readAmbientLux();
-
-  if (!alarmTriggered) {
-    char riga1[20];
-    char riga2[20];
-    snprintf(riga1, sizeof(riga1), "T:%.1fC H:%.0f%%", temp, hum);
-    snprintf(riga2, sizeof(riga2), "Lux: %.0f", lux);
-    showMessage(riga1, riga2);
   }
 }
 
@@ -195,6 +204,7 @@ void setup() {
   Serial.begin(115200);
 
   initDisplay();
+  initDisplayAddons();
   initSensors();
 
   wifiState = WIFI_IDLE;
@@ -208,7 +218,16 @@ void loop() {
     return;
   }
 
-  handleDisplayAutoWake();
+  struct tm timeinfo;
+  if (getLocalTime(&timeinfo)) {
+    checkHourlyTask(&timeinfo);
+  }
+
+  if (!alarmEnabled) {
+    handleDisplayAutoWake();
+  }
+
+  checkTelegramUpdates();
   checkAlarmSystem();
-  updateTelemetry();
+  sendHeartbeat();
 }

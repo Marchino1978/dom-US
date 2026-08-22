@@ -13,7 +13,9 @@
 │   │   │   └── sensor_motion.h
 │   │   ├── display.h
 │   │   ├── language.h
-│   │   └── sensors.h
+│   │   ├── notifications.h
+│   │   ├── sensors.h
+│   │   └── storage_cloud.h
 │   ├── config.example.h
 │   ├── config.h
 │   ├── esp32.ino
@@ -39,6 +41,6 @@
 ├── project-tree.txt
 └── README.md
 
-8 directories, 31 files
+8 directories, 33 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
