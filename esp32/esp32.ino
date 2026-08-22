@@ -1,6 +1,5 @@
 // ======================================================
-//  SKETCH DEMO
-//  COMPLETE SKETCH Tested and fully working on: 
+//  DEMO SKETCH Tested and fully working on: 
 //  Waveshare ESP32-S3 mini
 //  https://https://www.waveshare.com/esp32-s3-zero.htm
 // ======================================================
@@ -13,7 +12,7 @@
 #include "lib/sensors.h"
 
 // ======================================================
-//  WIFI STATE MACHINE
+//  WIFI STATE MACHINE AND TIMERS
 // ======================================================
 enum WifiState {
   WIFI_IDLE,
@@ -27,11 +26,18 @@ enum WifiState {
 WifiState wifiState = WIFI_IDLE;
 unsigned long wifiAttemptStart = 0;
 unsigned long lastWifiRetry    = 0;
-const unsigned long wifiTimeoutMs     = 15000;
-const unsigned long wifiRetryDelayMs  = 30000;
+const unsigned long wifiTimeoutMs    = 15000;
+const unsigned long wifiRetryDelayMs = 30000;
+
+unsigned long lastTelemetryUpdate = 0;
+const unsigned long telemetryInterval = 5000;
+
+bool alarmEnabled = true;
+bool alarmTriggered = false;
+unsigned long lastAlarmCheck = 0;
 
 // ======================================================
-//  SYNC NTP
+//  NTP SYNCHRONIZATION
 // ======================================================
 void syncNtp() {
   showMessage(TXT_WIFI_CONN, TXT_NTP_CONN);
@@ -64,11 +70,11 @@ void syncNtp() {
            timeinfo.tm_year + 1900);
            
   showMessage(ora, "");
-  delay(3000);
+  delay(2000);
 }
 
 // ======================================================
-//  AVVIO WIFI
+//  WIFI START
 // ======================================================
 void wifiStart(const char* ssid, const char* pass, WifiState nextState, const char* msg) {
   WiFi.disconnect(true, true);
@@ -84,7 +90,7 @@ void wifiStart(const char* ssid, const char* pass, WifiState nextState, const ch
 }
 
 // ======================================================
-//  UPDATE WIFI
+//  WIFI STATE MACHINE UPDATE
 // ======================================================
 void wifiUpdateState() {
   wl_status_t st = WiFi.status();
@@ -119,7 +125,7 @@ void wifiUpdateState() {
     case WIFI_CONNECTING_HOTSPOT:
       if (st == WL_CONNECTED) {
         wifiState = WIFI_CONNECTED;
-        showMessage(TXT_WIFI_CONN, TXT_WIFI_OK_HOTSPOT);
+        showMessage(TXT_WIFI_OK_HOTSPOT, "");
         delay(2000);
         syncNtp();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
@@ -146,7 +152,44 @@ void wifiUpdateState() {
 }
 
 // ======================================================
-//  SETUP & LOOP
+//  ALARM VERIFICATION LOGIC
+// ======================================================
+void checkAlarmSystem() {
+  if (!alarmEnabled || alarmTriggered) return;
+
+  if (isMotionDetected()) {
+    delay(100);
+    float distance = readDistanceCM();
+
+    if (distance > 0 && distance < 200.0) {
+      alarmTriggered = true;
+      showMessage("ALARM TRIGGERED", "Motion Confirmed");
+    }
+  }
+}
+
+// ======================================================
+//  TELEMETRY PROCESSING
+// ======================================================
+void updateTelemetry() {
+  if (millis() - lastTelemetryUpdate < telemetryInterval) return;
+  lastTelemetryUpdate = millis();
+
+  float temp = readTemperature();
+  float hum = readHumidity();
+  float lux = readAmbientLux();
+
+  if (!alarmTriggered) {
+    char riga1[20];
+    char riga2[20];
+    snprintf(riga1, sizeof(riga1), "T:%.1fC H:%.0f%%", temp, hum);
+    snprintf(riga2, sizeof(riga2), "Lux: %.0f", lux);
+    showMessage(riga1, riga2);
+  }
+}
+
+// ======================================================
+//  SETUP AND MAIN LOOP
 // ======================================================
 void setup() {
   Serial.begin(115200);
@@ -165,6 +208,7 @@ void loop() {
     return;
   }
 
-// TODO: Implement sensor reading and display refresh here
-
+  handleDisplayAutoWake();
+  checkAlarmSystem();
+  updateTelemetry();
 }
