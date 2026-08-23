@@ -48,22 +48,46 @@ For more information, check the official <strong>Waveshare product page</strong>
     <td width="50%" align="center">
       <img src="../img/display.jpeg" alt="display" width="50%">
       <font color="gold"><br><b>display</b></font>
-      <br><br>
+<br><br>
       <div align="center" style="text-align: left; display: inline-block;">
-        ✅ OLED 0.96" I2C<br>
-        🔄 TFT 1.47" SPI<br>
-        ❌ LCD 16x2 I2C
+        <font color="gold"><small><b>LCD</b></small></font><br>
+        ⌛ LCD_16X2<br>
+        ❌ LCD_20X4<br><br>
+        <font color="gold"><small><b>OLED</b></small></font><br>
+        ❌ OLED_SSD1306<br>
+        ❌ OLED_SH1106<br><br>
+        <font color="gold"><small><b>TFT</b></small></font><br>
+        ❌ TFT_ST7789<br>
+        ❌ TFT_ILI9341
       </div>
     </td>
     <td width="50%" align="center">
       <img src="../img/sensor.jpeg" alt="sensor" width="50%">
       <font color="gold"><br><b>sensor</b></font>
-      <br><br>
+<br><br>
       <div align="center" style="text-align: left; display: inline-block;">
-        ✅ DHT22 (Temp/Hum)<br>
-        🔄 PIR MH-SR602<br>
-        🔄 Radar LD2410<br>
-        ❌ HC-SR04 Ultrasounds
+        <font color="gold"><small><b>CLIMATE</b></small></font><br>
+        ⌛ DHT11<br>
+        ❌ DHT22<br>
+        ⌛ BME280<br>
+        ❌ BMP280<br>
+        ❌ SHT31<br>
+        ❌ AHT20<br>
+        ❌ DS18B20<br><br>
+        <font color="gold"><small><b>MOTION</b></small></font><br>
+        ⌛ PIR_HCSR501<br>
+        ❌ RADAR_RCWL<br>
+        ❌ MMWAVE_LD2410<br>
+        ❌ IR_TE174<br><br>
+        <font color="gold"><small><b>DISTANCE</b></small></font><br>
+        ❌ ULTRASONIC_HCSR04<br>
+        ⌛ ULTRASONIC_US100<br>
+        ❌ LASER_VL53L0X<br><br>
+        <font color="gold"><small><b>AMBIENT</b></small></font><br>
+        ❌ LIGHT_BH1750<br>
+        ❌ LIGHT_LDR<br>
+        ⌛ COLOR_TCS34725<br>
+        ❌ GAS_MQ135
       </div>
     </td>
   </tr>
@@ -71,13 +95,7 @@ For more information, check the official <strong>Waveshare product page</strong>
 
 <div align="center">
 
-✅ Verified & Working &nbsp;&nbsp;|&nbsp;&nbsp; 🔄 Testing in Progress &nbsp;&nbsp;|&nbsp;&nbsp; ❌ Planned / To Test
-
-</div>
-
-<div align="center">
-
-1: 🧪 &nbsp;&nbsp; 2: ⚙️ &nbsp;&nbsp; 3: 🛠️ &nbsp;&nbsp; 4: 🟡 &nbsp;&nbsp; 5: 🟧 &nbsp;&nbsp; 6: ⏱️ &nbsp;&nbsp; 7: 🔹 &nbsp;&nbsp; 8: ⌛ &nbsp;&nbsp; 9: 🚧 &nbsp;&nbsp; 10: 💡
+✅ Verified & Working &nbsp;&nbsp;|&nbsp;&nbsp; ⌛ Testing in Progress &nbsp;&nbsp;|&nbsp;&nbsp; ❌ Planned / To Test
 
 </div>
 
