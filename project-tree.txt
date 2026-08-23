@@ -47,11 +47,10 @@
 │   ├── backup_supabase.py
 │   ├── monthly_report.py
 │   └── README.md
-├── _config.yml
 ├── .gitignore
 ├── project-tree.txt
 └── README.md
 
-11 directories, 41 files
+11 directories, 40 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
