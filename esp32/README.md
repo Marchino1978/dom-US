@@ -128,12 +128,12 @@ available soon and ready for implementation
   <tr>
     <td>
       <a href="https://github.com/Marchino1978/dom-us">
-        <img src="https://capsule-render.vercel.app/api?type=pulse&height=600&width=600&color=7928ca&text=go%20%to%20HOME&fontSize=75&fontColor=00f5ff" width="250">
+        <img src="https://capsule-render.vercel.app/api?type=pulse&height=600&width=600&color=7928ca&text=go%20to%20HOME&fontSize=75&fontColor=00f5ff" width="250">
       </a>
     </td>
     <td>
       <a href="../gallery/">
-        <img src="https://capsule-render.vercel.app/api?type=pulse&height=600&width=600&color=7928ca&text=go%20%to%20GALLERY&fontSize=75&fontColor=00f5ff" width="250">
+        <img src="https://capsule-render.vercel.app/api?type=pulse&height=600&width=600&color=7928ca&text=go%20to%20GALLERY&fontSize=75&fontColor=00f5ff" width="250">
       </a>
     </td>
   </tr>
