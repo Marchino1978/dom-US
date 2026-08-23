@@ -72,7 +72,7 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 //#define SENSOR_GAS_MQ135          // Air Quality / Gas sensor (Analog)
 
 // #######################################################
-// 4. PIN MAPPING (Defaults for Waveshare ESP32-S3-Zero)
+// 4. PIN MAPPING (Defaults for Waveshare ESP32-C3-Zero)
 // #######################################################
 #define PIN_I2C_SDA      8        // SDA pin for I2C Displays & I2C Sensors
 #define PIN_I2C_SCL      9        // SCL pin for I2C Displays & I2C Sensors

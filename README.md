@@ -5,11 +5,15 @@
 
 <div align="center">
 
-...
+⚠️ REPOSITORY - WORK IN PROGRESS ⚠️
+
 <br><br>
-...
+
+⚠️ FIRMWARE - WORK IN PROGRESS ⚠️
+
 <br><br>
-...
+
+⚠️ HARDWARE - WORK IN PROGRESS ⚠️
 
 </div>
 
