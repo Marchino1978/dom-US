@@ -8,11 +8,11 @@
   <tr>
     <td width="50%" align="center" valign="top">
       <img src="../img/work-in-progress.png" alt="xyz" width="100%"><br>
-      <font color="gold"><b>XYZ</b></font>
+      <font color="cyan"><b>XYZ</b></font>
     </td>
     <td width="50%" align="center" valign="top">
       <img src="../img/work-in-progress.png" alt="xyz" width="100%"><br>
-      <font color="gold"><b>XYZ</b></font>
+      <font color="cyan"><b>XYZ</b></font>
     </td>
   </tr>
 
