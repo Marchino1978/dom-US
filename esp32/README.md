@@ -48,30 +48,27 @@ For more information, check the official <strong>Waveshare product page</strong>
     <td width="50%" align="center">
       <img src="../img/display.jpeg" alt="display" width="50%">
       <font color="gold"><br><b>display</b></font>
+      <br><br>
+      <div align="center">
+        <ul style="list-style-type: none; padding-left: 0; margin: 0; display: inline-block; text-align: left;">
+          <li>✅ OLED 0.96" I2C</li>
+          <li>⏳ TFT 1.47" SPI</li>
+          <li>❌ LCD 16x2 I2C</li>
+        </ul>
+      </div>
     </td>
     <td width="50%" align="center">
       <img src="../img/sensor.jpeg" alt="sensor" width="50%">
       <font color="gold"><br><b>sensor</b></font>
-    </td>
-  </tr>
- 
-<table width="100%">
-  <!-- DISPLAY / SENSOR LISTS -->
-  <tr>
-    <td width="50%" align="center" valign="top">
-      <ul style="list-style-type: none; padding-left: 0; text-align: left; display: inline-block;">
-        <li>✅ OLED 0.96" I2C</li>
-        <li>⏳ TFT 1.47" SPI</li>
-        <li>❌ LCD 16x2 I2C</li>
-      </ul>
-    </td>
-    <td width="50%" align="center" valign="top">
-      <ul style="list-style-type: none; padding-left: 0; text-align: left; display: inline-block;">
-        <li>✅ DHT22 (Temp/Hum)</li>
-        <li>⏳ PIR MH-SR602</li>
-        <li>⏳ Radar LD2410</li>
-        <li>❌ HC-SR04 Ultrasounds</li>
-      </ul>
+      <br><br>
+      <div align="center">
+        <ul style="list-style-type: none; padding-left: 0; margin: 0; display: inline-block; text-align: left;">
+          <li>✅ DHT22 (Temp/Hum)</li>
+          <li>⏳ PIR MH-SR602</li>
+          <li>⏳ Radar LD2410</li>
+          <li>❌ HC-SR04 Ultrasounds</li>
+        </ul>
+      </div>
     </td>
   </tr>
 </table>
