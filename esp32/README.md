@@ -45,7 +45,7 @@ For more information, check the official <strong>Waveshare product page</strong>
 <table width="100%">
   <!-- DISPLAY / SENSOR -->
   <tr>
-    <td width="50%" align="center">
+    <td width="50%" align="center" valign="top">
       <img src="../img/display.jpeg" alt="display" width="50%">
       <font color="gold"><br><b>display</b></font>
 <br><br>
@@ -61,7 +61,7 @@ For more information, check the official <strong>Waveshare product page</strong>
         ❌ TFT_ILI9341
       </div>
     </td>
-    <td width="50%" align="center">
+    <td width="50%" align="center" valign="top">
       <img src="../img/sensor.jpeg" alt="sensor" width="50%">
       <font color="gold"><br><b>sensor</b></font>
 <br><br>
@@ -112,11 +112,11 @@ available soon and ready for implementation
 <table width="100%">
   <!-- XYZ -->
   <tr>
-    <td width="50%" align="center">
+    <td width="50%" align="center" valign="top">
       <img src="../img/work-in-progress.png" alt="xyz" width="50%">
       <font color="gold"><br><b>XYZ</b></font>
     </td>
-    <td width="50%" align="center">
+    <td width="50%" align="center" valign="top">
       <img src="../img/work-in-progress.png" alt="xyz" width="50%">
       <font color="gold"><br><b>XYZ</b></font>
     </td>
