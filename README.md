@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:ff0080,100:7928ca&fontColor=00f5ff&height=100&section=header&text=DOM-US%20project&fontSize=50"
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:ff0080,100:7928ca&fontColor=00f5ff&height=100&section=header&text=DOM-US%20PROJECT&fontSize=50"
   alt="DOM-US project" />
 </p>
 
@@ -31,12 +31,12 @@
   <tr>
     <td>
       <a href="./gallery/">
-        <img src="https://capsule-render.vercel.app/api?type=pulse&height=600&width=600&color=7928ca&text=go%20to%20GALLERY&fontSize=75&fontColor=00f5ff" width="250">
+        <img src="https://capsule-render.vercel.app/api?type=pulse&height=750&width=750&color=7928ca&text=go%20to%20GALLERY&fontSize=75&fontColor=00f5ff" width="250">
       </a>
     </td>
     <td>
       <a href="./esp32/">
-        <img src="https://capsule-render.vercel.app/api?type=pulse&height=600&width=600&color=7928ca&text=go%20to%20ESP32&fontSize=75&fontColor=00f5ff" width="250">
+        <img src="https://capsule-render.vercel.app/api?type=pulse&height=750&width=750&color=7928ca&text=go%20to%20ESP32&fontSize=75&fontColor=00f5ff" width="250">
       </a>
     </td>
   </tr>
