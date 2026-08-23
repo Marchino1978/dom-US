@@ -6,7 +6,9 @@
 <div align="center">
 
 Firmware ...
+
 <br><br>
+
 Built for the <strong>Waveshare ESP32-C3 MINI</strong>
 
 </div>
@@ -34,6 +36,12 @@ For more information, check the official <strong>Waveshare product page</strong>
 
 <br><br>
 
+<div align="center">
+
+Built for the <strong>DISPLAYS & SENSORS</strong>
+
+</div>
+
 <table width="100%">
   <!-- DISPLAY / SENSOR -->
   <tr>
@@ -51,7 +59,7 @@ For more information, check the official <strong>Waveshare product page</strong>
 
 <div align="center">
 
-For more information, check the official <strong>Waveshare product page</strong>
+available soon and ready for implementation
 
 </div>
 
