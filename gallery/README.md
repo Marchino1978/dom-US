@@ -21,7 +21,7 @@
 <table align="center" cellspacing="0" cellpadding="0">
   <tr>
     <td>
-      <a href="https://github.com/Marchino1978/dom-us">
+      <a href="../">
         <img src="https://capsule-render.vercel.app/api?type=pulse&height=750&width=750&color=7928ca&text=go%20to%20HOME&fontSize=75&fontColor=00f5ff" width="250">
       </a>
     </td>
