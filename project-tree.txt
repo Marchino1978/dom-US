@@ -1,6 +1,8 @@
 .
 ├── backup_SQL/
 │   └── README.md
+├── data/
+│   └── README.md
 ├── esp32/
 │   ├── lib/
 │   │   ├── displays/
@@ -41,10 +43,14 @@
 │   ├── README.md
 │   ├── snapshot_all.sh*
 │   └── zippa.sh*
+├── src/
+│   ├── backup_supabase.py
+│   ├── monthly_report.py
+│   └── README.md
 ├── .gitignore
 ├── project-tree.txt
 └── README.md
 
-9 directories, 36 files
+11 directories, 40 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
