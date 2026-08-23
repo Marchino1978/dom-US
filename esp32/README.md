@@ -71,6 +71,20 @@ For more information, check the official <strong>Waveshare product page</strong>
 
 <div align="center">
 
+✅ Verified & Working &nbsp;&nbsp;|&nbsp;&nbsp; 🔄 Testing in Progress &nbsp;&nbsp;|&nbsp;&nbsp; ❌ Planned / To Test
+
+</div>
+
+<div align="center">
+
+1: 🧪 &nbsp;&nbsp; 2: ⚙️ &nbsp;&nbsp; 3: 🛠️ &nbsp;&nbsp; 4: 🟡 &nbsp;&nbsp; 5: 🟧 &nbsp;&nbsp; 6: ⏱️ &nbsp;&nbsp; 7: 🔹 &nbsp;&nbsp; 8: ⌛ &nbsp;&nbsp; 9: 🚧 &nbsp;&nbsp; 10: 💡
+
+</div>
+
+<br><br>
+
+<div align="center">
+
 available soon and ready for implementation
 
 </div>
