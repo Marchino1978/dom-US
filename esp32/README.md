@@ -3,6 +3,10 @@
     background-color: #0d1117 !important;
     color: #c9d1d9 !important;
   }
+  table, td, th {
+    background-color: transparent !important;
+    border: none !important;
+  }
 </style>
 
 <p align="center">
@@ -25,7 +29,7 @@ Built for the <strong>Waveshare ESP32-C3 MINI</strong>
   <tr>
     <td width="50%" align="center">
       <img src="../img/esp32-c3-zero-front.jpg" alt="Vista frontale della scheda Waveshare ESP32-S3 mini | Front view of Waveshare ESP32-C3 mini board" width="50%">
-      <font color="gold"><br><b>front</b></font>
+      <font color="cyan"><br><b>front</b></font>
     </td>
     <td width="50%" align="center">
       <img src="../img/esp32-c3-zero-rear.jpg" alt="Vista posteriore della scheda Waveshare ESP32-S3 mini | Rear view of Waveshare ESP32-C3 mini board" width="50%">
@@ -54,26 +58,26 @@ For more information, check the official <strong>Waveshare product page</strong>
   <tr>
     <td width="50%" align="center" valign="top">
       <img src="../img/display.jpeg" alt="display" width="50%">
-      <font color="gold"><br><b>display</b></font>
+      <font color="cyan"><br><b>display</b></font>
 <br><br>
       <div align="center" style="text-align: left; display: inline-block;">
-        <font color="gold"><small><b>LCD</b></small></font><br>
+        <font color="cyan"><small><b>LCD</b></small></font><br>
         ⌛ LCD_16X2<br>
         ❌ LCD_20X4<br><br>
-        <font color="gold"><small><b>OLED</b></small></font><br>
+        <font color="cyan"><small><b>OLED</b></small></font><br>
         ❌ OLED_SSD1306<br>
         ❌ OLED_SH1106<br><br>
-        <font color="gold"><small><b>TFT</b></small></font><br>
+        <font color="cyan"><small><b>TFT</b></small></font><br>
         ❌ TFT_ST7789<br>
         ❌ TFT_ILI9341
       </div>
     </td>
     <td width="50%" align="center" valign="top">
       <img src="../img/sensor.jpeg" alt="sensor" width="50%">
-      <font color="gold"><br><b>sensor</b></font>
+      <font color="cyan"><br><b>sensor</b></font>
 <br><br>
       <div align="center" style="text-align: left; display: inline-block;">
-        <font color="gold"><small><b>CLIMATE</b></small></font><br>
+        <font color="cyan"><small><b>CLIMATE</b></small></font><br>
         ⌛ DHT11<br>
         ❌ DHT22<br>
         ⌛ BME280<br>
@@ -81,16 +85,16 @@ For more information, check the official <strong>Waveshare product page</strong>
         ❌ SHT31<br>
         ❌ AHT20<br>
         ❌ DS18B20<br><br>
-        <font color="gold"><small><b>MOTION</b></small></font><br>
+        <font color="cyan"><small><b>MOTION</b></small></font><br>
         ⌛ PIR_HCSR501<br>
         ❌ RADAR_RCWL<br>
         ❌ MMWAVE_LD2410<br>
         ❌ IR_TE174<br><br>
-        <font color="gold"><small><b>DISTANCE</b></small></font><br>
+        <font color="cyan"><small><b>DISTANCE</b></small></font><br>
         ❌ ULTRASONIC_HCSR04<br>
         ⌛ ULTRASONIC_US100<br>
         ❌ LASER_VL53L0X<br><br>
-        <font color="gold"><small><b>AMBIENT</b></small></font><br>
+        <font color="cyan"><small><b>AMBIENT</b></small></font><br>
         ❌ LIGHT_BH1750<br>
         ❌ LIGHT_LDR<br>
         ⌛ COLOR_TCS34725<br>
@@ -121,11 +125,11 @@ available soon and ready for implementation
   <tr>
     <td width="50%" align="center" valign="top">
       <img src="../img/work-in-progress.png" alt="xyz" width="50%">
-      <font color="gold"><br><b>XYZ</b></font>
+      <font color="cyan"><br><b>XYZ</b></font>
     </td>
     <td width="50%" align="center" valign="top">
       <img src="../img/work-in-progress.png" alt="xyz" width="50%">
-      <font color="gold"><br><b>XYZ</b></font>
+      <font color="cyan"><br><b>XYZ</b></font>
     </td>
   </tr>
  
