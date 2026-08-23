@@ -1,3 +1,10 @@
+<style>
+  body {
+    background-color: #0d1117 !important;
+    color: #c9d1d9 !important;
+  }
+</style>
+
 <p align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=0:ff0080,100:7928ca&fontColor=00f5ff&height=100&section=header&text=ESP32&fontSize=50"
   alt="ESP32" />
