@@ -42,6 +42,12 @@ For more information, check the official <strong>Waveshare product page</strong>
 
 </div>
 
+<div align="center">
+
+✅ Verified & Working &nbsp;&nbsp;|&nbsp;&nbsp; ⌛ Testing in Progress &nbsp;&nbsp;|&nbsp;&nbsp; ❌ Planned / To Test
+
+</div>
+
 <table width="100%">
   <!-- DISPLAY / SENSOR -->
   <tr>
@@ -92,14 +98,6 @@ For more information, check the official <strong>Waveshare product page</strong>
     </td>
   </tr>
 </table>
-
-<div align="center">
-
-✅ Verified & Working &nbsp;&nbsp;|&nbsp;&nbsp; ⌛ Testing in Progress &nbsp;&nbsp;|&nbsp;&nbsp; ❌ Planned / To Test
-
-</div>
-
-<br><br>
 
 <div align="center">
 
