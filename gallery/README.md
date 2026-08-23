@@ -6,11 +6,11 @@
 <table width="100%">
   <!-- XYZ -->
   <tr>
-    <td width="50%" align="center">
+    <td width="50%" align="center" valign="top">
       <img src="../img/work-in-progress.png" alt="xyz" width="100%"><br>
       <font color="gold"><b>XYZ</b></font>
     </td>
-    <td width="50%" align="center">
+    <td width="50%" align="center" valign="top">
       <img src="../img/work-in-progress.png" alt="xyz" width="100%"><br>
       <font color="gold"><b>XYZ</b></font>
     </td>
