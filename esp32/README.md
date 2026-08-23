@@ -51,8 +51,8 @@ For more information, check the official <strong>Waveshare product page</strong>
 <br><br>
       <div align="center" style="text-align: left; display: inline-block;">
         <font color="cyan"><small><b>LCD</b></small></font><br>
-        ⌛ LCD_16X2<br>
-        ❌ LCD_20X4<br><br>
+        ✅ LCD_16X2<br>
+        ⌛ LCD_20X4<br><br>
         <font color="cyan"><small><b>OLED</b></small></font><br>
         ❌ OLED_SSD1306<br>
         ❌ OLED_SH1106<br><br>
@@ -67,7 +67,7 @@ For more information, check the official <strong>Waveshare product page</strong>
 <br><br>
       <div align="center" style="text-align: left; display: inline-block;">
         <font color="cyan"><small><b>CLIMATE</b></small></font><br>
-        ⌛ DHT11<br>
+        ✅ DHT11<br>
         ❌ DHT22<br>
         ⌛ BME280<br>
         ❌ BMP280<br>
