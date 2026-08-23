@@ -35,6 +35,29 @@ For more information, check the official <strong>Waveshare product page</strong>
 <br><br>
 
 <table width="100%">
+  <!-- DISPLAY / SENSOR -->
+  <tr>
+    <td width="50%" align="center">
+      <img src="../img/display.jpeg" alt="display" width="50%">
+      <font color="gold"><br><b>display</b></font>
+    </td>
+    <td width="50%" align="center">
+      <img src="../img/sensor.jpeg" alt="sensor" width="50%">
+      <font color="gold"><br><b>sensor</b></font>
+    </td>
+  </tr>
+ 
+</table>
+
+<div align="center">
+
+For more information, check the official <strong>Waveshare product page</strong>
+
+</div>
+
+<br><br>
+
+<table width="100%">
   <!-- XYZ -->
   <tr>
     <td width="50%" align="center">
