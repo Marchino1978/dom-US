@@ -22,7 +22,7 @@ Built for the <strong>Waveshare ESP32-C3 MINI</strong>
     </td>
     <td width="50%" align="center">
       <img src="../img/esp32-c3-zero-rear.jpg" alt="Vista posteriore della scheda Waveshare ESP32-S3 mini | Rear view of Waveshare ESP32-C3 mini board" width="50%">
-      <font color="gold"><br><b>rear</b></font>
+      <font color="cyan"><br><b>rear</b></font>
     </td>
   </tr>
  
