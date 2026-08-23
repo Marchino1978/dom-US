@@ -49,25 +49,21 @@ For more information, check the official <strong>Waveshare product page</strong>
       <img src="../img/display.jpeg" alt="display" width="50%">
       <font color="gold"><br><b>display</b></font>
       <br><br>
-      <div align="center">
-        <ul style="list-style-type: none; padding-left: 0; margin: 0; display: inline-block; text-align: left;">
-          <li>✅ OLED 0.96" I2C</li>
-          <li>⏳ TFT 1.47" SPI</li>
-          <li>❌ LCD 16x2 I2C</li>
-        </ul>
+      <div align="center" style="text-align: left; display: inline-block;">
+        ✅ OLED 0.96" I2C<br>
+        🔄 TFT 1.47" SPI<br>
+        ❌ LCD 16x2 I2C
       </div>
     </td>
     <td width="50%" align="center">
       <img src="../img/sensor.jpeg" alt="sensor" width="50%">
       <font color="gold"><br><b>sensor</b></font>
       <br><br>
-      <div align="center">
-        <ul style="list-style-type: none; padding-left: 0; margin: 0; display: inline-block; text-align: left;">
-          <li>✅ DHT22 (Temp/Hum)</li>
-          <li>⏳ PIR MH-SR602</li>
-          <li>⏳ Radar LD2410</li>
-          <li>❌ HC-SR04 Ultrasounds</li>
-        </ul>
+      <div align="center" style="text-align: left; display: inline-block;">
+        ✅ DHT22 (Temp/Hum)<br>
+        🔄 PIR MH-SR602<br>
+        🔄 Radar LD2410<br>
+        ❌ HC-SR04 Ultrasounds
       </div>
     </td>
   </tr>
