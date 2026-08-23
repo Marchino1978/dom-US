@@ -22,7 +22,7 @@
 </p>
 
 <p align="center">
-  <strong>Developed on Raspberry Pi 400 | Hosted on --- | Uptime: running since ---</strong>
+  <strong>Developed on Raspberry Pi 400 | <s>Hosted on</s> Serverless | Uptime: running since ---</strong>
 </p>
 
 <br><br>
