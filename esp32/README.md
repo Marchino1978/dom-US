@@ -38,7 +38,7 @@ For more information, check the official <strong>Waveshare product page</strong>
 
 <div align="center">
 
-Built for the <strong>DISPLAYS & SENSORS</strong>
+<strong>DISPLAYS & SENSORS</strong>
 
 </div>
 
