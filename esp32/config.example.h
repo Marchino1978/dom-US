@@ -88,12 +88,12 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 // #######################################################
 
 // Telegram Config
-#define TELEGRAM_BOT_TOKEN "IL_TUO_BOT_TOKEN_REALE"
-#define TELEGRAM_CHAT_ID   "LA_TUA_CHAT_ID_REALE"
+#define TELEGRAM_BOT_TOKEN "YOUR_BOT_TOKEN"
+#define TELEGRAM_CHAT_ID   "YOUR_CHAT_ID"
 
 // Supabase Config
-#define SUPABASE_URL       "https://tuo-project.supabase.co"
-#define SUPABASE_KEY       "la_tua_anon_key_o_service_key"
+#define SUPABASE_URL       "https://your-project.supabase.co"
+#define SUPABASE_KEY       "your_publishable_key"
 
 // Heartbeat / Blackout Monitor Config
 #define HEARTBEAT_URL      "https://api.cron-job.org/ping-or-your-endpoint"
