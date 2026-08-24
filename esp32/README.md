@@ -17,11 +17,11 @@ Built for the <strong>Waveshare ESP32-C3 MINI</strong>
   <!-- ESP32-C3-MINI -->
   <tr>
     <td width="50%" align="center">
-      <img src="../img/esp32-c3-zero-front.jpg" alt="Vista frontale della scheda Waveshare ESP32-S3 mini | Front view of Waveshare ESP32-C3 mini board" width="50%">
+      <img src="../img/esp32-c3-zero-front.jpg" alt="Vista frontale della scheda Waveshare ESP32-S3 mini | Front view of Waveshare ESP32-C3 mini board" width="100%">
       <font color="cyan"><br><b>front</b></font>
     </td>
     <td width="50%" align="center">
-      <img src="../img/esp32-c3-zero-rear.jpg" alt="Vista posteriore della scheda Waveshare ESP32-S3 mini | Rear view of Waveshare ESP32-C3 mini board" width="50%">
+      <img src="../img/esp32-c3-zero-rear.jpg" alt="Vista posteriore della scheda Waveshare ESP32-S3 mini | Rear view of Waveshare ESP32-C3 mini board" width="100%">
       <font color="cyan"><br><b>rear</b></font>
     </td>
   </tr>
@@ -52,7 +52,7 @@ For more information, check the official <strong>Waveshare product page</strong>
   <!-- DISPLAY / SENSOR -->
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="../img/display.jpeg" alt="display" width="50%">
+      <img src="../img/display.jpeg" alt="display" width="100%">
       <font color="cyan"><br><b>display</b></font>
 <br><br>
       <div align="center" style="text-align: left; display: inline-block;">
@@ -68,7 +68,7 @@ For more information, check the official <strong>Waveshare product page</strong>
       </div>
     </td>
     <td width="50%" align="center" valign="top">
-      <img src="../img/sensor.jpeg" alt="sensor" width="50%">
+      <img src="../img/sensor.jpeg" alt="sensor" width="100%">
       <font color="cyan"><br><b>sensor</b></font>
 <br><br>
       <div align="center" style="text-align: left; display: inline-block;">
@@ -111,11 +111,11 @@ available soon and ready for implementation
   <!-- XYZ -->
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="../img/work-in-progress.png" alt="xyz" width="50%">
+      <img src="../img/work-in-progress.png" alt="xyz" width="100%">
       <font color="cyan"><br><b>XYZ</b></font>
     </td>
     <td width="50%" align="center" valign="top">
-      <img src="../img/work-in-progress.png" alt="xyz" width="50%">
+      <img src="../img/work-in-progress.png" alt="xyz" width="100%">
       <font color="cyan"><br><b>XYZ</b></font>
     </td>
   </tr>
