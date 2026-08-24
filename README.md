@@ -5,7 +5,7 @@
 
 <div align="center">
 
-A lightweight, serverless smart home IoT ecosystem built with ESP32-C3 mini and Supabase.
+<strong>A lightweight, serverless smart home IoT ecosystem built with ESP32-C3 mini and Supabase.</strong>
 
 Architecture & Smart Features
 
