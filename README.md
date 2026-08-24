@@ -23,8 +23,6 @@ A lightweight, serverless smart home IoT ecosystem built with ESP32-C3 mini and 
   <strong>Developed on Raspberry Pi 400 | <s>Hosted on</s> Serverless | Uptime: running since ---</strong>
 </p>
 
-<br><br>
-
 <p align="center">
   <img src="https://capsule-render.vercel.app/api?type=rect&animation=blinking&color=00000000&fontColor=FF0000&height=60&section=header&text=***WORK%20IN%20PROGRESS***&fontSize=32"
   alt="WORK IN PROGRESS" />
