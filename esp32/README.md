@@ -71,7 +71,7 @@ For more information, check the official <strong>Waveshare product page</strong>
       <div align="center" style="text-align: left; display: inline-block;">
         <font color="cyan"><small><b>CLIMATE</b></small></font><br>
         ✅ DHT11 - Temp/Hum [3.3V / 5V]<br>
-        ❌ DHT22 - Temp/Hum[3.3V / 5V]<br>
+        ❌ DHT22 - Temp/Hum [3.3V / 5V]<br>
         ⌛ BME280 - Temp/Hum/Press [3.3V]<br>
         ❌ BMP280 - Temp/Press [3.3V]<br>
         ❌ SHT31 - Temp/Hum [3.3V / 5V]<br>
@@ -79,7 +79,7 @@ For more information, check the official <strong>Waveshare product page</strong>
         ❌ DS18B20 - Temp [3.3V / 5V]<br><br>
         <font color="cyan"><small><b>MOTION & PRESENCE</b></small></font><br>
         ⌛ HCSR501 - Passive Infrared [5V (3.3V signal)]<br>
-        ❌ RCWL - Doppler Microwave - [4V - 28V]<br>
+        ❌ RCWL - Doppler Microwave [4V - 28V]<br>
         ❌ LD2410 - Micro-movements [5V]<br>
         ❌ TE174 - IR Beam [3.3V / 5V]<br><br>
         <font color="cyan"><small><b>DISTANCE</b></small></font><br>
