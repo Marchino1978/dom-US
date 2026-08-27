@@ -17,11 +17,11 @@ Built for the <strong>Waveshare ESP32-C3 MINI</strong>
   <!-- ESP32-C3-MINI -->
   <tr>
     <td width="50%" align="center">
-      <img src="../img/esp32-c3-zero-front.jpg" alt="Vista frontale della scheda Waveshare ESP32-S3 mini | Front view of Waveshare ESP32-C3 mini board" width="100%">
+      <img src="../img/esp32-c3-zero-front.jpg" alt="Vista frontale della scheda Waveshare ESP32-C3 mini | Front view of Waveshare ESP32-C3 mini board" width="100%">
       <font color="cyan"><br><b>front</b></font>
     </td>
     <td width="50%" align="center">
-      <img src="../img/esp32-c3-zero-rear.jpg" alt="Vista posteriore della scheda Waveshare ESP32-S3 mini | Rear view of Waveshare ESP32-C3 mini board" width="100%">
+      <img src="../img/esp32-c3-zero-rear.jpg" alt="Vista posteriore della scheda Waveshare ESP32-C3 mini | Rear view of Waveshare ESP32-C3 mini board" width="100%">
       <font color="cyan"><br><b>rear</b></font>
     </td>
   </tr>
