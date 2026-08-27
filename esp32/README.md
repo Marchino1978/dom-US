@@ -72,8 +72,8 @@ For more information, check the official <strong>Waveshare product page</strong>
       <font color="cyan"><br><b>sensor</b></font>
 <br><br>
       <div align="center" style="text-align: left; display: inline-block;">
-        <font color="cyan"><small><b>CLIMATE</b></small></font><br>
-        ✅ DHT11<br>
+        <font color="cyan"><small><b>CLIMATE🌡️</b></small></font><br>
+        ✅ DHT11 - Temp🌡️/Hum💧[3.3V / 5V]<br>
         ❌ DHT22<br>
         ⌛ BME280<br>
         ❌ BMP280<br>
