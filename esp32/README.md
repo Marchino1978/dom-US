@@ -53,47 +53,44 @@ For more information, check the official <strong>Waveshare product page</strong>
   <tr>
     <td width="50%" align="center" valign="top">
       <img src="../img/display.jpeg" alt="display" width="100%">
-      <font color="cyan"><br><b>display</b></font>
+      <font color="cyan"><br><b>displays (LCD, OLED, TFT)</b></font>
 <br><br>
       <div align="center" style="text-align: left; display: inline-block;">
-        <font color="cyan"><small><b>LCD</b></small></font><br>
-        ✅ LCD_16X2<br>
-        ⌛ LCD_20X4<br><br>
-        <font color="cyan"><small><b>OLED</b></small></font><br>
-        ❌ OLED_SSD1306<br>
-        ❌ OLED_SH1106<br><br>
-        <font color="cyan"><small><b>TFT</b></small></font><br>
-        ❌ TFT_ST7789<br>
-        ❌ TFT_ILI9341
+        ✅ LCD_16X2 - Alphanumeric [5V / I2C]<br>
+        ⌛ LCD_20X4 - Alphanumeric [5V / I2C]<br><br>
+        ❌ SSD1306 - Monochrome OLED 0.96" [3.3V / 5V]<br>
+        ❌ SH1106 - Monochrome OLED 1.3" [3.3V / 5V]<br><br>
+        ❌ ST7789 - Color TFT [3.3V]<br>
+        ❌ ILI9341 - Color TFT [3.3V]
       </div>
     </td>
     <td width="50%" align="center" valign="top">
       <img src="../img/sensor.jpeg" alt="sensor" width="100%">
-      <font color="cyan"><br><b>sensor</b></font>
+      <font color="cyan"><br><b>sensors</b></font>
 <br><br>
       <div align="center" style="text-align: left; display: inline-block;">
-        <font color="cyan"><small><b>CLIMATE🌡️</b></small></font><br>
-        ✅ DHT11 - Temp🌡️/Hum💧 [3.3V / 5V]<br>
-        ❌ DHT22<br>
-        ⌛ BME280<br>
-        ❌ BMP280<br>
-        ❌ SHT31<br>
-        ❌ AHT20<br>
-        ❌ DS18B20<br><br>
-        <font color="cyan"><small><b>MOTION</b></small></font><br>
-        ⌛ PIR_HCSR501<br>
-        ❌ RADAR_RCWL<br>
-        ❌ MMWAVE_LD2410<br>
-        ❌ IR_TE174<br><br>
+        <font color="cyan"><small><b>CLIMATE</b></small></font><br>
+        ✅ DHT11 - Temp/Hum [3.3V / 5V]<br>
+        ❌ DHT22 - Temp/Hum[3.3V / 5V]<br>
+        ⌛ BME280 - Temp/Hum/Press [3.3V]<br>
+        ❌ BMP280 - Temp/Press [3.3V]<br>
+        ❌ SHT31 - Temp/Hum [3.3V / 5V]<br>
+        ❌ AHT20 - Temp/Hum [3.3V]<br>
+        ❌ DS18B20 - Temp [3.3V / 5V]<br><br>
+        <font color="cyan"><small><b>MOTION & PRESENCE</b></small></font><br>
+        ⌛ HCSR501 - Passive Infrared [5V (3.3V signal)]<br>
+        ❌ RCWL - Doppler Microwave - [4V - 28V]<br>
+        ❌ LD2410 - Micro-movements [5V]<br>
+        ❌ TE174 - IR Beam [3.3V / 5V]<br><br>
         <font color="cyan"><small><b>DISTANCE</b></small></font><br>
-        ❌ ULTRASONIC_HCSR04<br>
-        ⌛ ULTRASONIC_US100<br>
-        ❌ LASER_VL53L0X<br><br>
+        ❌ HCSR04 - Ultrasound [5V]<br>
+        ⌛ US100 - Ultrasound + Temp [3.3V / 5V]<br>
+        ❌ VL53L0X - Laser ToF [2.8V - 5V]<br><br>
         <font color="cyan"><small><b>AMBIENT</b></small></font><br>
-        ❌ LIGHT_BH1750<br>
-        ❌ LIGHT_LDR<br>
-        ⌛ COLOR_TCS34725<br>
-        ❌ GAS_MQ135
+        ❌ BH1750 - Lux (Digital) [3.3V / 5V]<br>
+        ❌ LDR - Analog Photoresistor [3.3V / 5V]<br>
+        ⌛ TCS34725 - RGB + Color Temp [3.3V / 5V]<br>
+        ❌ MQ135 - Air Quality [5V]
       </div>
     </td>
   </tr>
