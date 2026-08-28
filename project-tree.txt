@@ -42,7 +42,8 @@
 │   ├── display.jpeg
 │   ├── esp32-c3-zero-front.jpg
 │   ├── esp32-c3-zero-rear.jpg
-│   ├── monthly_report.png
+│   ├── monthly_report_chart.png
+│   ├── monthly_report_table.png
 │   ├── README.md
 │   ├── sensor.jpeg
 │   ├── _splash_.png
@@ -67,6 +68,6 @@
 ├── project-tree.txt
 └── README.md
 
-15 directories, 52 files
+15 directories, 53 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***

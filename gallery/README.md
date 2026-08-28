@@ -4,15 +4,30 @@
 </p>
 
 <table width="100%">
+  <!-- monthly report -->
+  <tr>
+    <td width="50%" align="center" valign="top">
+      <img src="../img/monthly_report_chart.png" alt="xyz" width="100%"><br>
+      <font color="cyan"><b>monthly report [chart]</b></font>
+    </td>
+    <td width="50%" align="center" valign="top">
+      <img src="../img/monthly_reort_table.png" alt="xyz" width="100%"><br>
+      <font color="cyan"><b>monthly report [table]</b></font>
+    </td>
+  </tr>
+
+<br><br>
+
+<table width="100%">
   <!-- XYZ -->
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="../img/monthly_report.png" alt="xyz" width="100%"><br>
-      <font color="cyan"><b>monthly report</b></font>
+      <img src="../img/work-in-progress.png" alt="xyz" width="100%"><br>
+      <font color="cyan"><b>monthly report [table]</b></font>
     </td>
     <td width="50%" align="center" valign="top">
       <img src="../img/work-in-progress.png" alt="xyz" width="100%"><br>
-      <font color="cyan"><b>XYZ</b></font>
+      <font color="cyan"><b>monthly report [table]</b></font>
     </td>
   </tr>
 
