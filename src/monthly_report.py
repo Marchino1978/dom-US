@@ -113,7 +113,7 @@ def generate_monthly_report():
 
         start_dt = datetime(first_day.year, first_day.month, first_day.day, 0, 0, 0)
         next_month_first = (last_day + timedelta(days=1))
-        end_dt = datetime(next_month_first.year, next_month_first.month, next_month_first.day, 0, 0, 0)
+        end_dt = datetime(last_day.year, last_day.month, last_day.day, 23, 0, 0)
 
         for ax in (ax1, ax2):
             ax.set_xlim(start_dt, end_dt)
