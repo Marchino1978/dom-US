@@ -1,4 +1,4 @@
-name: Report Mensile Sensori DOM-US
+name: MONTHLY REPORT
 
 on:
   schedule:

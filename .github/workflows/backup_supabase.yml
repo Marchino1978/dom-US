@@ -1,4 +1,4 @@
-name: Backup Supabase DOM-US
+name: BACKUP SUPABASE
 
 on:
   schedule:
