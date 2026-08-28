@@ -17,6 +17,7 @@ GITHUB_TOKEN = os.environ.get("GH_TOKEN")
 GITHUB_REPO = "Marchino1978/dom-us"
 
 def get_previous_month_range():
+    """Calcola le date del mese precedente e restituisce stringhe formattate."""
     today = datetime.utcnow().date()
     first_day_this_month = today.replace(day=1)
     last_day_prev_month = first_day_this_month - timedelta(days=1)
@@ -32,11 +33,19 @@ def get_previous_month_range():
 def generate_monthly_report():
     start_date, end_date, year_str, month_suffix = get_previous_month_range()
     
+    year_str = "".join(c for c in year_str if c.isdigit())
+    if not year_str:
+        year_str = str(datetime.utcnow().year)
+
     current_dir = os.path.dirname(os.path.abspath(__file__))
     root_dir = os.path.dirname(current_dir)
     
     csv_folder = os.path.join(root_dir, "data", year_str, "csv")
     png_folder = os.path.join(root_dir, "data", year_str, "png")
+    
+    print(f"DEBUG - Anno estratto: {year_str}")
+    print(f"DEBUG - Percorso cartella CSV: {csv_folder}")
+    print(f"DEBUG - Percorso cartella PNG: {png_folder}")
     
     os.makedirs(csv_folder, exist_ok=True)
     os.makedirs(png_folder, exist_ok=True)
@@ -47,9 +56,7 @@ def generate_monthly_report():
     csv_path = os.path.join(csv_folder, csv_filename)
     png_path = os.path.join(png_folder, png_filename)
     
-    print(f"Generazione report per periodo: {start_date} -> {end_date}")
-    print(f"Cartella CSV target: {csv_folder}")
-    print(f"Cartella PNG target: {png_folder}")
+    print(f"Generazione report per il periodo: {start_date} -> {end_date}")
     
     rows = []
     if SUPABASE_URL and SUPABASE_KEY:
@@ -63,12 +70,12 @@ def generate_monthly_report():
                 .execute()
             if hasattr(resp, 'data') and resp.data:
                 rows = resp.data
-            print(f"Query Supabase completata. Righe trovate: {len(rows)}")
+            print(f"Query Supabase completata con successo. Righe trovate: {len(rows)}")
         except Exception as e:
             print(f"Errore durante la query su Supabase: {e}")
             
     if not rows:
-        print("Nessun dato trovato, inserisco riga vuota di fallback.")
+        print("Nessun dato trovato per il mese precedente, inserisco riga di fallback.")
         rows = [{"created_at": start_date, "temperatura": 0, "umidita": 0}]
 
     try:
@@ -76,9 +83,9 @@ def generate_monthly_report():
             writer = csv.DictWriter(f, fieldnames=["created_at", "temperatura", "umidita"])
             writer.writeheader()
             writer.writerows(rows)
-        print(f"File CSV salvato con successo: {csv_path}")
+        print(f"File CSV salvato correttamente: {csv_path}")
     except Exception as e:
-        print(f"Errore scrittura CSV: {e}")
+        print(f"Errore durante la scrittura del file CSV: {e}")
         return None, None
 
     labels = ["" for _ in rows]
@@ -137,11 +144,11 @@ def generate_monthly_report():
         if qc_resp.status_code == 200:
             with open(png_path, "wb") as p_file:
                 p_file.write(qc_resp.content)
-            print(f"File PNG salvato con successo: {png_path}")
+            print(f"File PNG salvato correttamente: {png_path}")
         else:
-            print(f"QuickChart errore {qc_resp.status_code}: {qc_resp.text}")
+            print(f"Errore QuickChart [{qc_resp.status_code}]: {qc_resp.text}")
     except Exception as e:
-        print(f"Errore critico generazione PNG: {e}")
+        print(f"Errore critico durante la generazione del PNG: {e}")
 
     final_csv = csv_path if os.path.exists(csv_path) else None
     final_png = png_path if os.path.exists(png_path) else None
@@ -149,6 +156,7 @@ def generate_monthly_report():
     return final_csv, final_png
 
 def upload_to_github(file_path):
+    """Carica o aggiorna il file sul repository GitHub tramite API REST."""
     if not GITHUB_TOKEN or not file_path or not os.path.exists(file_path):
         return False
 
@@ -181,25 +189,28 @@ def upload_to_github(file_path):
         put_resp = requests.put(api_url, headers=headers, json=payload, timeout=10)
         
         if put_resp.status_code in [200, 201]:
-            print(f"File {rel_path} caricato correttamente su GitHub.")
+            print(f"File caricato/aggiornato con successo su GitHub: {rel_path}")
             return True
         else:
-            print(f"Errore upload GitHub per {rel_path}: {put_resp.text}")
+            print(f"Errore caricamento GitHub per {rel_path} [{put_resp.status_code}]: {put_resp.text}")
             return False
 
     except Exception as e:
-        print(f"Errore caricamento su GitHub {rel_path}: {e}")
+        print(f"Errore di comunicazione con GitHub per {rel_path}: {e}")
         return False
 
 if __name__ == "__main__":
     try:
+        print("Avvio script di report mensile...")
         csv_p, png_p = generate_monthly_report()
+        
         if csv_p:
             upload_to_github(csv_p)
         if png_p:
             upload_to_github(png_p)
+            
         print("Esecuzione completata con successo.")
     except Exception as e:
-        print(f"Errore fatale: {e}")
+        print(f"Errore fatale nell'esecuzione dello script: {e}")
         traceback.print_exc()
         exit(1)
