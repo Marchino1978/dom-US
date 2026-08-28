@@ -153,7 +153,9 @@ def upload_to_github(file_path):
         return False
 
     headers = {"Authorization": f"Bearer {GITHUB_TOKEN}", "Accept": "application/vnd.github+json"}
-    api_url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{file_path}"
+    
+    normalized_path = file_path.replace(os.sep, "/")
+    api_url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{normalized_path}"
     
     try:
         with open(file_path, "rb") as f:
@@ -163,7 +165,7 @@ def upload_to_github(file_path):
         sha = get_resp.json().get("sha") if get_resp.status_code == 200 else None
 
         payload = {
-            "message": "fix",
+            "message": f"Add monthly report {normalized_path}",
             "content": content,
             "branch": "main"
         }
@@ -173,10 +175,10 @@ def upload_to_github(file_path):
         put_resp = requests.put(api_url, headers=headers, json=payload, timeout=15)
         
         if put_resp.status_code in [200, 201]:
-            print(f"File {file_path} caricato correttamente su GitHub.")
+            print(f"File {normalized_path} caricato correttamente su GitHub.")
             return True
         else:
-            print(f"Errore upload GitHub per {file_path}: {put_resp.text}")
+            print(f"Errore upload GitHub per {normalized_path}: {put_resp.text}")
             return False
 
     except Exception as e:
