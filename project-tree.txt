@@ -42,7 +42,7 @@
 │   ├── display.jpeg
 │   ├── esp32-c3-zero-front.jpg
 │   ├── esp32-c3-zero-rear.jpg
-│   ├── ino.png
+│   ├── ino_lib.png
 │   ├── monthly_report_chart.png
 │   ├── monthly_report_table.png
 │   ├── README.md
