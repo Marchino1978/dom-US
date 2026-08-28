@@ -59,7 +59,8 @@ For more information, check the official <strong>Waveshare product page</strong>
         ❌ SH1106 - Monochrome OLED 1.3" [3.3V / 5V]<br><br>
         ❌ ST7789 - Color TFT [3.3V]<br>
         ❌ ILI9341 - Color TFT [3.3V]<br><br>
-        <font color="cyan"><small><i>DISPLAY WAKE-UP ADDONS</i></small></font><br>
+      <font color="cyan"><small><i>DISPLAY WAKE-UP ADDONS</i></small></font>
+<br><br>
         ❌ TE174 - IR Beam [3.3V / 5V]<br><br>
         ⌛ VL53L0X - Laser ToF [2.8V - 5V]<br><br>
         ❌ HCSR501 - Passive Infrared [5V (3.3V signal)]<br>
