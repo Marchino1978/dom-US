@@ -66,7 +66,7 @@ def generate_monthly_report():
         print("Nessun dato trovato, inserisco riga vuota di fallback.")
         rows = [{"created_at": start_date, "temperatura": 0, "umidita": 0}]
 
-     try:
+    try:
         with open(csv_path, "w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=["created_at", "temperatura", "umidita"])
             writer.writeheader()
@@ -151,7 +151,7 @@ def upload_to_github(file_path):
         sha = get_resp.json().get("sha") if get_resp.status_code == 200 else None
 
         payload = {
-            "message": "fix",
+            "message": "automated monthly report update",
             "content": content,
             "branch": "main"
         }
