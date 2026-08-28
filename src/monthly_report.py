@@ -59,12 +59,14 @@ def generate_monthly_report():
             print(f"Nessun dato trovato per il periodo {start_date} - {end_date}.")
             return None, None
 
+        # 1. Scrittura del file CSV
         with open(csv_path, "w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=["created_at", "temperatura", "umidita"])
             writer.writeheader()
             writer.writerows(rows)
         print(f"File CSV salvato: {csv_path}")
 
+        # 2. Configurazione QuickChart con due grafici separati (Temp sopra, Hum sotto)
         labels = ["" for _ in rows]
         temperatures = [r.get("temperatura", 0) for r in rows]
         humidities = [r.get("umidita", 0) for r in rows]
