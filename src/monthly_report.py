@@ -3,7 +3,6 @@ import csv
 import base64
 import traceback
 import requests
-from pathlib import Path
 from datetime import datetime, timedelta
 
 try:
@@ -33,26 +32,24 @@ def get_previous_month_range():
 def generate_monthly_report():
     start_date, end_date, year_str, month_suffix = get_previous_month_range()
     
-    script_path = Path(__file__).resolve()
-    if script_path.parent.name == "scripts":
-        root_dir = script_path.parent.parent
-    else:
-        root_dir = script_path.parent
-
-    csv_folder = root_dir / "data" / year_str / "csv"
-    png_folder = root_dir / "data" / year_str / "png"
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    root_dir = os.path.dirname(current_dir)
     
-    csv_folder.mkdir(parents=True, exist_ok=True)
-    png_folder.mkdir(parents=True, exist_ok=True)
+    csv_folder = os.path.join(root_dir, "data", year_str, "csv")
+    png_folder = os.path.join(root_dir, "data", year_str, "png")
+    
+    os.makedirs(csv_folder, exist_ok=True)
+    os.makedirs(png_folder, exist_ok=True)
     
     csv_filename = f"report_{month_suffix}.csv"
     png_filename = f"report_{month_suffix}.png"
     
-    csv_path = csv_folder / csv_filename
-    png_path = png_folder / png_filename
+    csv_path = os.path.join(csv_folder, csv_filename)
+    png_path = os.path.join(png_folder, png_filename)
     
-    print(f"Cartella CSV forzata a: {csv_path}")
-    print(f"Cartella PNG forzata a: {png_path}")
+    print(f"Generazione report per periodo: {start_date} -> {end_date}")
+    print(f"Cartella CSV target: {csv_folder}")
+    print(f"Cartella PNG target: {png_folder}")
     
     rows = []
     if SUPABASE_URL and SUPABASE_KEY:
@@ -146,8 +143,8 @@ def generate_monthly_report():
     except Exception as e:
         print(f"Errore critico generazione PNG: {e}")
 
-    final_csv = str(csv_path) if csv_path.exists() else None
-    final_png = str(png_path) if png_path.exists() else None
+    final_csv = csv_path if os.path.exists(csv_path) else None
+    final_png = png_path if os.path.exists(png_path) else None
 
     return final_csv, final_png
 
@@ -155,11 +152,11 @@ def upload_to_github(file_path):
     if not GITHUB_TOKEN or not file_path or not os.path.exists(file_path):
         return False
 
-    script_path = Path(__file__).resolve()
-    root_dir = script_path.parent.parent if script_path.parent.name == "scripts" else script_path.parent
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    root_dir = os.path.dirname(current_dir)
     
     try:
-        rel_path = Path(file_path).relative_to(root_dir).as_posix()
+        rel_path = os.path.relpath(file_path, root_dir).replace("\\", "/")
     except ValueError:
         rel_path = file_path
 
