@@ -7,7 +7,7 @@
   <!-- XYZ -->
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="../img/monthly:report.png" alt="xyz" width="100%"><br>
+      <img src="../img/monthly_report.png" alt="xyz" width="100%"><br>
       <font color="cyan"><b>monthly report</b></font>
     </td>
     <td width="50%" align="center" valign="top">
