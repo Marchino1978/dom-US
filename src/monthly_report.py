@@ -30,17 +30,14 @@ def generate_monthly_report():
 
     start_date, end_date, year_str, month_suffix = get_previous_month_range()
     
-    csv_folder = os.path.join("data", year_str, "csv")
-    png_folder = os.path.join("data", year_str, "png")
-    
-    os.makedirs(csv_folder, exist_ok=True)
-    os.makedirs(png_folder, exist_ok=True)
+    target_folder = os.path.join("data", year_str)
+    os.makedirs(target_folder, exist_ok=True)
     
     csv_filename = f"report_{month_suffix}.csv"
     png_filename = f"report_{month_suffix}.png"
     
-    csv_path = os.path.join(csv_folder, csv_filename)
-    png_path = os.path.join(png_folder, png_filename)
+    csv_path = os.path.join(target_folder, csv_filename)
+    png_path = os.path.join(target_folder, png_filename)
     
     print(f"Generazione report per periodo: {start_date} -> {end_date}")
     
@@ -59,14 +56,12 @@ def generate_monthly_report():
             print(f"Nessun dato trovato per il periodo {start_date} - {end_date}.")
             return None, None
 
-        # 1. Scrittura del file CSV
         with open(csv_path, "w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=["created_at", "temperatura", "umidita"])
             writer.writeheader()
             writer.writerows(rows)
         print(f"File CSV salvato: {csv_path}")
 
-        # 2. Configurazione QuickChart con due grafici separati (Temp sopra, Hum sotto)
         labels = ["" for _ in rows]
         temperatures = [r.get("temperatura", 0) for r in rows]
         humidities = [r.get("umidita", 0) for r in rows]
