@@ -16,9 +16,6 @@
     </td>
   </tr>
 
-<br><br>
-
-<table width="100%">
   <!-- XYZ -->
   <tr>
     <td width="50%" align="center" valign="top">
