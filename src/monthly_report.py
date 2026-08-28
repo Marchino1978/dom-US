@@ -70,7 +70,7 @@ def generate_monthly_report():
             
     if not rows:
         print("Nessun dato trovato, inserisco riga di fallback.")
-        rows = [{"created_at": start_date, "temperatura": 0, "umidita": 0}]
+        rows = [{"created_at": start_date, "temperatura": 0, "umidita": 0, "umidita": 0}]
 
     try:
         with open(csv_path, "w", newline="", encoding="utf-8") as f:
