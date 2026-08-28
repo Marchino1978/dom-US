@@ -47,9 +47,7 @@ def generate_monthly_report():
     print(f"Generazione report per periodo: {start_date} -> {end_date}")
     
     rows = []
-    if not SUPABASE_URL or not SUPABASE_KEY:
-        print("ATTENZIONE: Credenziali Supabase non trovate nelle variabili d'ambiente.")
-    else:
+    if SUPABASE_URL and SUPABASE_KEY:
         try:
             supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
             resp = supabase.table("sensor_data") \
@@ -60,16 +58,15 @@ def generate_monthly_report():
                 .execute()
             if hasattr(resp, 'data') and resp.data:
                 rows = resp.data
-            print(Query Supabase completata. Righe trovate: {len(rows)})
+            print(f"Query Supabase completata. Righe trovate: {len(rows)}")
         except Exception as e:
             print(f"Errore durante la query su Supabase: {e}")
-            traceback.print_exc()
             
     if not rows:
         print("Nessun dato trovato, inserisco riga vuota di fallback.")
         rows = [{"created_at": start_date, "temperatura": 0, "umidita": 0}]
 
-    # Scrittura CSV
+    # Scrittura CSV (Blindata)
     try:
         with open(csv_path, "w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=["created_at", "temperatura", "umidita"])
@@ -78,10 +75,9 @@ def generate_monthly_report():
         print(f"File CSV salvato con successo: {csv_path}")
     except Exception as e:
         print(f"Errore scrittura CSV: {e}")
-        traceback.print_exc()
         return None, None
 
-    # Generazione PNG
+    # Generazione PNG con timeout stretto
     labels = ["" for _ in rows]
     temperatures = [r.get("temperatura", 0) for r in rows]
     humidities = [r.get("umidita", 0) for r in rows]
@@ -129,37 +125,31 @@ def generate_monthly_report():
 
     try:
         qc_url = "https://quickchart.io/chart"
-        qc_resp = requests.post(qc_url, json={"chart": chart_config, "width": 900, "height": 500, "format": "png"}, timeout=15)
+        qc_resp = requests.post(qc_url, json={"chart": chart_config, "width": 900, "height": 500, "format": "png"}, timeout=5)
         
         if qc_resp.status_code == 200:
             with open(png_path, "wb") as p_file:
                 p_file.write(qc_resp.content)
             print(f"File PNG salvato con successo: {png_path}")
         else:
-            print(f"Errore QuickChart ({qc_resp.status_code}): {qc_resp.text}")
+            print(f"QuickChart ha risposto con codice {qc_resp.status_code}, salto il PNG.")
     except Exception as e:
-        print(f"Errore generazione PNG: {e}")
-        traceback.print_exc()
+        print(f"Timeout o errore generazione PNG (proseguo comunque col CSV): {e}")
 
-    return csv_path, png_path
+    return csv_path, png_path if os.path.exists(png_path) else None
 
 def upload_to_github(file_path):
-    if not GITHUB_TOKEN:
-        print("Errore: GITHUB_TOKEN non trovato.")
+    if not GITHUB_TOKEN or not file_path or not os.path.exists(file_path):
         return False
 
     headers = {"Authorization": f"Bearer {GITHUB_TOKEN}", "Accept": "application/vnd.github+json"}
     api_url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{file_path}"
     
     try:
-        if not os.path.exists(file_path):
-            print(f"File non trovato localmente per l'upload: {file_path}")
-            return False
-            
         with open(file_path, "rb") as f:
             content = base64.b64encode(f.read()).decode("utf-8")
         
-        get_resp = requests.get(api_url, headers=headers)
+        get_resp = requests.get(api_url, headers=headers, timeout=10)
         sha = get_resp.json().get("sha") if get_resp.status_code == 200 else None
 
         payload = {
@@ -170,7 +160,7 @@ def upload_to_github(file_path):
         if sha:
             payload["sha"] = sha
 
-        put_resp = requests.put(api_url, headers=headers, json=payload, timeout=15)
+        put_resp = requests.put(api_url, headers=headers, json=payload, timeout=10)
         
         if put_resp.status_code in [200, 201]:
             print(f"File {file_path} caricato correttamente su GitHub.")
@@ -180,8 +170,7 @@ def upload_to_github(file_path):
             return False
 
     except Exception as e:
-        print(f"Errore caricamento su GitHub: {e}")
-        traceback.print_exc()
+        print(f"Errore caricamento su GitHub {file_path}: {e}")
         return False
 
 if __name__ == "__main__":
@@ -189,9 +178,10 @@ if __name__ == "__main__":
         csv_p, png_p = generate_monthly_report()
         if csv_p:
             upload_to_github(csv_p)
-        if png_p and os.path.exists(png_p):
+        if png_p:
             upload_to_github(png_p)
+        print("Esecuzione completata con successo.")
     except Exception as e:
-        print(f"Errore fatale nel blocco principale: {e}")
+        print(f"Errore fatale: {e}")
         traceback.print_exc()
         exit(1)
