@@ -30,10 +30,11 @@ def get_previous_month_range():
     start_str = f"{first_day_prev_month.strftime('%Y-%m-%d')}T00:00:00Z"
     end_str = f"{last_day_prev_month.strftime('%Y-%m-%d')}T23:59:59Z"
     month_suffix = first_day_prev_month.strftime("%Y_%m")
-    return start_str, end_str, month_suffix
+    
+    return start_str, end_str, month_suffix, first_day_prev_month, last_day_prev_month
 
 def generate_monthly_report():
-    start_date, end_date, month_suffix = get_previous_month_range()
+    start_date, end_date, month_suffix, first_day, last_day = get_previous_month_range()
     
     folder = "data"
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -98,7 +99,7 @@ def generate_monthly_report():
             temperatures.append(float(r.get("temperatura", 0) or 0))
             humidities.append(float(r.get("umidita", 0) or 0))
 
-        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 8), sharex=True)
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 8))
         
         fig.suptitle(f"REPORT {month_suffix}", fontsize=16, fontweight='bold', y=0.95)
 
@@ -110,11 +111,17 @@ def generate_monthly_report():
         ax2.set_title("HUM (%)", fontsize=12, fontweight='bold', loc='left')
         ax2.grid(True, linestyle="--", alpha=0.5)
 
-        ax2.xaxis.set_major_formatter(mates.DateFormatter('%d'))
-        ax2.xaxis.set_major_locator(mates.DayLocator(interval=1))
-        plt.xlabel("Giorni del mese", fontsize=11)
+        start_dt = datetime(first_day.year, first_day.month, first_day.day, 0, 0, 0)
+         next_month_first = (last_day + timedelta(days=1))
+        end_dt = datetime(next_month_first.year, next_month_first.month, next_month_first.day, 0, 0, 0)
 
-        plt.tight_layout(rect=[0, 0.03, 1, 0.93])
+        for ax in (ax1, ax2):
+            ax.set_xlim(start_dt, end_dt)
+            ax.xaxis.set_major_formatter(mates.DateFormatter('%d'))
+            ax.xaxis.set_major_locator(mates.DayLocator(interval=1))
+            plt.setp(ax.get_xticklabels(), visible=True)
+
+        plt.tight_layout(rect=[0, 0.02, 1, 0.93])
         
         plt.savefig(chart_path, dpi=150)
         plt.close()
