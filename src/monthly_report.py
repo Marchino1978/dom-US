@@ -11,7 +11,6 @@ GITHUB_TOKEN = os.environ.get("GH_TOKEN")
 GITHUB_REPO = "Marchino1978/dom-us"
 
 def get_previous_month_range():
-    """Calcola inizio e fine del mese precedente in formato ISO (UTC)."""
     today = datetime.utcnow().date()
     first_day_this_month = today.replace(day=1)
     last_day_prev_month = first_day_this_month - timedelta(days=1)
@@ -49,7 +48,7 @@ def generate_monthly_report():
         supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
         
         resp = supabase.table("sensor_data") \
-            .select("*") \
+            .select("created_at, temperatura, umidita") \
             .gte("created_at", start_date) \
             .lte("created_at", end_date) \
             .order("created_at", desc=False) \
@@ -60,14 +59,13 @@ def generate_monthly_report():
             print(f"Nessun dato trovato per il periodo {start_date} - {end_date}.")
             return None, None
 
-        keys = rows[0].keys()
         with open(csv_path, "w", newline="", encoding="utf-8") as f:
-            writer = csv.DictWriter(f, fieldnames=keys)
+            writer = csv.DictWriter(f, fieldnames=["created_at", "temperatura", "umidita"])
             writer.writeheader()
             writer.writerows(rows)
         print(f"File CSV salvato: {csv_path}")
 
-        labels = [r.get("created_at", "") for r in rows]
+        labels = ["" for _ in rows]
         temperatures = [r.get("temperatura", 0) for r in rows]
         humidities = [r.get("umidita", 0) for r in rows]
 
@@ -75,39 +73,86 @@ def generate_monthly_report():
             "type": "line",
             "data": {
                 "labels": labels,
+                "datasets": []
+            },
+            "options": {
+                "responsive": True,
+                "plugins": {
+                    "legend": {"display": False}
+                },
+                "title": {
+                    "display": True,
+                    "text": f"REPORT_{month_suffix.upper()}"
+                }
+            }
+        }
+
+        chart_config = {
+            "type": "bar",
+            "data": {
+                "labels": labels,
                 "datasets": [
                     {
-                        "label": "Temperatura (°C)",
+                        "label": "TEMP",
                         "data": temperatures,
-                        "borderColor": "rgb(255, 99, 132)",
+                        "borderColor": "red",
+                        "backgroundColor": "red",
                         "yAxisID": "y",
-                        "fill": False
+                        "type": "line",
+                        "fill": False,
+                        "pointRadius": 0
                     },
                     {
-                        "label": "Umidità (%)",
+                        "label": "HUM",
                         "data": humidities,
-                        "borderColor": "rgb(54, 162, 235)",
+                        "borderColor": "blue",
+                        "backgroundColor": "blue",
                         "yAxisID": "y1",
-                        "fill": False
+                        "type": "line",
+                        "fill": False,
+                        "pointRadius": 0
                     }
                 ]
             },
             "options": {
                 "title": {
                     "display": True,
-                    "text": f"Report Mensile Sensori - {month_suffix}"
+                    "text": f"REPORT_{month_suffix.upper()}"
+                },
+                "legend": {
+                    "display": False
                 },
                 "scales": {
+                    "xAxes": [{
+                        "display": False
+                    }],
                     "yAxes": [
-                        {"id": "y", "type": "linear", "position": "left"},
-                        {"id": "y1", "type": "linear", "position": "right", "gridLines": {"drawOnChartArea": False}}
+                        {
+                            "id": "y",
+                            "type": "linear",
+                            "position": "left",
+                            "scaleLabel": {
+                                "display": True,
+                                "labelString": "TEMP (°C)"
+                            }
+                        },
+                        {
+                            "id": "y1",
+                            "type": "linear",
+                            "position": "right",
+                            "gridLines": {"drawOnChartArea": False},
+                            "scaleLabel": {
+                                "display": True,
+                                "labelString": "HUM (%)"
+                            }
+                        }
                     ]
                 }
             }
         }
 
         qc_url = "https://quickchart.io/chart"
-        qc_resp = requests.post(qc_url, json={"chart": chart_config, "width": 800, "height": 400, "format": "png"}, timeout=15)
+        qc_resp = requests.post(qc_url, json={"chart": chart_config, "width": 900, "height": 500, "format": "png"}, timeout=15)
         
         if qc_resp.status_code == 200:
             with open(png_path, "wb") as p_file:
