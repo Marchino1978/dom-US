@@ -5,6 +5,10 @@ import traceback
 import requests
 from datetime import datetime, timedelta
 
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+
 try:
     from supabase import create_client
 except ImportError as e:
@@ -31,7 +35,6 @@ def generate_monthly_report():
     start_date, end_date, month_suffix = get_previous_month_range()
     
     folder = "data"
-    
     current_dir = os.path.dirname(os.path.abspath(__file__))
     root_dir = os.path.dirname(current_dir)
     folder_path = os.path.join(root_dir, folder)
@@ -39,12 +42,12 @@ def generate_monthly_report():
     os.makedirs(folder_path, exist_ok=True)
     
     csv_filename = f"report_{month_suffix}.csv"
-    png_filename = f"report_{month_suffix}.png"
-    
     csv_path = os.path.join(folder_path, csv_filename)
-    png_path = os.path.join(folder_path, png_filename)
     
-    print(f"Inizio generazione report per periodo: {start_date} -> {end_date}")
+    chart_filename = f"report_{month_suffix}.png"
+    chart_path = os.path.join(folder_path, chart_filename)
+    
+    print(f"Inizio generazione report CSV e grafico PNG per periodo: {start_date} -> {end_date}")
     
     rows = []
     if SUPABASE_URL and SUPABASE_KEY:
@@ -76,72 +79,46 @@ def generate_monthly_report():
         print(f"Errore scrittura CSV: {e}")
         return None, None
 
-    labels = ["" for _ in rows]
-    temperatures = [r.get("temperatura", 0) for r in rows]
-    humidities = [r.get("umidita", 0) for r in rows]
-
-    chart_config = {
-        "type": "line",
-        "data": {
-            "labels": labels,
-            "datasets": [
-                {
-                    "label": "TEMP (°C)",
-                    "data": temperatures,
-                    "borderColor": "red",
-                    "backgroundColor": "rgba(255, 0, 0, 0.1)",
-                    "fill": False,
-                    "pointRadius": 0,
-                    "borderWidth": 1.5
-                },
-                {
-                    "label": "HUM (%)",
-                    "data": humidities,
-                    "borderColor": "blue",
-                    "backgroundColor": "rgba(0, 0, 255, 0.1)",
-                    "fill": False,
-                    "pointRadius": 0,
-                    "borderWidth": 1.5
-                }
-            ]
-        },
-        "options": {
-            "title": {
-                "display": True,
-                "text": f"REPORT_{month_suffix.upper()}"
-            },
-            "legend": {
-                "display": True,
-                "position": "bottom"
-            },
-            "scales": {
-                "xAxes": [{"display": False}],
-                "yAxes": [{"display": True, "scaleLabel": {"display": True, "labelString": "Valori"}}]
-            }
-        }
-    }
-
     try:
-        qc_url = "https://quickchart.io/chart"
-        qc_resp = requests.post(
-            qc_url, 
-            json={"chart": chart_config, "width": 900, "height": 500, "format": "png"}, 
-            timeout=25
-        )
+        dates = []
+        temperatures = []
+        humidities = []
         
-        if qc_resp.status_code == 200:
-            with open(png_path, "wb") as p_file:
-                p_file.write(qc_resp.content)
-            print(f"File PNG locale salvato: {png_path}")
-        else:
-            print(f"QuickChart errore {qc_resp.status_code}: {qc_resp.text}")
+        for r in rows:
+            dt_raw = r.get("created_at", "")
+            try:
+                dt = datetime.fromisoformat(dt_raw.replace("Z", "+00:00"))
+            except Exception:
+                try:
+                    dt = datetime.strptime(dt_raw[:19], "%Y-%m-%d %H:%M:%S")
+                except Exception:
+                    dt = dt_raw
+            dates.append(dt)
+            temperatures.append(float(r.get("temperatura", 0) or 0))
+            humidities.append(float(r.get("umidita", 0) or 0))
+
+        plt.figure(figsize=(12, 6))
+        plt.plot(dates, temperatures, label="Temperatura (°C)", color="#ff7f0e", linewidth=1.5)
+        plt.plot(dates, humidities, label="Umidità (%)", color="#1f77b4", linewidth=1.5, alpha=0.8)
+        
+        plt.title(f"Report Sensori - {month_suffix}", fontsize=14, fontweight='bold')
+        plt.xlabel("Data e Ora", fontsize=11)
+        plt.ylabel("Valori", fontsize=11)
+        plt.grid(True, linestyle="--", alpha=0.5)
+        plt.legend(loc="upper left")
+        plt.tight_layout()
+        
+        plt.savefig(chart_path, dpi=150)
+        plt.close()
+        print(f"File PNG locale salvato: {chart_path}")
     except Exception as e:
-        print(f"Errore generazione PNG: {e}")
+        print(f"Errore generazione grafico PNG locale: {e}")
+        traceback.print_exc()
 
-    final_csv = csv_path if os.path.exists(csv_path) else None
-    final_png = png_path if os.path.exists(png_path) else None
-
-    return final_csv, final_png
+    return (
+        csv_path if os.path.exists(csv_path) else None,
+        chart_path if os.path.exists(chart_path) else None
+    )
 
 def upload_to_github(file_path):
     if not GITHUB_TOKEN or not file_path or not os.path.exists(file_path):
@@ -157,7 +134,7 @@ def upload_to_github(file_path):
         
         target_url = f"{api_url_base}/{file_name}"
         
-        get_resp = requests.get(target_url, headers=headers, timeout=10)
+        get_resp = requests.get(target_url, headers=headers, timeout=30)
         sha = get_resp.json().get("sha") if get_resp.status_code == 200 else None
 
         payload = {
@@ -168,7 +145,7 @@ def upload_to_github(file_path):
         if sha:
             payload["sha"] = sha
 
-        put_resp = requests.put(target_url, headers=headers, json=payload, timeout=10)
+        put_resp = requests.put(target_url, headers=headers, json=payload, timeout=30)
         
         if put_resp.status_code in [200, 201]:
             print(f"File {file_name} caricato con successo in data su GitHub.")
@@ -180,11 +157,11 @@ def upload_to_github(file_path):
 
 if __name__ == "__main__":
     try:
-        csv_p, png_p = generate_monthly_report()
+        csv_p, chart_p = generate_monthly_report()
         if csv_p:
             upload_to_github(csv_p)
-        if png_p:
-            upload_to_github(png_p)
+        if chart_p:
+            upload_to_github(chart_p)
         print("Esecuzione completata.")
     except Exception as e:
         print(f"Errore fatale: {e}")
