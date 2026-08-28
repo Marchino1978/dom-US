@@ -2,8 +2,7 @@ name: Backup Supabase DOM-US
 
 on:
   schedule:
-    # Esegue il 1° di ogni mese alle 12:00 (ora italiana)
-    - cron: '0 10 1 * *'
+    - cron: '0 10 * * 1'
   workflow_dispatch:
 
 jobs:
