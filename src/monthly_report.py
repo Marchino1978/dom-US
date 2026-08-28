@@ -1,9 +1,15 @@
 import os
 import csv
 import base64
+import traceback
 import requests
 from datetime import datetime, timedelta
-from supabase import create_client
+
+try:
+    from supabase import create_client
+except ImportError as e:
+    print(f"ERRORE CRITICO: Modulo mancante -> {e}")
+    exit(1)
 
 SUPABASE_URL = os.environ.get("SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
@@ -41,7 +47,9 @@ def generate_monthly_report():
     print(f"Generazione report per periodo: {start_date} -> {end_date}")
     
     rows = []
-    if SUPABASE_URL and SUPABASE_KEY:
+    if not SUPABASE_URL or not SUPABASE_KEY:
+        print("ATTENZIONE: Credenziali Supabase non trovate nelle variabili d'ambiente.")
+    else:
         try:
             supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
             resp = supabase.table("sensor_data") \
@@ -50,22 +58,31 @@ def generate_monthly_report():
                 .lte("created_at", end_date) \
                 .order("created_at", desc=False) \
                 .execute()
-            if resp.data:
+            if hasattr(resp, 'data') and resp.data:
                 rows = resp.data
+            print(Query Supabase completata. Righe trovate: {len(rows)})
         except Exception as e:
-            print(f"Errore query Supabase: {e}")
+            print(f"Errore durante la query su Supabase: {e}")
+            traceback.print_exc()
             
     if not rows:
-        print("Nessun dato trovato da Supabase per il mese precedente, creo comunque il CSV vuoto/intestato.")
+        print("Nessun dato trovato, inserisco riga vuota di fallback.")
         rows = [{"created_at": start_date, "temperatura": 0, "umidita": 0}]
 
-    with open(csv_path, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=["created_at", "temperatura", "umidita"])
-        writer.writeheader()
-        writer.writerows(rows)
-    print(f"File CSV salvato con successo: {csv_path}")
+    # Scrittura CSV
+    try:
+        with open(csv_path, "w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=["created_at", "temperatura", "umidita"])
+            writer.writeheader()
+            writer.writerows(rows)
+        print(f"File CSV salvato con successo: {csv_path}")
+    except Exception as e:
+        print(f"Errore scrittura CSV: {e}")
+        traceback.print_exc()
+        return None, None
 
-     labels = ["" for _ in rows]
+    # Generazione PNG
+    labels = ["" for _ in rows]
     temperatures = [r.get("temperatura", 0) for r in rows]
     humidities = [r.get("umidita", 0) for r in rows]
 
@@ -104,16 +121,8 @@ def generate_monthly_report():
                 "position": "bottom"
             },
             "scales": {
-                "xAxes": [{
-                    "display": False
-                }],
-                "yAxes": [{
-                    "display": True,
-                    "scaleLabel": {
-                        "display": True,
-                        "labelString": "Valori"
-                    }
-                }]
+                "xAxes": [{"display": False}],
+                "yAxes": [{"display": True, "scaleLabel": {"display": True, "labelString": "Valori"}}]
             }
         }
     }
@@ -130,6 +139,7 @@ def generate_monthly_report():
             print(f"Errore QuickChart ({qc_resp.status_code}): {qc_resp.text}")
     except Exception as e:
         print(f"Errore generazione PNG: {e}")
+        traceback.print_exc()
 
     return csv_path, png_path
 
@@ -171,11 +181,17 @@ def upload_to_github(file_path):
 
     except Exception as e:
         print(f"Errore caricamento su GitHub: {e}")
+        traceback.print_exc()
         return False
 
 if __name__ == "__main__":
-    csv_p, png_p = generate_monthly_report()
-    if csv_p:
-        upload_to_github(csv_p)
-    if png_p and os.path.exists(png_p):
-        upload_to_github(png_p)
+    try:
+        csv_p, png_p = generate_monthly_report()
+        if csv_p:
+            upload_to_github(csv_p)
+        if png_p and os.path.exists(png_p):
+            upload_to_github(png_p)
+    except Exception as e:
+        print(f"Errore fatale nel blocco principale: {e}")
+        traceback.print_exc()
+        exit(1)
