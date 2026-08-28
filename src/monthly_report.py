@@ -27,8 +27,8 @@ def get_previous_month_range():
     last_day_prev_month = first_day_this_month - timedelta(days=1)
     first_day_prev_month = last_day_prev_month.replace(day=1)
     
-    start_str = f"{first_day_prev_month.strftime('%Y-%m-%d')}T00:00:00Z"
-    end_str = f"{last_day_prev_month.strftime('%Y-%m-%d')}T23:59:59Z"
+    start_str = f"{first_day_prev_month.strftime('%Y-%m-%d')}T00:00:00"
+    end_str = f"{last_day_prev_month.strftime('%Y-%m-%d')}T23:59:59"
     month_suffix = first_day_prev_month.strftime("%Y_%m")
     
     return start_str, end_str, month_suffix, first_day_prev_month, last_day_prev_month
