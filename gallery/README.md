@@ -7,8 +7,8 @@
   <!-- XYZ -->
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="../img/work-in-progress.png" alt="xyz" width="100%"><br>
-      <font color="cyan"><b>XYZ</b></font>
+      <img src="../img/monthly:report.png" alt="xyz" width="100%"><br>
+      <font color="cyan"><b>monthly report</b></font>
     </td>
     <td width="50%" align="center" valign="top">
       <img src="../img/work-in-progress.png" alt="xyz" width="100%"><br>
