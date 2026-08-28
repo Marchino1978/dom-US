@@ -61,6 +61,8 @@ For more information, check the official <strong>Waveshare product page</strong>
         ❌ ILI9341 - Color TFT [3.3V]<br><br>
       <font color="cyan"><small><b>DISPLAY WAKE-UP ADDONS</b></small></font>
 <br><br>
+<br><br>
+<br><br>
         ❌ TE174 - IR Beam [3.3V / 5V]<br><br>
         ⌛ VL53L0X - Laser ToF [2.8V - 5V]<br><br>
         ❌ HCSR501 - Passive Infrared [5V (3.3V signal)]<br>
