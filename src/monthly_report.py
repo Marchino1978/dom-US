@@ -123,18 +123,21 @@ def generate_monthly_report():
 
     try:
         qc_url = "https://quickchart.io/chart"
-        qc_resp = requests.post(qc_url, json={"chart": chart_config, "width": 900, "height": 500, "format": "png"}, timeout=5)
+        qc_resp = requests.post(qc_url, json={"chart": chart_config, "width": 900, "height": 500, "format": "png"}, timeout=15)
         
         if qc_resp.status_code == 200:
             with open(png_path, "wb") as p_file:
                 p_file.write(qc_resp.content)
             print(f"File PNG salvato con successo: {png_path}")
         else:
-            print(f"QuickChart ha risposto con codice {qc_resp.status_code}, salto il PNG.")
+            print(f"QuickChart ha risposto con codice {qc_resp.status_code}: {qc_resp.text}")
     except Exception as e:
-        print(f"Timeout o errore generazione PNG (proseguo comunque col CSV): {e}")
+        print(f"Timeout o errore generazione PNG: {e}")
 
-    return csv_path, png_path if os.path.exists(png_path) else None
+    final_csv = csv_path if os.path.exists(csv_path) else None
+    final_png = png_path if os.path.exists(png_path) else None
+
+    return final_csv, final_png
 
 def upload_to_github(file_path):
     if not GITHUB_TOKEN or not file_path or not os.path.exists(file_path):
@@ -151,7 +154,7 @@ def upload_to_github(file_path):
         sha = get_resp.json().get("sha") if get_resp.status_code == 200 else None
 
         payload = {
-            "message": "automated monthly report update",
+            "message": "fix",
             "content": content,
             "branch": "main"
         }
