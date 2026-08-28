@@ -1,4 +1,4 @@
-name: Backup LOG DOM-US
+name: backup_LOG
 
 on:
   schedule:
@@ -23,7 +23,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install supabase requests
 
-      - name: Esegui lo script di backup e pulizia log
+      - name: Esegui lo script
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
