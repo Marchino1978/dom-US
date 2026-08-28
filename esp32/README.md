@@ -5,7 +5,7 @@
 
 <div align="center">
 
-Firmware ...
+Firmware and 3D case for my personal IoT project
 
 <br><br>
 
