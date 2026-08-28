@@ -11,7 +11,7 @@
       <font color="cyan"><b>monthly report [chart]</b></font>
     </td>
     <td width="50%" align="center" valign="top">
-      <img src="../img/monthly_reort_table.png" alt="xyz" width="100%"><br>
+      <img src="../img/monthly_report_table.png" alt="xyz" width="100%"><br>
       <font color="cyan"><b>monthly report [table]</b></font>
     </td>
   </tr>
