@@ -32,8 +32,11 @@ def get_previous_month_range():
 def generate_monthly_report():
     start_date, end_date, year_str, month_suffix = get_previous_month_range()
     
-    csv_folder = os.path.join("data", year_str, "csv")
-    png_folder = os.path.join("data", year_str, "png")
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    root_dir = os.path.dirname(base_dir) if os.path.basename(base_dir) == "scripts" else base_dir
+
+    csv_folder = os.path.join(root_dir, "data", year_str, "csv")
+    png_folder = os.path.join(root_dir, "data", year_str, "png")
     
     os.makedirs(csv_folder, exist_ok=True)
     os.makedirs(png_folder, exist_ok=True)
@@ -76,9 +79,16 @@ def generate_monthly_report():
         print(f"Errore scrittura CSV: {e}")
         return None, None
 
-    labels = ["" for _ in rows]
-    temperatures = [r.get("temperatura", 0) for r in rows]
-    humidities = [r.get("umidita", 0) for r in rows]
+    max_points = 500
+    if len(rows) > max_points:
+        step = len(rows) // max_points
+        chart_rows = rows[::step]
+    else:
+        chart_rows = rows
+
+    labels = ["" for _ in chart_rows]
+    temperatures = [r.get("temperatura", 0) for r in chart_rows]
+    humidities = [r.get("umidita", 0) for r in chart_rows]
 
     chart_config = {
         "type": "line",
@@ -123,7 +133,7 @@ def generate_monthly_report():
 
     try:
         qc_url = "https://quickchart.io/chart"
-        qc_resp = requests.post(qc_url, json={"chart": chart_config, "width": 900, "height": 500, "format": "png"}, timeout=15)
+        qc_resp = requests.post(qc_url, json={"chart": chart_config, "width": 900, "height": 500, "format": "png"}, timeout=20)
         
         if qc_resp.status_code == 200:
             with open(png_path, "wb") as p_file:
@@ -143,8 +153,12 @@ def upload_to_github(file_path):
     if not GITHUB_TOKEN or not file_path or not os.path.exists(file_path):
         return False
 
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    root_dir = os.path.dirname(base_dir) if os.path.basename(base_dir) == "scripts" else base_dir
+    rel_path = os.path.relpath(file_path, root_dir).replace("\\", "/")
+
     headers = {"Authorization": f"Bearer {GITHUB_TOKEN}", "Accept": "application/vnd.github+json"}
-    api_url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{file_path}"
+    api_url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{rel_path}"
     
     try:
         with open(file_path, "rb") as f:
@@ -154,7 +168,7 @@ def upload_to_github(file_path):
         sha = get_resp.json().get("sha") if get_resp.status_code == 200 else None
 
         payload = {
-            "message": "fix",
+            "message": "automated monthly report update",
             "content": content,
             "branch": "main"
         }
@@ -164,14 +178,14 @@ def upload_to_github(file_path):
         put_resp = requests.put(api_url, headers=headers, json=payload, timeout=10)
         
         if put_resp.status_code in [200, 201]:
-            print(f"File {file_path} caricato correttamente su GitHub.")
+            print(f"File {rel_path} caricato correttamente su GitHub.")
             return True
         else:
-            print(f"Errore upload GitHub per {file_path}: {put_resp.text}")
+            print(f"Errore upload GitHub per {rel_path}: {put_resp.text}")
             return False
 
     except Exception as e:
-        print(f"Errore caricamento su GitHub {file_path}: {e}")
+        print(f"Errore caricamento su GitHub {rel_path}: {e}")
         return False
 
 if __name__ == "__main__":
