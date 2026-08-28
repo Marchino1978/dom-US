@@ -1,4 +1,4 @@
-name: Report Mensile Sensori DOM-US
+name: monthly_report
 
 on:
   schedule:
@@ -23,7 +23,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install supabase requests
 
-      - name: Esegui lo script del report mensile
+      - name: Esegui lo script
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
