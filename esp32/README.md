@@ -102,6 +102,14 @@ available soon and ready for implementation
 
 </div>
 
+<br><br>
+
+<div align="center">
+
+<strong>DOWNLOAD</strong>
+
+</div>
+
 <table width="100%">
   <!-- DOWNLOAD  -->
   <tr>
