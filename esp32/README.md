@@ -129,10 +129,10 @@ available soon and ready for implementation
       <font color="gold"><i>N.B.: rename them to: esp32.ino, config.h, ...</i></font>
           </td>
     <td width="50%" align="center" valign="top">
-      <img src="../img/stl.png" alt="Icona con stampante 3D e file .stl per il download del frame per ESP32 in stile Lego Technic | Icon representing 3D printer and .stl file for downloading ESP32 Lego Technic style frame" width="50%"><br>
-      <a href="https://marchino1978.github.io/dom-us/stl/frame.stl" download><strong>Download 3D Frame (.stl)</strong></a>
+      <img src="../img/stl.png" alt="Icona con stampante 3D e file .stl per il download del case per ESP32 in stile Lego Technic | Icon representing 3D printer and .stl file for downloading ESP32 Lego Technic style case" width="50%"><br>
+      <a href="https://marchino1978.github.io/dom-us/stl/case.stl" download><strong>Download 3D Case (.stl)</strong></a>
       <br>
-      <font color="gold"><i>3D PRINTED FRAME - LEGO TECHNIC STYLE</i></font>
+      <font color="gold"><i>3D PRINTED CASE - LEGO TECHNIC STYLE</i></font>
       <br>
       <font color="gold"><i>100% compatible</i></font>
           </td>
