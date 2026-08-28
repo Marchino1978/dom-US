@@ -6,9 +6,7 @@
 <div align="center">
 
 Firmware and 3D case for my personal IoT project
-
 <br><br>
-
 Built for the <strong>Waveshare ESP32-C3 MINI</strong>
 
 </div>
