@@ -9,7 +9,7 @@ SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
 GITHUB_TOKEN = os.environ.get("GH_TOKEN")
 GITHUB_REPO = "Marchino1978/dom-us"
 
-tables_to_backup = ["sensor_data", "device_status", "logs"]
+tables_to_backup = ["sensor_data"]
 
 def run_domus_backup():
     if not SUPABASE_URL or not SUPABASE_KEY:
@@ -20,14 +20,14 @@ def run_domus_backup():
     filename = f"backup_supabase_{datetime.now().strftime('%Y_%m_%d')}.sql"
     file_path = os.path.join(folder, filename)
     
-    print(f"Inizio generazione backup SQL: {filename}")
+    print(f"Inizio generazione backup SQL per sensor_data: {filename}")
     
     try:
         supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
         os.makedirs(folder, exist_ok=True)
         
         with open(file_path, "w", encoding="utf-8") as f:
-            f.write(f"-- BACKUP AUTOMATICO DOM-US: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+            f.write(f"-- BACKUP AUTOMATICO DOM-US (sensor_data): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
             
             for table_name in tables_to_backup:
                 resp = supabase.table(table_name).select("*").execute()
