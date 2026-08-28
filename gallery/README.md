@@ -27,6 +27,7 @@
       <font color="cyan"><b>monthly report [table]</b></font>
     </td>
   </tr>
+</table>
 
 <br><br>
 

@@ -23,7 +23,6 @@ Built for the <strong>Waveshare ESP32-C3 MINI</strong>
       <font color="cyan"><br><b>rear</b></font>
     </td>
   </tr>
- 
 </table>
 
 <div align="center">
@@ -135,7 +134,6 @@ available soon and ready for implementation
       <font color="gold"><i>100% compatible</i></font>
           </td>
   </tr>
- 
 </table>
 
 <br><br>
@@ -152,7 +150,6 @@ available soon and ready for implementation
       <font color="cyan"><br><b>XYZ</b></font>
     </td>
   </tr>
- 
 </table>
 
 <br><br>
