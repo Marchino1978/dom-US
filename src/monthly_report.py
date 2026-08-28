@@ -112,7 +112,6 @@ def generate_monthly_report():
         ax2.grid(True, linestyle="--", alpha=0.5)
 
         start_dt = datetime(first_day.year, first_day.month, first_day.day, 0, 0, 0)
-        next_month_first = (last_day + timedelta(days=1))
         end_dt = datetime(last_day.year, last_day.month, last_day.day, 23, 0, 0)
 
         for ax in (ax1, ax2):
