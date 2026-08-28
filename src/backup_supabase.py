@@ -74,7 +74,7 @@ def upload_backup_to_github(file_path):
             content = base64.b64encode(f.read()).decode("utf-8")
         
         put_resp = requests.put(f"{api_url_base}/{file_name}", headers=headers, json={
-            "message": "auto: backup SQL dom-us",
+            "message": "fix",
             "content": content,
             "branch": "main"
         }, timeout=10)
@@ -95,7 +95,7 @@ def upload_backup_to_github(file_path):
                 for old_file in backups[3:]:
                     del_url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{old_file['path']}"
                     requests.delete(del_url, headers=headers, json={
-                        "message": "auto: rimozione vecchio backup",
+                        "message": "fix",
                         "sha": old_file['sha'],
                         "branch": "main"
                     }, timeout=10)
