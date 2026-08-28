@@ -104,6 +104,13 @@ available soon and ready for implementation
 
 <br><br>
 
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=rect&animation=blinking&color=00000000&fontColor=FF0000&height=60&section=header&text=***DEMO%20and%20STL%20available%20soon***&fontSize=32"
+  alt="DEMO and STL" />
+</p>
+
+<br><br>
+
 <div align="center">
 
 <strong>DOWNLOAD</strong>
