@@ -66,8 +66,7 @@ def generate_monthly_report():
         print("Nessun dato trovato, inserisco riga vuota di fallback.")
         rows = [{"created_at": start_date, "temperatura": 0, "umidita": 0}]
 
-    # Scrittura CSV (Blindata)
-    try:
+     try:
         with open(csv_path, "w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=["created_at", "temperatura", "umidita"])
             writer.writeheader()
@@ -77,7 +76,6 @@ def generate_monthly_report():
         print(f"Errore scrittura CSV: {e}")
         return None, None
 
-    # Generazione PNG con timeout stretto
     labels = ["" for _ in rows]
     temperatures = [r.get("temperatura", 0) for r in rows]
     humidities = [r.get("umidita", 0) for r in rows]
@@ -153,7 +151,7 @@ def upload_to_github(file_path):
         sha = get_resp.json().get("sha") if get_resp.status_code == 200 else None
 
         payload = {
-            "message": "automated monthly report update",
+            "message": "fix",
             "content": content,
             "branch": "main"
         }
