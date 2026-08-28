@@ -120,7 +120,7 @@ def generate_monthly_report():
         ax2.grid(True, linestyle="--", alpha=0.5)
 
         ax3.plot(dates, pressures, color="green", linewidth=1.5)
-        ax3.set_title("BARO (hPa)", fontsize=12, fontweight='bold', loc='left')
+        ax3.set_title("PRES (hPa)", fontsize=12, fontweight='bold', loc='left')
         ax3.grid(True, linestyle="--", alpha=0.5)
 
         start_dt = datetime(first_day.year, first_day.month, first_day.day, 0, 0, 0)
