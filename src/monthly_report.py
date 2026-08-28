@@ -5,6 +5,7 @@ import traceback
 import requests
 from datetime import datetime, timedelta
 
+import math
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -56,7 +57,7 @@ def generate_monthly_report():
         try:
             supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
             resp = supabase.table("sensor_data") \
-                .select("created_at, temperatura, umidita") \
+                .select("created_at, temperatura, umidita, pressione") \
                 .gte("created_at", start_date) \
                 .lte("created_at", end_date) \
                 .order("created_at", desc=False) \
@@ -73,7 +74,7 @@ def generate_monthly_report():
 
     try:
         with open(csv_path, "w", newline="", encoding="utf-8") as f:
-            writer = csv.DictWriter(f, fieldnames=["created_at", "temperatura", "umidita"])
+            writer = csv.DictWriter(f, fieldnames=["created_at", "temperatura", "umidita", "pressione"])
             writer.writeheader()
             writer.writerows(rows)
         print(f"File CSV locale salvato: {csv_path}")
@@ -85,6 +86,7 @@ def generate_monthly_report():
         dates = []
         temperatures = []
         humidities = []
+        pressures = []
         
         for r in rows:
             dt_raw = r.get("created_at", "")
@@ -99,7 +101,13 @@ def generate_monthly_report():
             temperatures.append(float(r.get("temperatura", 0) or 0))
             humidities.append(float(r.get("umidita", 0) or 0))
 
-        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 8))
+            val_pressione = r.get("pressione")
+            if val_pressione is None:
+                pressures.append(float('nan'))
+            else:
+                pressures.append(float(val_pressione))
+
+        fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(12, 10))
         
         fig.suptitle(f"REPORT {month_suffix}", fontsize=16, fontweight='bold', y=0.95)
 
@@ -111,10 +119,14 @@ def generate_monthly_report():
         ax2.set_title("HUM (%)", fontsize=12, fontweight='bold', loc='left')
         ax2.grid(True, linestyle="--", alpha=0.5)
 
+        ax3.plot(dates, pressures, color="green", linewidth=1.5)
+        ax3.set_title("BARO (hPa)", fontsize=12, fontweight='bold', loc='left')
+        ax3.grid(True, linestyle="--", alpha=0.5)
+
         start_dt = datetime(first_day.year, first_day.month, first_day.day, 0, 0, 0)
         end_dt = datetime(last_day.year, last_day.month, last_day.day, 23, 0, 0)
 
-        for ax in (ax1, ax2):
+        for ax in (ax1, ax2, ax3):
             ax.set_xlim(start_dt, end_dt)
             ax.xaxis.set_major_formatter(mates.DateFormatter('%d'))
             ax.xaxis.set_major_locator(mates.DayLocator(interval=1))
