@@ -88,7 +88,7 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 // #######################################################
 
 // Telegram Config
-#define TELEGRAM_BOT_TOKEN "YOUR_BOT_TOKEN"
+#define TELEGRAM_TOKEN "YOUR_BOT_TOKEN"
 #define TELEGRAM_CHAT_ID   "YOUR_CHAT_ID"
 
 // Supabase Config
