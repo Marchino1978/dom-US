@@ -105,7 +105,7 @@ available soon and ready for implementation
 <br><br>
 
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&animation=blinking&color=00000000&fontColor=FF0000&height=60&section=header&text=***DEMO%20and%20STL%20available%20soon***&fontSize=32"
+  <img src="https://capsule-render.vercel.app/api?type=rect&animation=blinking&color=00000000&fontColor=FF0000&height=60&section=header&text=***FIRMWARE%20and%20STL%20available%20soon***&fontSize=32"
   alt="DEMO and STL" />
 </p>
 
@@ -121,8 +121,8 @@ available soon and ready for implementation
   <!-- DOWNLOAD  -->
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="../img/ino_lib.png" alt="Icona con codice sorgente Arduino e file .ino per il download del firmware demo | Icon representing Arduino source code and .ino file for downloading demo firmware for ESP32" width="50%"><br>
-      <a href="https://marchino1978.github.io/dom-us/esp32/DEMO.zip" download><strong>Download Demo Firmware (.zip)</strong></a>
+      <img src="../img/ino_lib.png" alt="Icona con codice sorgente Arduino e file .ino per il download del firmware | Icon representing Arduino source code and .ino file for downloading firmware for ESP32" width="50%"><br>
+      <a href="https://marchino1978.github.io/dom-us/esp32/FIRMWARE.zip" download><strong>Download Firmware (.zip)</strong></a>
       <br>
       <font color="gold"><i>Includes: esp32.ino, config.example.h, /lib</i></font>
       <br>
