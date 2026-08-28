@@ -24,10 +24,6 @@ def get_previous_month_range():
     return start_str, end_str, year_str, month_suffix
 
 def generate_monthly_report():
-    if not SUPABASE_URL or not SUPABASE_KEY:
-        print("Errore: SUPABASE_URL o SUPABASE_KEY non trovati.")
-        return None, None
-
     start_date, end_date, year_str, month_suffix = get_previous_month_range()
     
     csv_folder = os.path.join("data", year_str, "csv")
@@ -44,96 +40,98 @@ def generate_monthly_report():
     
     print(f"Generazione report per periodo: {start_date} -> {end_date}")
     
-    try:
-        supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
-        
-        resp = supabase.table("sensor_data") \
-            .select("created_at, temperatura, umidita") \
-            .gte("created_at", start_date) \
-            .lte("created_at", end_date) \
-            .order("created_at", desc=False) \
-            .execute()
-        
-        rows = resp.data
-        if not rows:
-            print(f"Nessun dato trovato per il periodo {start_date} - {end_date}.")
-            return None, None
+    rows = []
+    if SUPABASE_URL and SUPABASE_KEY:
+        try:
+            supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+            resp = supabase.table("sensor_data") \
+                .select("created_at, temperatura, umidita") \
+                .gte("created_at", start_date) \
+                .lte("created_at", end_date) \
+                .order("created_at", desc=False) \
+                .execute()
+            if resp.data:
+                rows = resp.data
+        except Exception as e:
+            print(f"Errore query Supabase: {e}")
+            
+    if not rows:
+        print("Nessun dato trovato da Supabase per il mese precedente, creo comunque il CSV vuoto/intestato.")
+        rows = [{"created_at": start_date, "temperatura": 0, "umidita": 0}]
 
-        with open(csv_path, "w", newline="", encoding="utf-8") as f:
-            writer = csv.DictWriter(f, fieldnames=["created_at", "temperatura", "umidita"])
-            writer.writeheader()
-            writer.writerows(rows)
-        print(f"File CSV salvato: {csv_path}")
+    with open(csv_path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=["created_at", "temperatura", "umidita"])
+        writer.writeheader()
+        writer.writerows(rows)
+    print(f"File CSV salvato con successo: {csv_path}")
 
-        labels = ["" for _ in rows]
-        temperatures = [r.get("temperatura", 0) for r in rows]
-        humidities = [r.get("umidita", 0) for r in rows]
+     labels = ["" for _ in rows]
+    temperatures = [r.get("temperatura", 0) for r in rows]
+    humidities = [r.get("umidita", 0) for r in rows]
 
-        chart_config = {
-            "type": "line",
-            "data": {
-                "labels": labels,
-                "datasets": [
-                    {
-                        "label": "TEMP (°C)",
-                        "data": temperatures,
-                        "borderColor": "red",
-                        "backgroundColor": "rgba(255, 0, 0, 0.1)",
-                        "fill": False,
-                        "pointRadius": 0,
-                        "borderWidth": 1.5
-                    },
-                    {
-                        "label": "HUM (%)",
-                        "data": humidities,
-                        "borderColor": "blue",
-                        "backgroundColor": "rgba(0, 0, 255, 0.1)",
-                        "fill": False,
-                        "pointRadius": 0,
-                        "borderWidth": 1.5
-                    }
-                ]
-            },
-            "options": {
-                "title": {
-                    "display": True,
-                    "text": f"REPORT_{month_suffix.upper()}"
+    chart_config = {
+        "type": "line",
+        "data": {
+            "labels": labels,
+            "datasets": [
+                {
+                    "label": "TEMP (°C)",
+                    "data": temperatures,
+                    "borderColor": "red",
+                    "backgroundColor": "rgba(255, 0, 0, 0.1)",
+                    "fill": False,
+                    "pointRadius": 0,
+                    "borderWidth": 1.5
                 },
-                "legend": {
-                    "display": True,
-                    "position": "bottom"
-                },
-                "scales": {
-                    "xAxes": [{
-                        "display": False
-                    }],
-                    "yAxes": [{
-                        "display": True,
-                        "scaleLabel": {
-                            "display": True,
-                            "labelString": "Valori"
-                        }
-                    }]
+                {
+                    "label": "HUM (%)",
+                    "data": humidities,
+                    "borderColor": "blue",
+                    "backgroundColor": "rgba(0, 0, 255, 0.1)",
+                    "fill": False,
+                    "pointRadius": 0,
+                    "borderWidth": 1.5
                 }
+            ]
+        },
+        "options": {
+            "title": {
+                "display": True,
+                "text": f"REPORT_{month_suffix.upper()}"
+            },
+            "legend": {
+                "display": True,
+                "position": "bottom"
+            },
+            "scales": {
+                "xAxes": [{
+                    "display": False
+                }],
+                "yAxes": [{
+                    "display": True,
+                    "scaleLabel": {
+                        "display": True,
+                        "labelString": "Valori"
+                    }
+                }]
             }
         }
+    }
 
+    try:
         qc_url = "https://quickchart.io/chart"
         qc_resp = requests.post(qc_url, json={"chart": chart_config, "width": 900, "height": 500, "format": "png"}, timeout=15)
         
         if qc_resp.status_code == 200:
             with open(png_path, "wb") as p_file:
                 p_file.write(qc_resp.content)
-            print(f"File PNG salvato correttamente: {png_path}")
+            print(f"File PNG salvato con successo: {png_path}")
         else:
-            print(f"Errore nella generazione del grafico PNG: {qc_resp.status_code} - {qc_resp.text}")
-            return None, None
-
-        return csv_path, png_path
-
+            print(f"Errore QuickChart ({qc_resp.status_code}): {qc_resp.text}")
     except Exception as e:
-        print(f"Errore durante la generazione del report: {e}")
-        return None, None
+        print(f"Errore generazione PNG: {e}")
+
+    return csv_path, png_path
 
 def upload_to_github(file_path):
     if not GITHUB_TOKEN:
@@ -144,6 +142,10 @@ def upload_to_github(file_path):
     api_url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{file_path}"
     
     try:
+        if not os.path.exists(file_path):
+            print(f"File non trovato localmente per l'upload: {file_path}")
+            return False
+            
         with open(file_path, "rb") as f:
             content = base64.b64encode(f.read()).decode("utf-8")
         
@@ -151,7 +153,7 @@ def upload_to_github(file_path):
         sha = get_resp.json().get("sha") if get_resp.status_code == 200 else None
 
         payload = {
-            "message": "fix report generation",
+            "message": "automated monthly report update",
             "content": content,
             "branch": "main"
         }
@@ -173,6 +175,7 @@ def upload_to_github(file_path):
 
 if __name__ == "__main__":
     csv_p, png_p = generate_monthly_report()
-    if csv_p and png_p:
+    if csv_p:
         upload_to_github(csv_p)
+    if png_p and os.path.exists(png_p):
         upload_to_github(png_p)

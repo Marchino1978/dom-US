@@ -5,7 +5,7 @@
 
 <div align="center">
 
-Static historical data folder: stores generated monthly reports, statistical summaries, and sensor trend images (PNG/MD) for long-term tracking
+Static historical data folder: stores generated monthly reports, statistical summaries, and sensor trend images (PNG/CSV) for long-term tracking
 
 </div>
 
