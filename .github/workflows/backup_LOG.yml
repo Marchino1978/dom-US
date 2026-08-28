@@ -1,4 +1,4 @@
-name: BACKUP LOG
+name: Backup LOG DOM-US
 
 on:
   schedule:
