@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+import matplotlib.dates as mates
 
 try:
     from supabase import create_client
@@ -97,16 +98,23 @@ def generate_monthly_report():
             temperatures.append(float(r.get("temperatura", 0) or 0))
             humidities.append(float(r.get("umidita", 0) or 0))
 
-        plt.figure(figsize=(12, 6))
-        plt.plot(dates, temperatures, label="Temperatura (°C)", color="#ff7f0e", linewidth=1.5)
-        plt.plot(dates, humidities, label="Umidità (%)", color="#1f77b4", linewidth=1.5, alpha=0.8)
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 8), sharex=True)
         
-        plt.title(f"Report Sensori - {month_suffix}", fontsize=14, fontweight='bold')
-        plt.xlabel("Data e Ora", fontsize=11)
-        plt.ylabel("Valori", fontsize=11)
-        plt.grid(True, linestyle="--", alpha=0.5)
-        plt.legend(loc="upper left")
-        plt.tight_layout()
+        fig.suptitle(f"REPORT {month_suffix}", fontsize=16, fontweight='bold', y=0.95)
+
+        ax1.plot(dates, temperatures, color="red", linewidth=1.5)
+        ax1.set_title("TEMP (°C)", fontsize=12, fontweight='bold', loc='left')
+        ax1.grid(True, linestyle="--", alpha=0.5)
+
+        ax2.plot(dates, humidities, color="blue", linewidth=1.5)
+        ax2.set_title("HUM (%)", fontsize=12, fontweight='bold', loc='left')
+        ax2.grid(True, linestyle="--", alpha=0.5)
+
+        ax2.xaxis.set_major_formatter(mates.DateFormatter('%d'))
+        ax2.xaxis.set_major_locator(mates.DayLocator(interval=1))
+        plt.xlabel("Giorni del mese", fontsize=11)
+
+        plt.tight_layout(rect=[0, 0.03, 1, 0.93])
         
         plt.savefig(chart_path, dpi=150)
         plt.close()
