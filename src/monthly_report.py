@@ -36,12 +36,6 @@ def generate_monthly_report():
     os.makedirs(csv_folder, exist_ok=True)
     os.makedirs(png_folder, exist_ok=True)
     
-    for folder in [csv_folder, png_folder]:
-        gitkeep_path = os.path.join(folder, ".gitkeep")
-        if not os.path.exists(gitkeep_path):
-            with open(gitkeep_path, "w") as gk:
-                gk.write("")
-    
     csv_filename = f"report_{month_suffix}.csv"
     png_filename = f"report_{month_suffix}.png"
     
@@ -147,17 +141,11 @@ def generate_monthly_report():
         else:
             print(f"Errore nella generazione del grafico PNG: {qc_resp.text}")
 
-        files_to_upload = [
-            os.path.join(csv_folder, ".gitkeep"),
-            os.path.join(png_folder, ".gitkeep"),
-            csv_path,
-            png_path
-        ]
-        return files_to_upload
+        return csv_path, png_path
 
     except Exception as e:
         print(f"Errore durante la generazione del report: {e}")
-        return None
+        return None, None
 
 def upload_to_github(file_path):
     if not GITHUB_TOKEN:
@@ -165,8 +153,7 @@ def upload_to_github(file_path):
         return False
 
     headers = {"Authorization": f"Bearer {GITHUB_TOKEN}", "Accept": "application/vnd.github+json"}
-    normalized_path = file_path.replace(os.sep, "/")
-    api_url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{normalized_path}"
+    api_url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{file_path}"
     
     try:
         with open(file_path, "rb") as f:
@@ -176,7 +163,7 @@ def upload_to_github(file_path):
         sha = get_resp.json().get("sha") if get_resp.status_code == 200 else None
 
         payload = {
-            "message": f"Add {normalized_path}",
+            "message": "fix",
             "content": content,
             "branch": "main"
         }
@@ -186,10 +173,10 @@ def upload_to_github(file_path):
         put_resp = requests.put(api_url, headers=headers, json=payload, timeout=15)
         
         if put_resp.status_code in [200, 201]:
-            print(f"File {normalized_path} caricato correttamente su GitHub.")
+            print(f"File {file_path} caricato correttamente su GitHub.")
             return True
         else:
-            print(f"Errore upload GitHub per {normalized_path}: {put_resp.text}")
+            print(f"Errore upload GitHub per {file_path}: {put_resp.text}")
             return False
 
     except Exception as e:
@@ -197,7 +184,7 @@ def upload_to_github(file_path):
         return False
 
 if __name__ == "__main__":
-    files_to_upload = generate_monthly_report()
-    if files_to_upload:
-        for f_path in files_to_upload:
-            upload_to_github(f_path)
+    csv_p, png_p = generate_monthly_report()
+    if csv_p and png_p:
+        upload_to_github(csv_p)
+        upload_to_github(png_p)
