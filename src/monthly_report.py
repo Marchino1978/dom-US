@@ -30,14 +30,17 @@ def generate_monthly_report():
 
     start_date, end_date, year_str, month_suffix = get_previous_month_range()
     
-    target_folder = os.path.join("data", year_str)
-    os.makedirs(target_folder, exist_ok=True)
+    csv_folder = os.path.join("data", year_str, "csv")
+    png_folder = os.path.join("data", year_str, "png")
+    
+    os.makedirs(csv_folder, exist_ok=True)
+    os.makedirs(png_folder, exist_ok=True)
     
     csv_filename = f"report_{month_suffix}.csv"
     png_filename = f"report_{month_suffix}.png"
     
-    csv_path = os.path.join(target_folder, csv_filename)
-    png_path = os.path.join(target_folder, png_filename)
+    csv_path = os.path.join(csv_folder, csv_filename)
+    png_path = os.path.join(png_folder, png_filename)
     
     print(f"Generazione report per periodo: {start_date} -> {end_date}")
     
@@ -72,22 +75,22 @@ def generate_monthly_report():
                 "labels": labels,
                 "datasets": [
                     {
-                        "label": "TEMP",
+                        "label": "TEMP (°C)",
                         "data": temperatures,
                         "borderColor": "red",
-                        "backgroundColor": "red",
-                        "yAxisID": "y",
+                        "backgroundColor": "rgba(255, 0, 0, 0.1)",
                         "fill": False,
-                        "pointRadius": 0
+                        "pointRadius": 0,
+                        "borderWidth": 1.5
                     },
                     {
-                        "label": "HUM",
+                        "label": "HUM (%)",
                         "data": humidities,
                         "borderColor": "blue",
-                        "backgroundColor": "blue",
-                        "yAxisID": "y1",
+                        "backgroundColor": "rgba(0, 0, 255, 0.1)",
                         "fill": False,
-                        "pointRadius": 0
+                        "pointRadius": 0,
+                        "borderWidth": 1.5
                     }
                 ]
             },
@@ -97,33 +100,20 @@ def generate_monthly_report():
                     "text": f"REPORT_{month_suffix.upper()}"
                 },
                 "legend": {
-                    "display": False
+                    "display": True,
+                    "position": "bottom"
                 },
                 "scales": {
                     "xAxes": [{
                         "display": False
                     }],
-                    "yAxes": [
-                        {
-                            "id": "y",
-                            "type": "linear",
-                            "position": "left",
-                            "scaleLabel": {
-                                "display": True,
-                                "labelString": "TEMP (°C)"
-                            }
-                        },
-                        {
-                            "id": "y1",
-                            "type": "linear",
-                            "position": "right",
-                            "gridLines": {"drawOnChartArea": False},
-                            "scaleLabel": {
-                                "display": True,
-                                "labelString": "HUM (%)"
-                            }
+                    "yAxes": [{
+                        "display": True,
+                        "scaleLabel": {
+                            "display": True,
+                            "labelString": "Valori"
                         }
-                    ]
+                    }]
                 }
             }
         }
@@ -134,9 +124,10 @@ def generate_monthly_report():
         if qc_resp.status_code == 200:
             with open(png_path, "wb") as p_file:
                 p_file.write(qc_resp.content)
-            print(f"File PNG salvato: {png_path}")
+            print(f"File PNG salvato correttamente: {png_path}")
         else:
-            print(f"Errore nella generazione del grafico PNG: {qc_resp.text}")
+            print(f"Errore nella generazione del grafico PNG: {qc_resp.status_code} - {qc_resp.text}")
+            return None, None
 
         return csv_path, png_path
 
@@ -160,7 +151,7 @@ def upload_to_github(file_path):
         sha = get_resp.json().get("sha") if get_resp.status_code == 200 else None
 
         payload = {
-            "message": "fix",
+            "message": "fix report generation",
             "content": content,
             "branch": "main"
         }
