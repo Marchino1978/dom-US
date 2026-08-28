@@ -58,7 +58,7 @@ For more information, check the official <strong>Waveshare product page</strong>
         ❌ SSD1306 - Monochrome OLED 0.96" [3.3V / 5V]<br>
         ❌ SH1106 - Monochrome OLED 1.3" [3.3V / 5V]<br><br>
         ❌ ST7789 - Color TFT [3.3V]<br>
-        ❌ ILI9341 - Color TFT [3.3V]<br><br><br><br><br><br>
+        ❌ ILI9341 - Color TFT [3.3V]<br><br><br><br><br><br><br><br>
       <font color="cyan"><small><b>display wake-up ADDONS</b></small></font>
 <br><br>
         ❌ TE174 - IR Beam [3.3V / 5V]<br>
