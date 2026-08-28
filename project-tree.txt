@@ -2,6 +2,7 @@
 ├── backup_LOG/
 │   └── README.md
 ├── backup_SQL/
+│   ├── backup_supabase_2026_08_28.sql
 │   └── README.md
 ├── data/
 │   └── README.md
@@ -29,6 +30,9 @@
 │   └── TODO.md
 ├── gallery/
 │   └── README.md
+├── .github/
+│   └── workflows/
+│       └── backup_supabase.yml
 ├── img/
 │   ├── display.jpeg
 │   ├── esp32-c3-zero-front.jpg
@@ -57,6 +61,6 @@
 ├── project-tree.txt
 └── README.md
 
-13 directories, 44 files
+15 directories, 46 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
