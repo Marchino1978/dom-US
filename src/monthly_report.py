@@ -3,6 +3,7 @@ import csv
 import base64
 import traceback
 import requests
+from pathlib import Path
 from datetime import datetime, timedelta
 
 try:
@@ -32,22 +33,26 @@ def get_previous_month_range():
 def generate_monthly_report():
     start_date, end_date, year_str, month_suffix = get_previous_month_range()
     
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    root_dir = os.path.dirname(base_dir) if os.path.basename(base_dir) == "scripts" else base_dir
+    script_path = Path(__file__).resolve()
+    if script_path.parent.name == "scripts":
+        root_dir = script_path.parent.parent
+    else:
+        root_dir = script_path.parent
 
-    csv_folder = os.path.join(root_dir, "data", year_str, "csv")
-    png_folder = os.path.join(root_dir, "data", year_str, "png")
+    csv_folder = root_dir / "data" / year_str / "csv"
+    png_folder = root_dir / "data" / year_str / "png"
     
-    os.makedirs(csv_folder, exist_ok=True)
-    os.makedirs(png_folder, exist_ok=True)
+    csv_folder.mkdir(parents=True, exist_ok=True)
+    png_folder.mkdir(parents=True, exist_ok=True)
     
     csv_filename = f"report_{month_suffix}.csv"
     png_filename = f"report_{month_suffix}.png"
     
-    csv_path = os.path.join(csv_folder, csv_filename)
-    png_path = os.path.join(png_folder, png_filename)
+    csv_path = csv_folder / csv_filename
+    png_path = png_folder / png_filename
     
-    print(f"Generazione report per periodo: {start_date} -> {end_date}")
+    print(f"Cartella CSV forzata a: {csv_path}")
+    print(f"Cartella PNG forzata a: {png_path}")
     
     rows = []
     if SUPABASE_URL and SUPABASE_KEY:
@@ -79,16 +84,9 @@ def generate_monthly_report():
         print(f"Errore scrittura CSV: {e}")
         return None, None
 
-    max_points = 500
-    if len(rows) > max_points:
-        step = len(rows) // max_points
-        chart_rows = rows[::step]
-    else:
-        chart_rows = rows
-
-    labels = ["" for _ in chart_rows]
-    temperatures = [r.get("temperatura", 0) for r in chart_rows]
-    humidities = [r.get("umidita", 0) for r in chart_rows]
+    labels = ["" for _ in rows]
+    temperatures = [r.get("temperatura", 0) for r in rows]
+    humidities = [r.get("umidita", 0) for r in rows]
 
     chart_config = {
         "type": "line",
@@ -133,19 +131,23 @@ def generate_monthly_report():
 
     try:
         qc_url = "https://quickchart.io/chart"
-        qc_resp = requests.post(qc_url, json={"chart": chart_config, "width": 900, "height": 500, "format": "png"}, timeout=20)
+        qc_resp = requests.post(
+            qc_url, 
+            json={"chart": chart_config, "width": 900, "height": 500, "format": "png"}, 
+            timeout=20
+        )
         
         if qc_resp.status_code == 200:
             with open(png_path, "wb") as p_file:
                 p_file.write(qc_resp.content)
             print(f"File PNG salvato con successo: {png_path}")
         else:
-            print(f"QuickChart ha risposto con codice {qc_resp.status_code}: {qc_resp.text}")
+            print(f"QuickChart errore {qc_resp.status_code}: {qc_resp.text}")
     except Exception as e:
-        print(f"Timeout o errore generazione PNG: {e}")
+        print(f"Errore critico generazione PNG: {e}")
 
-    final_csv = csv_path if os.path.exists(csv_path) else None
-    final_png = png_path if os.path.exists(png_path) else None
+    final_csv = str(csv_path) if csv_path.exists() else None
+    final_png = str(png_path) if png_path.exists() else None
 
     return final_csv, final_png
 
@@ -153,9 +155,13 @@ def upload_to_github(file_path):
     if not GITHUB_TOKEN or not file_path or not os.path.exists(file_path):
         return False
 
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    root_dir = os.path.dirname(base_dir) if os.path.basename(base_dir) == "scripts" else base_dir
-    rel_path = os.path.relpath(file_path, root_dir).replace("\\", "/")
+    script_path = Path(__file__).resolve()
+    root_dir = script_path.parent.parent if script_path.parent.name == "scripts" else script_path.parent
+    
+    try:
+        rel_path = Path(file_path).relative_to(root_dir).as_posix()
+    except ValueError:
+        rel_path = file_path
 
     headers = {"Authorization": f"Bearer {GITHUB_TOKEN}", "Accept": "application/vnd.github+json"}
     api_url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{rel_path}"
@@ -168,7 +174,7 @@ def upload_to_github(file_path):
         sha = get_resp.json().get("sha") if get_resp.status_code == 200 else None
 
         payload = {
-            "message": "automated monthly report update",
+            "message": "fix",
             "content": content,
             "branch": "main"
         }
