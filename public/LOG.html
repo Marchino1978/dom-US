@@ -110,7 +110,7 @@
     <table>
         <thead>
             <tr>
-                <th style="width: 10%;">ID</th>
+                <!-- <th style="width: 10%;">ID</th> -->
                 <th style="width: 25%;">Date & Time</th>
                 <th style="width: 15%; text-align: center;">Severity</th>
                 <th>Event Message</th>
@@ -188,7 +188,7 @@
             data.forEach(log => {
                 html += `
                     <tr>
-                        <td>${log.id}</td>
+                        <!-- <td>${log.id}</td> -->
                         <td>${log.created_at || '-'}</td>
                         <td class="center">${log.color || '⚪'}</td>
                         <td>${log.message || '-'}</td>
