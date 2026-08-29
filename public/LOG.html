@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DOM-US - Log Dashboard</title>
+    <title>dom-us LOG dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -65,16 +65,16 @@
 <body>
 
 <div class="container">
-    <h1>🛡️ DOM-US System Logs</h1>
-    <button class="refresh-btn" onclick="fetchLogs()">Aggiorna Log</button>
+    <h1>dom-us LOG</h1>
+    <button class="refresh-btn" onclick="fetchLogs()">update LOG</button>
     
     <table>
         <thead>
             <tr>
                 <th style="width: 10%;">ID</th>
                 <th style="width: 25%;">Timestamp</th>
-                <th style="width: 15%; text-align: center;">Stato</th>
-                <th>Messaggio Evento</th>
+                <th style="width: 15%; text-align: center;">State</th>
+                <th>Event Message</th>
             </tr>
         </thead>
         <tbody id="log-table-body">
@@ -83,17 +83,38 @@
     </table>
 </div>
 
-<script src="config.js"></script>
+<script src="config.js" onerror="handleConfigError()"></script>
 <script>
+    function handleConfigError() {
+        window.CONFIG = {
+            SUPABASE_URL: localStorage.getItem('SB_URL') || "",
+            SUPABASE_KEY: localStorage.getItem('SB_KEY') || ""
+        };
+        
+        if (!window.CONFIG.SUPABASE_URL || !window.CONFIG.SUPABASE_KEY) {
+            window.CONFIG.SUPABASE_URL = prompt("Inserisci il tuo Supabase URL:") || "";
+            window.CONFIG.SUPABASE_KEY = prompt("Inserisci la tua Supabase Anon Key:") || "";
+            localStorage.setItem('SB_URL', window.CONFIG.SUPABASE_URL);
+            localStorage.setItem('SB_KEY', window.CONFIG.SUPABASE_KEY);
+        }
+        fetchLogs();
+    }
+
     async function fetchLogs() {
+        const activeConfig = window.CONFIG;
+
+        if (!activeConfig || !activeConfig.SUPABASE_URL || !activeConfig.SUPABASE_KEY) {
+            return;
+        }
+
         const tbody = document.getElementById("log-table-body");
         tbody.innerHTML = `<tr><td colspan="4" class="center">Aggiornamento...</td></tr>`;
 
         try {
-            const response = await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/logs?select=*&order=id.desc`, {
+            const response = await fetch(`${activeConfig.SUPABASE_URL}/rest/v1/logs?select=*&order=id.desc`, {
                 headers: {
-                    "apikey": CONFIG.SUPABASE_KEY,
-                    "Authorization": `Bearer ${CONFIG.SUPABASE_KEY}`
+                    "apikey": activeConfig.SUPABASE_KEY,
+                    "Authorization": `Bearer ${activeConfig.SUPABASE_KEY}`
                 }
             });
 
@@ -128,7 +149,12 @@
         }
     }
 
-    fetchLogs();
+    window.addEventListener('DOMContentLoaded', () => {
+        if (typeof CONFIG !== 'undefined') {
+            window.CONFIG = CONFIG;
+            fetchLogs();
+        }
+    });
 </script>
 
 </body>
