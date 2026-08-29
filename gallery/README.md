@@ -19,11 +19,11 @@
   <!-- TELEGRAM MSG -->
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="../img/telegram_status.jpeg" alt="Messaggio TELEGRAM con lo stato del sistema di allarme e lettura dati ambientali in tempo reale | TELEGRAM message showing alarm system status and real-time environmental data readings" width="100%"><br>
+      <img src="../img/telegram_status.jpeg" alt="Messaggio del bot Telegram dom-us con lo stato del sistema di allarme e lettura dati ambientali in tempo reale | Telegram bot dom-us message showing alarm system status and real-time environmental data readings" width="100%"><br>
       <font color="red"><b>STATUS message [TELEGRAM]</b></font>
     </td>
     <td width="50%" align="center" valign="top">
-      <img src="../img/telegram_alarm.jpeg" alt="Messaggio di allarme TELEGRAM per intrusione rilevata | TELEGRAM warning message reporting an intrusion alarm" width="100%"><br>
+      <img src="../img/telegram_alarm.jpeg" alt="Messaggio di allarme del bot Telegram dom-us per intrusione rilevata | Telegram bot dom-us warning message reporting an intrusion alarm" width="100%"><br>
       <font color="red"><b>ALARM message [TELEGRAM]</b></font>
     </td>
   </tr>
@@ -31,11 +31,11 @@
   <!-- XYZ -->
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="../img/work-in-progress.png" alt="xyz" width="100%"><br>
+      <img src="../img/work-in-progress.png" alt="Illustrazione in stile fumetto di un laboratorio maker con stampante 3D, microcontrollore ESP32 su breadboard, saldatore e laptop con codice, sormontata da un cartello di legno 'WORK IN PROGRESS' | Comic-style illustration of a maker workshop with a 3D printer, ESP32 breadboard setup, soldering iron, and code on a laptop, topped with a wooden 'WORK IN PROGRESS' sign" width="100%"><br>
       <font color="red"><b>XYZ</b></font>
     </td>
     <td width="50%" align="center" valign="top">
-      <img src="../img/work-in-progress.png" alt="xyz" width="100%"><br>
+      <img src="../img/work-in-progress.png" alt="Illustrazione in stile fumetto di un laboratorio maker con stampante 3D, microcontrollore ESP32 su breadboard, saldatore e laptop con codice, sormontata da un cartello di legno 'WORK IN PROGRESS' | Comic-style illustration of a maker workshop with a 3D printer, ESP32 breadboard setup, soldering iron, and code on a laptop, topped with a wooden 'WORK IN PROGRESS' sign" width="100%"><br>
       <font color="red"><b>XYZ</b></font>
     </td>
   </tr>

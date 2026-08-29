@@ -49,7 +49,7 @@ For more information, check the official <strong>Waveshare product page</strong>
   <!-- DISPLAY / SENSOR -->
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="../img/display.jpeg" alt="display" width="100%">
+      <img src="../img/display.jpeg" alt="Collezione di vari display per microcontrollori su un tavolo di legno, inclusi LCD alfanumerici retroilluminati, piccoli OLED colorati e display TFT più grandi, collegati a una breadboard | Collection of various microcontroller displays on a wooden table, including backlit alphanumeric LCDs, small color OLEDs, and larger TFT displays, connected to a breadboard" width="100%">
       <font color="cyan"><br><b>displays (LCD, OLED, TFT)</b></font>
 <br><br>
       <div align="center" style="text-align: left; display: inline-block;">
@@ -67,7 +67,7 @@ For more information, check the official <strong>Waveshare product page</strong>
       </div>
     </td>
     <td width="50%" align="center" valign="top">
-      <img src="../img/sensor.jpeg" alt="sensor" width="100%">
+      <img src="../img/sensor.jpeg" alt="Vasta collezione di moduli sensori elettronici su un tavolo di legno, inclusi sensori di temperatura DHT, sensori di movimento PIR, sensori di gas e luce, con breadboard e saldatore | Wide array of electronic sensor modules on a wooden table, including DHT temperature sensors, PIR motion sensors, gas and light sensors, with a breadboard and soldering iron" width="100%">
       <font color="cyan"><br><b>sensors</b></font>
 <br><br>
       <div align="center" style="text-align: left; display: inline-block;">
@@ -147,11 +147,11 @@ available soon and ready for implementation
   <!-- XYZ -->
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="../img/work-in-progress.png" alt="xyz" width="100%">
+      <img src="../img/work-in-progress.png" alt="Illustrazione in stile fumetto di un laboratorio maker con stampante 3D, microcontrollore ESP32 su breadboard, saldatore e laptop con codice, sormontata da un cartello di legno 'WORK IN PROGRESS' | Comic-style illustration of a maker workshop with a 3D printer, ESP32 breadboard setup, soldering iron, and code on a laptop, topped with a wooden 'WORK IN PROGRESS' sign" width="100%">
       <font color="cyan"><br><b>XYZ</b></font>
     </td>
     <td width="50%" align="center" valign="top">
-      <img src="../img/work-in-progress.png" alt="xyz" width="100%">
+      <img src="../img/work-in-progress.png" alt="Illustrazione in stile fumetto di un laboratorio maker con stampante 3D, microcontrollore ESP32 su breadboard, saldatore e laptop con codice, sormontata da un cartello di legno 'WORK IN PROGRESS' | Comic-style illustration of a maker workshop with a 3D printer, ESP32 breadboard setup, soldering iron, and code on a laptop, topped with a wooden 'WORK IN PROGRESS' sign" width="100%">
       <font color="cyan"><br><b>XYZ</b></font>
     </td>
   </tr>

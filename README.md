@@ -16,7 +16,7 @@ A lightweight, serverless smart home IoT ecosystem built with ESP32-C3 mini and 
 </div>
 
 <p align="center">
-  <img src="img/splash.png" alt="XYZ" width="600">
+  <img src="img/splash.png" alt="Illustrazione in stile fumetto di una casa in miniatura che funge da involucro per una breadboard ESP32 con diversi sensori, con un percorso stilizzato di circuiti che collegano gli oggetti. Sulla sinistra un paio di pinze con una faccina sorridente | Comic-style illustration of a miniature house acting as a shell for an ESP32 breadboard with various sensors, with a stylized circuit path connecting items. To the left, a pair of pliers with a smiley face" width="600">
 </p>
 
 <p align="center">
