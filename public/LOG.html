@@ -186,6 +186,19 @@
 
             let html = "";
             data.forEach(log => {
+                let formattedDate = log.created_at || '-';
+    
+                // Se la data arriva nel formato "YYYY-MM-DD HH:mm:ss", la convertiamo in "DD-MM-YYYY HH:mm:ss"
+                if (log.created_at) {
+                    const parts = log.created_at.split(' ');
+                    if (parts.length === 2) {
+                        const dateParts = parts[0].split('-');
+                        if (dateParts.length === 3) {
+                            formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]} ${parts[1]}`;
+                        }
+                    }
+                }
+
                 html += `
                     <tr>
                         <!-- <td>${log.id}</td> -->
