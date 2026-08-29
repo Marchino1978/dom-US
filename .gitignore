@@ -70,3 +70,4 @@ data/*.csv.bak
 data/*.json.bak
 
 src/test_telegram.py
+src/test_alarm.py
