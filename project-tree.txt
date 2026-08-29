@@ -50,6 +50,7 @@
 │   ├── sensor.jpeg
 │   ├── _splash_.png
 │   ├── splash.png
+│   ├── sql_LOG.png
 │   ├── stl.png
 │   ├── telegram_alarm.jpeg
 │   ├── telegram_status.jpeg
@@ -76,6 +77,6 @@
 ├── project-tree.txt
 └── README.md
 
-15 directories, 61 files
+15 directories, 62 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
