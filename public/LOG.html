@@ -112,8 +112,8 @@
             <tr>
                 <th style="width: 10%;">ID</th>
                 <th style="width: 25%;">Timestamp</th>
-                <th style="width: 15%; text-align: center;">State</th>
-                <th>Event Message</th>
+                <th style="width: 15%; text-align: center;">Priority</th>
+                <th>Message</th>
             </tr>
         </thead>
         <tbody id="log-table-body">
@@ -124,7 +124,7 @@
     <hr>
 
     <div class="config-box">
-        <strong>Configurazione Supabase:</strong><br>
+        <strong>Supabase Config:</strong><br>
         <input type="text" id="sb-url" placeholder="Supabase URL (https://xyz.supabase.co)" style="width: 320px;">
         <input type="password" id="sb-key" placeholder="Supabase Anon Key" style="width: 320px;">
         <button onclick="saveConfig()" style="padding: 8px 20px; font-size: 13px; background-color: #34495e; color: white; border: none; border-radius: 4px; cursor: pointer;">Save</button>

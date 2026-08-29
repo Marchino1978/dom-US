@@ -53,17 +53,17 @@ For more information, check the official <strong>Waveshare product page</strong>
       <font color="cyan"><br><b>displays (LCD, OLED, TFT)</b></font>
 <br><br>
       <div align="center" style="text-align: left; display: inline-block;">
-        ✅ LCD_16X2 - Alphanumeric [5V / I2C]<br>
-        ⌛ LCD_20X4 - Alphanumeric [5V / I2C]<br><br>
-        ❌ SSD1306 - Monochrome OLED 0.96" [3.3V / 5V]<br>
-        ❌ SH1106 - Monochrome OLED 1.3" [3.3V / 5V]<br><br>
-        ❌ ST7789 - Color TFT [3.3V]<br>
-        ❌ ILI9341 - Color TFT [3.3V]<br><br><br><br><br><br><br><br>
-      <font color="cyan"><small><b>display wake-up ADDONS</b></small></font>
+        ✅ LCD_16X2 - Alphanumeric📟 [5V / I2C]<br>
+        ⌛ LCD_20X4 - Alphanumeric📟 [5V / I2C]<br><br>
+        ❌ SSD1306 - Monochrome OLED 0.96"📺 [3.3V / 5V]<br>
+        ❌ SH1106 - Monochrome OLED 1.3"📺 [3.3V / 5V]<br><br>
+        ❌ ST7789 - Color TFT🖼️ [3.3V]<br>
+        ❌ ILI9341 - Color TFT🖼️ [3.3V]<br><br><br><br><br><br><br><br>
+      <font color="cyan"><small><b>⚙️ display wake-up ADDONS</b></small></font>
 <br><br>
-        ❌ TE174 - IR Beam [3.3V / 5V]<br>
-        ⌛ VL53L0X - Laser ToF [2.8V - 5V]<br>
-        ❌ HCSR501 - Passive Infrared [5V (3.3V signal)]
+        ❌ TE174 - IR Beam🛑 [3.3V / 5V]<br>
+        ⌛ VL53L0X - Laser ToF⚡ [2.8V - 5V]<br>
+        ❌ HCSR501 - Passive Infrared🏃 [5V (3.3V signal)]
       </div>
     </td>
     <td width="50%" align="center" valign="top">
@@ -71,28 +71,28 @@ For more information, check the official <strong>Waveshare product page</strong>
       <font color="cyan"><br><b>sensors</b></font>
 <br><br>
       <div align="center" style="text-align: left; display: inline-block;">
-        <font color="cyan"><small><b>CLIMATE</b></small></font><br>
-        ✅ DHT11 - Temp/Hum [3.3V / 5V]<br>
-        ❌ DHT22 - Temp/Hum [3.3V / 5V]<br>
-        ⌛ BME280 - Temp/Hum/Press [3.3V]<br>
-        ❌ BMP280 - Temp/Press [3.3V]<br>
-        ❌ SHT31 - Temp/Hum [3.3V / 5V]<br>
-        ❌ AHT20 - Temp/Hum [3.3V]<br>
-        ❌ DS18B20 - Temp [3.3V / 5V]<br><br>
-        <font color="cyan"><small><b>MOTION & PRESENCE</b></small></font><br>
-        ⌛ HCSR501 - Passive Infrared [5V (3.3V signal)]<br>
-        ❌ RCWL - Doppler Microwave [4V - 28V]<br>
-        ❌ LD2410 - Micro-movements [5V]<br>
-        ❌ TE174 - IR Beam [3.3V / 5V]<br><br>
-        <font color="cyan"><small><b>DISTANCE</b></small></font><br>
-        ❌ HCSR04 - Ultrasound [5V]<br>
-        ⌛ US100 - Ultrasound + Temp [3.3V / 5V]<br>
-        ❌ VL53L0X - Laser ToF [2.8V - 5V]<br><br>
-        <font color="cyan"><small><b>AMBIENT</b></small></font><br>
-        ❌ BH1750 - Lux (Digital) [3.3V / 5V]<br>
-        ❌ LDR - Analog Photoresistor [3.3V / 5V]<br>
-        ⌛ TCS34725 - RGB + Color Temp [3.3V / 5V]<br>
-        ❌ MQ135 - Air Quality [5V]
+        <font color="cyan"><small><b>🌡️ CLIMATE</b></small></font><br>
+        ✅ DHT11 - Temp🌡️/Hum💧 [3.3V / 5V]<br>
+        ❌ DHT22 - Temp🌡️/Hum💧 [3.3V / 5V]<br>
+        ⌛ BME280 - Temp🌡️/Hum💧/Press🌀 [3.3V]<br>
+        ❌ BMP280 - Temp🌡️/Press🌀 [3.3V]<br>
+        ❌ SHT31 - Temp🌡️/Hum💧 [3.3V / 5V]<br>
+        ❌ AHT20 - Temp🌡️/Hum💧 [3.3V]<br>
+        ❌ DS18B20 - Temp🌡️ [3.3V / 5V]<br><br>
+        <font color="cyan"><small><b>👥 MOTION & PRESENCE</b></small></font><br>
+        ⌛ HCSR501 - Passive Infrared🏃 [5V (3.3V signal)]<br>
+        ❌ RCWL - Doppler Microwave📡 [4V - 28V]<br>
+        ❌ LD2410 - Micro-movements🧘 [5V]<br>
+        ❌ TE174 - IR Beam🛑 [3.3V / 5V]<br><br>
+        <font color="cyan"><small><b>📏 DISTANCE</b></small></font><br>
+        ❌ HCSR04 - Ultrasound🦇 [5V]<br>
+        ⌛ US100 - Ultrasound + Temp📏 [3.3V / 5V]<br>
+        ❌ VL53L0X - Laser ToF⚡ [2.8V - 5V]<br><br>
+        <font color="cyan"><small><b>🌍 AMBIENT</b></small></font><br>
+        ❌ BH1750 - Lux (Digital)☀️ [3.3V / 5V]<br>
+        ❌ LDR - Analog Photoresistor💡 [3.3V / 5V]<br>
+        ⌛ TCS34725 - RGB + Color Temp🎨 [3.3V / 5V]<br>
+        ❌ MQ135 - Air Quality💨 [5V]
       </div>
     </td>
   </tr>
