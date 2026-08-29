@@ -186,26 +186,24 @@
 
             let html = "";
             data.forEach(log => {
-            let formattedDate = log.created_at || '-';
+                let dataFormattata = '-';
     
                 if (log.created_at) {
-                    const dateObj = new Date(log.created_at);
-                    if (!isNaN(dateObj.getTime())) {
-                        const day = String(dateObj.getDate()).padStart(2, '0');
-                        const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-                        const year = dateObj.getFullYear();
-                        const hours = String(dateObj.getHours()).padStart(2, '0');
-                        const minutes = String(dateObj.getMinutes()).padStart(2, '0');
-                        const seconds = String(dateObj.getSeconds()).padStart(2, '0');
-            
-                        formattedDate = `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
-                    }
+                    const d = new Date(log.created_at);
+                    const giorno = String(d.getDate()).padStart(2, '0');
+                    const mese = String(d.getMonth() + 1).padStart(2, '0');
+                    const anno = d.getFullYear();
+                    const ore = String(d.getHours()).padStart(2, '0');
+                    const minuti = String(d.getMinutes()).padStart(2, '0');
+                    const secondi = String(d.getSeconds()).padStart(2, '0');
+        
+                    dataFormattata = `${giorno}-${mese}-${anno} ${ore}:${minuti}:${secondi}`;
                 }
 
                 html += `
                     <tr>
                         <!-- <td>${log.id}</td> -->
-                        <td>${log.created_at || '-'}</td>
+                        <td>${dataFormattata}</td>
                         <td class="center">${log.color || '⚪'}</td>
                         <td>${log.message || '-'}</td>
                     </tr>
