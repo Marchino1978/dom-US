@@ -50,6 +50,8 @@
 │   ├── _splash_.png
 │   ├── splash.png
 │   ├── stl.png
+│   ├── telegram_alarm.jpeg
+│   ├── telegram_status.jpeg
 │   └── work-in-progress.png
 ├── public/
 │   └── README.md
@@ -63,6 +65,7 @@
 │   ├── backup_supabase.py
 │   ├── monthly_report.py
 │   ├── README.md
+│   ├── test_alarm.py
 │   └── test_telegram.py
 ├── stl/
 │   └── README.md
@@ -71,6 +74,6 @@
 ├── project-tree.txt
 └── README.md
 
-15 directories, 56 files
+15 directories, 59 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***

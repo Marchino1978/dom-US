@@ -16,15 +16,15 @@
     </td>
   </tr>
 
-  <!-- XYZ -->
+  <!-- telegram -->
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="../img/work-in-progress.png" alt="xyz" width="100%"><br>
-      <font color="red"><b>XYZ</b></font>
+      <img src="../img/telegram_status.jpeg" alt="xyz" width="100%"><br>
+      <font color="red"><b>STATUS message [TELEGRAM]</b></font>
     </td>
     <td width="50%" align="center" valign="top">
-      <img src="../img/work-in-progress.png" alt="xyz" width="100%"><br>
-      <font color="red"><b>XYZ</b></font>
+      <img src="../img/telegram_alarm.jpeg" alt="xyz" width="100%"><br>
+      <font color="red"><b>ALARM message [TELEGRAM]</b></font>
     </td>
   </tr>
 </table>
