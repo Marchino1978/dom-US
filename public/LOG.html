@@ -103,7 +103,7 @@
 <div class="container">
     <h1>dom-us LOG</h1>
     
-    <button class="refresh-btn" onclick="fetchLogs()">update LOG</button>
+    <button class="refresh-btn" onclick="fetchLogs()">refresh LOG</button>
     
     <div id="loading-status" class="loading">Connessione a Supabase in corso...</div>
 
@@ -111,9 +111,9 @@
         <thead>
             <tr>
                 <th style="width: 10%;">ID</th>
-                <th style="width: 25%;">Timestamp</th>
-                <th style="width: 15%; text-align: center;">Priority</th>
-                <th>Message</th>
+                <th style="width: 25%;">Date & Time</th>
+                <th style="width: 15%; text-align: center;">Severity</th>
+                <th>Event Message</th>
             </tr>
         </thead>
         <tbody id="log-table-body">
