@@ -43,6 +43,7 @@
 │   ├── esp32-c3-zero-front.jpg
 │   ├── esp32-c3-zero-rear.jpg
 │   ├── ino_lib.png
+│   ├── LOG.png
 │   ├── monthly_report_chart.png
 │   ├── monthly_report_table.png
 │   ├── README.md
@@ -50,6 +51,7 @@
 │   ├── _splash_.png
 │   ├── splash.png
 │   ├── stl.png
+│   ├── supabase_LOG.png
 │   ├── telegram_alarm.jpeg
 │   ├── telegram_status.jpeg
 │   └── work-in-progress.png
@@ -75,6 +77,6 @@
 ├── project-tree.txt
 └── README.md
 
-15 directories, 60 files
+15 directories, 62 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***

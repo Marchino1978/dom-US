@@ -71,3 +71,5 @@ data/*.json.bak
 
 src/test_telegram.py
 src/test_alarm.py
+img/LOG.png
+img/supabase_LOG.png
