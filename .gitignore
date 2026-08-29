@@ -69,4 +69,4 @@ backup_SQL/
 data/*.csv.bak
 data/*.json.bak
 
-scripts/test_telegram.py
+src/test_telegram.py
