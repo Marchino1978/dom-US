@@ -51,7 +51,6 @@
 │   ├── _splash_.png
 │   ├── splash.png
 │   ├── stl.png
-│   ├── supabase_LOG.png
 │   ├── telegram_alarm.jpeg
 │   ├── telegram_status.jpeg
 │   └── work-in-progress.png
@@ -77,6 +76,6 @@
 ├── project-tree.txt
 └── README.md
 
-15 directories, 62 files
+15 directories, 61 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
