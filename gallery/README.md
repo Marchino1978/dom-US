@@ -28,6 +28,30 @@
     </td>
   </tr>
 
+  <!-- LOG -->
+  <tr>
+    <td width="50%" align="center" valign="top">
+      <img src="../img/LOG.png" alt="Log degli eventi dell'allarme visualizzato dalla web dashboard dell'applicazione dom-us. | CAlarm event log displayed on the dom-us application web dashboard." width="100%"><br>
+      <font color="red"><b>alarm LOG [web]</b></font>
+    </td>
+    <td width="50%" align="center" valign="top">
+      <img src="../img/supabase_LOG.png" alt="Record e dati grezzi del log dell'allarme estratti direttamente dal database SQL. | Alarm log records and raw data extracted directly from the SQL database." width="100%"><br>
+      <font color="red"><b>alarm LOG [SQL]</b></font>
+    </td>
+  </tr>
+
+  <!-- XYZ -->
+  <tr>
+    <td width="50%" align="center" valign="top">
+      <img src="../img/work-in-progress.png" alt="Illustrazione in stile fumetto di un laboratorio maker con stampante 3D, microcontrollore ESP32 su breadboard, saldatore e laptop con codice, sormontata da un cartello di legno 'WORK IN PROGRESS' | Comic-style illustration of a maker workshop with a 3D printer, ESP32 breadboard setup, soldering iron, and code on a laptop, topped with a wooden 'WORK IN PROGRESS' sign" width="100%"><br>
+      <font color="red"><b>XYZ</b></font>
+    </td>
+    <td width="50%" align="center" valign="top">
+      <img src="../img/work-in-progress.png" alt="Illustrazione in stile fumetto di un laboratorio maker con stampante 3D, microcontrollore ESP32 su breadboard, saldatore e laptop con codice, sormontata da un cartello di legno 'WORK IN PROGRESS' | Comic-style illustration of a maker workshop with a 3D printer, ESP32 breadboard setup, soldering iron, and code on a laptop, topped with a wooden 'WORK IN PROGRESS' sign" width="100%"><br>
+      <font color="red"><b>XYZ</b></font>
+    </td>
+  </tr>
+
   <!-- XYZ -->
   <tr>
     <td width="50%" align="center" valign="top">
