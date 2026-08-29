@@ -6,23 +6,41 @@
     <title>dom-us LOG dashboard</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
             margin: 0;
             padding: 20px;
-            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             max-width: 900px;
-            margin: 0 auto;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
         }
         h1 {
             text-align: center;
             color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        .config-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 35px;
+            border: 1px solid #e2e8f0;
+        }
+        .config-box input {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 13px;
         }
         table {
             width: 100%;
@@ -43,22 +61,40 @@
         }
         .center {
             text-align: center;
-            font-size: 1.2em;
+            font-size: 1.1em;
         }
         .refresh-btn {
             display: block;
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background-color: #3498db;
             color: white;
             border: none;
-            border-radius: 4px;
-            font-size: 1em;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 20px;
+            transition: background-color 0.2s;
         }
         .refresh-btn:hover {
             background-color: #2980b9;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background: #dcdde1;
+            margin: 35px 0;
+        }
+        .loading {
+            text-align: center;
+            color: #e67e22;
+            font-weight: bold;
+            display: none;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #fef5e7;
+            border-radius: 6px;
         }
     </style>
 </head>
@@ -66,8 +102,11 @@
 
 <div class="container">
     <h1>dom-us LOG</h1>
+    
     <button class="refresh-btn" onclick="fetchLogs()">update LOG</button>
     
+    <div id="loading-status" class="loading">Connessione a Supabase in corso...</div>
+
     <table>
         <thead>
             <tr>
@@ -78,43 +117,58 @@
             </tr>
         </thead>
         <tbody id="log-table-body">
-            <tr><td colspan="4" class="center">Caricamento log in corso...</td></tr>
+            <tr><td colspan="4" class="center">Configura le credenziali in basso per caricare i log.</td></tr>
         </tbody>
     </table>
+
+    <hr>
+
+    <div class="config-box">
+        <strong>Configurazione Supabase:</strong><br>
+        <input type="text" id="sb-url" placeholder="Supabase URL (https://xyz.supabase.co)" style="width: 320px;">
+        <input type="password" id="sb-key" placeholder="Supabase Anon Key" style="width: 320px;">
+        <button onclick="saveConfig()" style="padding: 8px 20px; font-size: 13px; background-color: #34495e; color: white; border: none; border-radius: 4px; cursor: pointer;">Save</button>
+    </div>
+
 </div>
 
-<script src="config.js" onerror="handleConfigError()"></script>
 <script>
-    function handleConfigError() {
-        window.CONFIG = {
-            SUPABASE_URL: localStorage.getItem('SB_URL') || "",
-            SUPABASE_KEY: localStorage.getItem('SB_KEY') || ""
-        };
+    window.onload = function() {
+        document.getElementById('sb-url').value = localStorage.getItem('domus_sb_url') || '';
+        document.getElementById('sb-key').value = localStorage.getItem('domus_sb_key') || '';
         
-        if (!window.CONFIG.SUPABASE_URL || !window.CONFIG.SUPABASE_KEY) {
-            window.CONFIG.SUPABASE_URL = prompt("Inserisci il tuo Supabase URL:") || "";
-            window.CONFIG.SUPABASE_KEY = prompt("Inserisci la tua Supabase Anon Key:") || "";
-            localStorage.setItem('SB_URL', window.CONFIG.SUPABASE_URL);
-            localStorage.setItem('SB_KEY', window.CONFIG.SUPABASE_KEY);
+        if (localStorage.getItem('domus_sb_url') && localStorage.getItem('domus_sb_key')) {
+            fetchLogs();
         }
+    };
+
+    function saveConfig() {
+        localStorage.setItem('domus_sb_url', document.getElementById('sb-url').value.trim());
+        localStorage.setItem('domus_sb_key', document.getElementById('sb-key').value.trim());
+        alert("Credenziali Supabase memorizzate nel browser!");
         fetchLogs();
     }
 
     async function fetchLogs() {
-        const activeConfig = window.CONFIG;
+        const url = localStorage.getItem('domus_sb_url');
+        const key = localStorage.getItem('domus_sb_key');
 
-        if (!activeConfig || !activeConfig.SUPABASE_URL || !activeConfig.SUPABASE_KEY) {
+        if (!url || !key) {
+            alert("Inserisci e salva prima le credenziali di Supabase nel box in basso!");
             return;
         }
 
         const tbody = document.getElementById("log-table-body");
-        tbody.innerHTML = `<tr><td colspan="4" class="center">Aggiornamento...</td></tr>`;
+        const loadingBox = document.getElementById("loading-status");
+        
+        loadingBox.style.display = 'block';
+        tbody.innerHTML = `<tr><td colspan="4" class="center">Caricamento log in corso...</td></tr>`;
 
         try {
-            const response = await fetch(`${activeConfig.SUPABASE_URL}/rest/v1/logs?select=*&order=id.desc`, {
+            const response = await fetch(`${url}/rest/v1/logs?select=*&order=id.desc`, {
                 headers: {
-                    "apikey": activeConfig.SUPABASE_KEY,
-                    "Authorization": `Bearer ${activeConfig.SUPABASE_KEY}`
+                    "apikey": key,
+                    "Authorization": `Bearer ${key}`
                 }
             });
 
@@ -123,6 +177,7 @@
             }
 
             const data = await response.json();
+            loadingBox.style.display = 'none';
             
             if (data.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="4" class="center">Nessun log trovato nel database.</td></tr>`;
@@ -144,17 +199,11 @@
             tbody.innerHTML = html;
 
         } catch (error) {
+            loadingBox.style.display = 'none';
             console.error("Errore nel recupero dei log:", error);
-            tbody.innerHTML = `<tr><td colspan="4" class="center" style="color: red;">Errore di connessione a Supabase</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="4" class="center" style="color: red;">Errore di connessione a Supabase (Verifica URL e Chiave)</td></tr>`;
         }
     }
-
-    window.addEventListener('DOMContentLoaded', () => {
-        if (typeof CONFIG !== 'undefined') {
-            window.CONFIG = CONFIG;
-            fetchLogs();
-        }
-    });
 </script>
 
 </body>
