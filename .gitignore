@@ -69,5 +69,8 @@ backup_SQL/
 data/*.csv.bak
 data/*.json.bak
 
+# PUBLIC
+public/config.js
+
 src/test_telegram.py
 src/test_alarm.py

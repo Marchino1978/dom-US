@@ -54,6 +54,8 @@
 │   ├── telegram_status.jpeg
 │   └── work-in-progress.png
 ├── public/
+│   ├── config.js
+│   ├── LOG.html
 │   └── README.md
 ├── scripts/
 │   ├── push.sh*
@@ -74,6 +76,6 @@
 ├── project-tree.txt
 └── README.md
 
-15 directories, 59 files
+15 directories, 61 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
