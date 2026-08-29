@@ -186,16 +186,19 @@
 
             let html = "";
             data.forEach(log => {
-                let formattedDate = log.created_at || '-';
+            let formattedDate = log.created_at || '-';
     
-                // Se la data arriva nel formato "YYYY-MM-DD HH:mm:ss", la convertiamo in "DD-MM-YYYY HH:mm:ss"
                 if (log.created_at) {
-                    const parts = log.created_at.split(' ');
-                    if (parts.length === 2) {
-                        const dateParts = parts[0].split('-');
-                        if (dateParts.length === 3) {
-                            formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]} ${parts[1]}`;
-                        }
+                    const dateObj = new Date(log.created_at);
+                    if (!isNaN(dateObj.getTime())) {
+                        const day = String(dateObj.getDate()).padStart(2, '0');
+                        const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+                        const year = dateObj.getFullYear();
+                        const hours = String(dateObj.getHours()).padStart(2, '0');
+                        const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+                        const seconds = String(dateObj.getSeconds()).padStart(2, '0');
+            
+                        formattedDate = `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
                     }
                 }
 
