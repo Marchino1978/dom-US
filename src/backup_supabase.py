@@ -7,7 +7,7 @@ from supabase import create_client
 SUPABASE_URL = os.environ.get("SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
 GITHUB_TOKEN = os.environ.get("GH_TOKEN")
-GITHUB_REPO = "Marchino1978/dom-us"
+GITHUB_REPO = "Marchino1978/dom-US"
 
 tables_to_backup = ["sensor_data"]
 
@@ -80,7 +80,7 @@ def upload_backup_to_github(file_path):
         }, timeout=10)
         
         if put_resp.status_code in [200, 201]:
-            print(f"Nuovo backup {file_name} caricato in backup_SQL su dom-us.")
+            print(f"Nuovo backup {file_name} caricato in backup_SQL su dom-US.")
         else:
             print(f"Errore upload GitHub: {put_resp.text}")
 

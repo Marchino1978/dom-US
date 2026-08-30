@@ -20,7 +20,7 @@ except ImportError as e:
 SUPABASE_URL = os.environ.get("SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
 GITHUB_TOKEN = os.environ.get("GH_TOKEN")
-GITHUB_REPO = "Marchino1978/dom-us"
+GITHUB_REPO = "Marchino1978/dom-US"
 
 def get_previous_month_range():
     today = datetime.utcnow().date()

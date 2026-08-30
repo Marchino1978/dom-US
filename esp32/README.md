@@ -124,7 +124,7 @@ available soon and ready for implementation
   <tr>
     <td width="50%" align="center" valign="top">
       <img src="../img/ino_lib.png" alt="Icona con codice sorgente Arduino e file .ino per il download del firmware | Icon representing Arduino source code and .ino file for downloading firmware for ESP32" width="50%"><br>
-      <a href="https://marchino1978.github.io/dom-us/esp32/FIRMWARE.zip" download><strong>Download Firmware (.zip)</strong></a>
+      <a href="https://marchino1978.github.io/dom-US/esp32/FIRMWARE.zip" download><strong>Download Firmware (.zip)</strong></a>
       <br>
       <font color="gold"><i>Includes: esp32.ino, config.example.h, /lib</i></font>
       <br>
@@ -132,7 +132,7 @@ available soon and ready for implementation
           </td>
     <td width="50%" align="center" valign="top">
       <img src="../img/stl.png" alt="Icona con stampante 3D e file .stl per il download del case per ESP32 in stile Lego Technic | Icon representing 3D printer and .stl file for downloading ESP32 Lego Technic style case" width="50%"><br>
-      <a href="https://marchino1978.github.io/dom-us/stl/case.stl" download><strong>Download 3D Case (.stl)</strong></a>
+      <a href="https://marchino1978.github.io/dom-US/stl/case.stl" download><strong>Download 3D Case (.stl)</strong></a>
       <br>
       <font color="gold"><i>3D PRINTED CASE - LEGO TECHNIC STYLE</i></font>
       <br>
@@ -162,7 +162,7 @@ available soon and ready for implementation
 <table align="center" cellspacing="0" cellpadding="0">
   <tr>
     <td>
-      <a href="https://marchino1978.github.io/dom-us/">
+      <a href="https://marchino1978.github.io/dom-US/">
         <img src="https://capsule-render.vercel.app/api?type=pulse&height=750&width=750&color=7928ca&text=go%20to%20HOME&fontSize=75&fontColor=00f5ff" width="250">
       </a>
     </td>

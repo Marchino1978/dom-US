@@ -19,11 +19,11 @@
   <!-- TELEGRAM MSG -->
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="../img/telegram_status.jpeg" alt="Messaggio del bot Telegram dom-us con lo stato del sistema di allarme e lettura dati ambientali in tempo reale | Telegram bot dom-us message showing alarm system status and real-time environmental data readings" width="100%"><br>
+      <img src="../img/telegram_status.jpeg" alt="Messaggio del bot Telegram dom-US con lo stato del sistema di allarme e lettura dati ambientali in tempo reale | Telegram bot dom-US message showing alarm system status and real-time environmental data readings" width="100%"><br>
       <font color="red"><b>STATUS message [TELEGRAM]</b></font>
     </td>
     <td width="50%" align="center" valign="top">
-      <img src="../img/telegram_alarm.jpeg" alt="Messaggio di allarme del bot Telegram dom-us per intrusione rilevata | Telegram bot dom-us warning message reporting an intrusion alarm" width="100%"><br>
+      <img src="../img/telegram_alarm.jpeg" alt="Messaggio di allarme del bot Telegram dom-US per intrusione rilevata | Telegram bot dom-US warning message reporting an intrusion alarm" width="100%"><br>
       <font color="red"><b>ALARM message [TELEGRAM]</b></font>
     </td>
   </tr>
@@ -31,7 +31,7 @@
   <!-- LOG -->
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="../img/work-in-progress.png" alt="Log degli eventi dell'allarme visualizzato dalla web dashboard dell'applicazione dom-us. | CAlarm event log displayed on the dom-us application web dashboard." width="100%"><br>
+      <img src="../img/work-in-progress.png" alt="Log degli eventi dell'allarme visualizzato dalla web dashboard dell'applicazione dom-US. | CAlarm event log displayed on the dom-US application web dashboard." width="100%"><br>
       <font color="red"><b>alarm LOG [web]</b></font>
     </td>
     <td width="50%" align="center" valign="top">
@@ -70,7 +70,7 @@
 <table align="center" cellspacing="0" cellpadding="0">
   <tr>
     <td>
-      <a href="https://marchino1978.github.io/dom-us/">
+      <a href="https://marchino1978.github.io/dom-US/">
         <img src="https://capsule-render.vercel.app/api?type=pulse&height=750&width=750&color=7928ca&text=go%20to%20HOME&fontSize=75&fontColor=00f5ff" width="250">
       </a>
     </td>
