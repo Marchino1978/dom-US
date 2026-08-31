@@ -55,8 +55,8 @@
 │   ├── splash.png
 │   ├── sql_LOG.png
 │   ├── stl.png
-│   ├── telegram_alarm.jpeg
-│   ├── telegram_status.jpeg
+│   ├── telegram_alarm_status.jpeg
+│   ├── telegram_blackout_connession.jpeg
 │   └── work-in-progress.png
 ├── public/
 │   ├── LOG.html
@@ -68,11 +68,14 @@
 │   └── zippa.sh*
 ├── src/
 │   ├── test/
+│   │   ├── messaggi.md
+│   │   ├── old_test_telegram.py
 │   │   ├── test_alarm.py
 │   │   ├── test_black.py
 │   │   ├── test_dsl.py
+│   │   ├── test_OFF.py
+│   │   ├── test_ON.py
 │   │   ├── test_status.py
-│   │   ├── test_telegram.py
 │   │   └── test_wifi.py
 │   ├── backup_LOG.py
 │   ├── backup_supabase.py
@@ -85,6 +88,6 @@
 ├── project-tree.txt
 └── README.md
 
-16 directories, 69 files
+16 directories, 72 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***

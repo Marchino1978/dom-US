@@ -19,12 +19,12 @@
   <!-- TELEGRAM MSG -->
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="../img/telegram_status.jpeg" alt="Messaggio del bot Telegram dom-US con lo stato del sistema di allarme e lettura dati ambientali in tempo reale | Telegram bot dom-US message showing alarm system status and real-time environmental data readings" width="100%"><br>
-      <font color="red"><b>STATUS message [TELEGRAM]</b></font>
+      <img src="../img/telegram_blackout_connession.jpeg" alt="Messaggio del bot Telegram dom-US con lo stato del sistema di allarme e lettura dati ambientali in tempo reale | Telegram bot dom-US message showing alarm system status and real-time environmental data readings" width="100%"><br>
+      <font color="red"><b>BLACKOUT/CONNECTION messages [TELEGRAM]</b></font>
     </td>
     <td width="50%" align="center" valign="top">
-      <img src="../img/telegram_alarm.jpeg" alt="Messaggio di allarme del bot Telegram dom-US per intrusione rilevata | Telegram bot dom-US warning message reporting an intrusion alarm" width="100%"><br>
-      <font color="red"><b>ALARM message [TELEGRAM]</b></font>
+      <img src="../img/telegram_alarm_status.jpeg" alt="Messaggio di allarme del bot Telegram dom-US per intrusione rilevata | Telegram bot dom-US warning message reporting an intrusion alarm" width="100%"><br>
+      <font color="red"><b>ALARM/STATUS messages [TELEGRAM]</b></font>
     </td>
   </tr>
 
