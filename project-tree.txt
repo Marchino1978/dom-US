@@ -52,11 +52,11 @@
 │   ├── sensor.jpeg
 │   ├── _splash_.png
 │   ├── splash.png
-│   ├── sql_LOG.png
+│   ├── sql-LOG.png
 │   ├── stl.png
 │   ├── telegram_alarm_status.jpeg
 │   ├── telegram_blackout_connession.jpeg
-│   ├── web_LOG.png
+│   ├── web-LOG.png
 │   └── work-in-progress.png
 ├── public/
 │   ├── LOG.html
