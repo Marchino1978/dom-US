@@ -31,11 +31,11 @@
   <!-- LOG -->
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="../img/work-in-progress.png" alt="Log degli eventi dell'allarme visualizzato dalla web dashboard dell'applicazione dom-US. | CAlarm event log displayed on the dom-US application web dashboard." width="100%"><br>
+      <img src="../img/web_LOG.png" alt="Log degli eventi dell'allarme visualizzato dalla web dashboard dell'applicazione dom-US. | CAlarm event log displayed on the dom-US application web dashboard." width="100%"><br>
       <font color="red"><b>alarm LOG [web]</b></font>
     </td>
     <td width="50%" align="center" valign="top">
-      <img src="../img/work-in-progress.png" alt="Record e dati grezzi del log dell'allarme estratti direttamente dal database SQL. | Alarm log records and raw data extracted directly from the SQL database." width="100%"><br>
+      <img src="../img/sql_LOG.png" alt="Record e dati grezzi del log dell'allarme estratti direttamente dal database SQL. | Alarm log records and raw data extracted directly from the SQL database." width="100%"><br>
       <font color="red"><b>alarm LOG [SQL]</b></font>
     </td>
   </tr>
