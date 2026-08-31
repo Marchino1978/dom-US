@@ -71,5 +71,8 @@ data/*.json.bak
 
 src/test_telegram.py
 src/test_alarm.py
+src/test_status.py
+src/test_black.py
+src/test_wifi.py
 img/LOG.png
 img/sql_LOG.png
