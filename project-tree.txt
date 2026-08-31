@@ -72,6 +72,7 @@
 │   ├── README.md
 │   ├── test_alarm.py
 │   ├── test_black.py
+│   ├── test_dsl.py
 │   ├── test_status.py
 │   ├── test_telegram.py
 │   └── test_wifi.py
@@ -82,6 +83,6 @@
 ├── project-tree.txt
 └── README.md
 
-15 directories, 67 files
+15 directories, 68 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
