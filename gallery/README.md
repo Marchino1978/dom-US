@@ -31,7 +31,7 @@
   <!-- LOG -->
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="../img/web-LOG.png" alt="Log degli eventi dell'allarme visualizzato dalla web dashboard dell'applicazione dom-US. | CAlarm event log displayed on the dom-US application web dashboard." width="100%"><br>
+      <img src="../img/web-LOG.png" alt="Log degli eventi dell'allarme visualizzato dalla web dashboard dell'applicazione dom-US. | Alarm event log displayed on the dom-US application web dashboard." width="100%"><br>
       <font color="red"><b>alarm LOG [web]</b></font>
     </td>
     <td width="50%" align="center" valign="top">
