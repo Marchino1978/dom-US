@@ -68,16 +68,16 @@
 │   └── zippa.sh*
 ├── src/
 │   ├── test/
+│   │   ├── test_alarm.py
+│   │   ├── test_black.py
+│   │   ├── test_dsl.py
+│   │   ├── test_status.py
+│   │   ├── test_telegram.py
+│   │   └── test_wifi.py
 │   ├── backup_LOG.py
 │   ├── backup_supabase.py
 │   ├── monthly_report.py
-│   ├── README.md
-│   ├── test_alarm.py
-│   ├── test_black.py
-│   ├── test_dsl.py
-│   ├── test_status.py
-│   ├── test_telegram.py
-│   └── test_wifi.py
+│   └── README.md
 ├── stl/
 │   └── README.md
 ├── _config.yml

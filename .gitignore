@@ -69,11 +69,6 @@ backup_SQL/
 data/*.csv.bak
 data/*.json.bak
 
-src/test_telegram.py
-src/test_alarm.py
-src/test_status.py
-src/test_black.py
-src/test_wifi.py
-src/test_dsl.py
 img/LOG.png
 img/sql_LOG.png
+src/test/
