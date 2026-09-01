@@ -1,6 +1,7 @@
 .
 ├── backup_LOG/
 │   ├── backup_LOG_2026_07.sql
+│   ├── backup_LOG_2026_08.sql
 │   └── README.md
 ├── backup_SQL/
 │   ├── backup_supabase_2026_08_28.sql
@@ -9,7 +10,9 @@
 ├── data/
 │   ├── README.md
 │   ├── report_2026_07.csv
-│   └── report_2026_07.png
+│   ├── report_2026_07.png
+│   ├── report_2026_08.csv
+│   └── report_2026_08.png
 ├── esp32/
 │   ├── lib/
 │   │   ├── displays/
@@ -91,6 +94,6 @@
 ├── project-tree.txt
 └── README.md
 
-16 directories, 75 files
+16 directories, 78 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***

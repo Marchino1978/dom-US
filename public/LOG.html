@@ -204,8 +204,8 @@
                     <tr>
                         <!-- <td>${log.id}</td> -->
                         <td>${dataFormattata}</td>
-                        <td class="center">${log.color || '⚪'}</td>
-                        <td>${log.message || '-'}</td>
+                        <td class="center">${log.severity || '⚪'}</td>
+                        <td>${log.event_message || '-'}</td>
                     </tr>
                 `;
             });
