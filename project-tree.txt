@@ -31,6 +31,7 @@
 │   ├── config.h
 │   ├── esp32.ino
 │   ├── README.md
+│   ├── TELEGRAM commands.md
 │   └── TODO.md
 ├── gallery/
 │   └── README.md
@@ -68,10 +69,12 @@
 │   └── zippa.sh*
 ├── src/
 │   ├── test/
+│   │   ├── bot.py
 │   │   ├── messaggi.md
 │   │   ├── old_test_telegram.py
 │   │   ├── test_alarm.py
 │   │   ├── test_black.py
+│   │   ├── test_bot.py
 │   │   ├── test_dsl.py
 │   │   ├── test_OFF.py
 │   │   ├── test_ON.py
@@ -88,6 +91,6 @@
 ├── project-tree.txt
 └── README.md
 
-16 directories, 72 files
+16 directories, 75 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
