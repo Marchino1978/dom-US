@@ -19,7 +19,7 @@
   <!-- TELEGRAM MSG -->
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="../img/telegram_blackout_connession.jpeg" alt="Messaggio del bot Telegram dom-US con lo stato del sistema di allarme e lettura dati ambientali in tempo reale | Telegram bot dom-US message showing alarm system status and real-time environmental data readings" width="100%"><br>
+      <img src="../img/telegram_blackout_connection.jpeg" alt="Messaggio del bot Telegram dom-US con lo stato del sistema di allarme e lettura dati ambientali in tempo reale | Telegram bot dom-US message showing alarm system status and real-time environmental data readings" width="100%"><br>
       <font color="red"><b>BLACKOUT/CONNECTION messages [TELEGRAM]</b></font>
     </td>
     <td width="50%" align="center" valign="top">

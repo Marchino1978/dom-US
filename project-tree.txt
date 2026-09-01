@@ -59,7 +59,7 @@
 │   ├── sql-LOG.png
 │   ├── stl.png
 │   ├── telegram_alarm_status.jpeg
-│   ├── telegram_blackout_connession.jpeg
+│   ├── telegram_blackout_connection.jpeg
 │   ├── web-LOG.png
 │   └── work-in-progress.png
 ├── public/
