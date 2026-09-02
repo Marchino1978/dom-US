@@ -46,7 +46,7 @@ A lightweight, serverless smart home IoT ecosystem built with ESP32-C3 mini and 
 </table>
 
 <a href="https://github.com/Marchino1978/Marchino1978"><img src="https://img.shields.io/badge/%20https%3A%2F%2Fgithub.com%2FMarchino1978%2FMarchino1978%20-%20link?logo=github&logoColor=ffffff&label=Marchino1978&labelColor=000000&color=b30000&link=%20https%3A%2F%2Fgithub.com%2FMarchino1978%2FMarchino1978" alt="Marchino1978 GitHub Link"></a><a href="https://marchino1978.github.io/Marchino1978/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/Marchino1978-marchino1978.github.io%2Fportfolio%2F-00b300?logo=googlechrome&logoColor=ffffff&labelColor=000000" alt="Marchino1978 Pages"></a>
-<br>
+<br><br>
 <a href="https://github.com/Marchino1978/portfolio"><img src="https://img.shields.io/badge/%20https%3A%2F%2Fgithub.com%2FMarchino1978%2Fportfolio%20-%20link?logo=github&logoColor=ffffff&label=portfolio&labelColor=000000&color=b30000&link=%20https%3A%2F%2Fgithub.com%2FMarchino1978%2Fportfolio" alt="portfolio GitHub Link"></a><a href="https://marchino1978.github.io/portfolio/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/portfolio-marchino1978.github.io%2Fportfolio%2F-00b300?logo=googlechrome&logoColor=ffffff&labelColor=000000" alt="portfolio Pages"></a>
 
 <!-- 
