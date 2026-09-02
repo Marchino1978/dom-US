@@ -45,6 +45,10 @@ A lightweight, serverless smart home IoT ecosystem built with ESP32-C3 mini and 
   </tr>
 </table>
 
+<a href="https://github.com/Marchino1978/portfolio">
+  <img src="https://img.shields.io/badge/%20https%3A%2F%2Fgithub.com%2FMarchino1978%2Fportfolio%20-%20link?logo=github&logoColor=ffffff&label=dom-US&labelColor=000000&color=ff2400&link=%20https%3A%2F%2Fgithub.com%2FMarchino1978%2Fportfolio" alt="portfolio GitHub Link">            
+</a>
+
 <!-- 
 HTML, supabase, github, raspberry, esp32, telegram, dashboard, sql, charts, iot, smarthome-iot, home-automation, supabase-postgresql-integration, raspberry-pi-400-project, domotic, arduino-ide, data-logger, embedded-cpp, iot-dashboard, power-outage-monitoring, security-alarm, smart-home, telegram-bot, esp32-c3, esp32-c3-zero
 -->
