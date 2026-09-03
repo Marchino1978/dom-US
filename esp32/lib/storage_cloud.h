@@ -10,6 +10,7 @@ struct OfflineReading {
   char timestamp[25];
   float temp;
   float hum;
+  float press;
 };
 
 const int MAX_OFFLINE_READINGS = 48;
@@ -19,7 +20,7 @@ int bufferCount = 0;
 // ======================================================
 // 1. SEND SINGLE RECORD TO SUPABASE
 // ======================================================
-bool sendToSupabase(const char* ts, float temp, float hum) {
+bool sendToSupabase(const char* ts, float temp, float hum, float press) {
   if (WiFi.status() != WL_CONNECTED) return false;
 
   HTTPClient http;
@@ -35,6 +36,7 @@ bool sendToSupabase(const char* ts, float temp, float hum) {
   doc["created_at"]  = ts;
   doc["temperature"] = temp;
   doc["humidity"]    = hum;
+  doc["pressure"]    = press;
 
   String body;
   serializeJson(doc, body);
@@ -53,7 +55,7 @@ void flushRamBuffer() {
 
   int sentSuccessfully = 0;
   for (int i = 0; i < bufferCount; i++) {
-    bool ok = sendToSupabase(ramBuffer[i].timestamp, ramBuffer[i].temp, ramBuffer[i].hum);
+    bool ok = sendToSupabase(ramBuffer[i].timestamp, ramBuffer[i].temp, ramBuffer[i].hum, ramBuffer[i].press);
     if (ok) {
       sentSuccessfully++;
     } else {
@@ -72,7 +74,7 @@ void flushRamBuffer() {
 // ======================================================
 // 3. SAVE TELEMETRY (ONLINE OR RAM BUFFER)
 // ======================================================
-void saveTelemetryData(struct tm* timeinfo, float temp, float hum) {
+void saveTelemetryData(struct tm* timeinfo, float temp, float hum, float press) {
   char ts[25];
   snprintf(ts, sizeof(ts), "%04d-%02d-%02dT%02d:00:00Z",
            timeinfo->tm_year + 1900,
@@ -82,12 +84,13 @@ void saveTelemetryData(struct tm* timeinfo, float temp, float hum) {
 
   if (WiFi.status() == WL_CONNECTED) {
     flushRamBuffer();
-    sendToSupabase(ts, temp, hum);
+    sendToSupabase(ts, temp, hum, press);
   } else {
     if (bufferCount < MAX_OFFLINE_READINGS) {
       strncpy(ramBuffer[bufferCount].timestamp, ts, sizeof(ramBuffer[bufferCount].timestamp));
       ramBuffer[bufferCount].temp = temp;
       ramBuffer[bufferCount].hum  = hum;
+      ramBuffer[bufferCount].press  = press;
       bufferCount++;
     }
   }

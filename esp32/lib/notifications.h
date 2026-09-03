@@ -59,22 +59,24 @@ inline void checkTelegramUpdates() {
 
       if (text == "ALARM ON") {
         alarmEnabled = true;
-        sendTelegramMessage("🛡️ *Sistema Allarme ATTIVATO*");
+        sendTelegramMessage("🛡️ *ALARM ON*");
       } 
       else if (text == "ALARM OFF") {
         alarmEnabled = false;
-        sendTelegramMessage("🔓 *Sistema Allarme DISATTIVATO*");
+        sendTelegramMessage("🔓 *ALARM OFF*");
       } 
       else if (text == "ALARM STATUS") {
         float temp = readTemperature();
         float hum = readHumidity();
+        float press = readPressure();
         float lux = readAmbientLux();
 
-        String statusMsg = "📊 *STATO SISTEMA*\n\n";
-        statusMsg += "• Stato Allarme: " + String(alarmEnabled ? "🟢 ATTIVO" : "🔴 DISATTIVATO") + "\n";
-        statusMsg += "• Temperatura: " + String(temp, 1) + " °C\n";
-        statusMsg += "• Umidità: " + String(hum, 0) + " %\n";
-        statusMsg += "• Luce Ambiente: " + String(lux, 0) + " Lux";
+        String statusMsg = "📊 *SYSTEM*\n\n";
+        statusMsg += "• ALARM STATUS: " + String(alarmEnabled ? "🟢 ON" : "🔴 OFF") + "\n";
+        statusMsg += "• Temp: " + String(temp, 1) + " °C\n";
+        statusMsg += "• Hum: " + String(hum, 0) + " %\n";
+        statusMsg += "• Press: " + String(hum, 0) + " hPa\n";
+        statusMsg += "• Light: " + String(lux, 0) + " Lux";
 
         sendTelegramMessage(statusMsg);
       }
