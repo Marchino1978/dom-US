@@ -57,7 +57,7 @@ def generate_monthly_report():
         try:
             supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
             resp = supabase.table("sensor_data") \
-                .select("created_at, temperatura, umidita, pressione") \
+                .select("created_at, temp, hum, press") \
                 .gte("created_at", start_date) \
                 .lte("created_at", end_date) \
                 .order("created_at", desc=False) \
@@ -70,11 +70,11 @@ def generate_monthly_report():
             
     if not rows:
         print("Nessun dato trovato, inserisco riga di fallback.")
-        rows = [{"created_at": start_date, "temperatura": 0, "umidita": 0, "umidita": 0}]
+        rows = [{"created_at": start_date, "temp": 0, "hum": 0, "press": 0}]
 
     try:
         with open(csv_path, "w", newline="", encoding="utf-8") as f:
-            writer = csv.DictWriter(f, fieldnames=["created_at", "temperatura", "umidita", "pressione"])
+            writer = csv.DictWriter(f, fieldnames=["created_at", "tempe", "hub", "press"])
             writer.writeheader()
             writer.writerows(rows)
         print(f"File CSV locale salvato: {csv_path}")
@@ -98,10 +98,10 @@ def generate_monthly_report():
                 except Exception:
                     dt = dt_raw
             dates.append(dt)
-            temperatures.append(float(r.get("temperatura", 0) or 0))
-            humidities.append(float(r.get("umidita", 0) or 0))
+            temperatures.append(float(r.get("temp", 0) or 0))
+            humidities.append(float(r.get("hum", 0) or 0))
 
-            val_pressione = r.get("pressione")
+            val_pressione = r.get("press")
             if val_pressione is None:
                 pressures.append(float('nan'))
             else:
@@ -120,7 +120,7 @@ def generate_monthly_report():
         ax2.grid(True, linestyle="--", alpha=0.5)
 
         ax3.plot(dates, pressures, color="green", linewidth=1.5)
-        ax3.set_title("PRES (hPa)", fontsize=12, fontweight='bold', loc='left')
+        ax3.set_title("PRESS (hPa)", fontsize=12, fontweight='bold', loc='left')
         ax3.grid(True, linestyle="--", alpha=0.5)
 
         start_dt = datetime(first_day.year, first_day.month, first_day.day, 0, 0, 0)
