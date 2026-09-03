@@ -9,11 +9,11 @@ A lightweight, serverless smart home IoT ecosystem built with ESP32-C3 mini and 
 <br><br>
 <strong>Architecture & Smart Features</strong>
 <br><br>
-<strong>Smart Power Outage Detection:</strong> The ESP32-C3 constantly sends timestamped pings to the Supabase SQL database. After a blackout, the device reboots, compares the current time with the last saved ping, and sends an alert via a Telegram Bot stating exactly how long the power was lost.
-<br>
-<strong>Offline Sensor Data Buffering:</strong> Continuous environmental logging. Data is buffered offline if Wi-Fi drops and synced to the cloud upon reconnection.
-<br>
-<strong>Web Dashboard & Alarm:</strong> Real-time data visualization via interactive charts and integrated security alarm logic.
+• <strong>Smart Power Outage Detection:</strong> The ESP32-C3 constantly sends timestamped pings to the Supabase SQL database. After a blackout, the device reboots, compares the current time with the last saved ping, and sends an alert via a Telegram Bot stating exactly how long the power was lost.
+<br><br>
+• <strong>Offline Sensor Data Buffering:</strong> Continuous environmental logging. Data is buffered offline if Wi-Fi drops and synced to the cloud upon reconnection.
+<br><br>
+• <strong>Web Dashboard & Alarm:</strong> Real-time data visualization via interactive charts and integrated security alarm logic.
 <br><br>
 </div>
 
