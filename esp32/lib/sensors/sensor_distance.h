@@ -1,7 +1,7 @@
 #ifndef SENSOR_DISTANCE_H
 #define SENSOR_DISTANCE_H
 
-#include "../config.h"
+#include "../../config.h"
 
 #if defined(SENSOR_ULTRASONIC_US100)
   #define US100_SERIAL Serial2

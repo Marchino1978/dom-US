@@ -18,13 +18,13 @@ OfflineReading ramBuffer[MAX_OFFLINE_READINGS];
 int bufferCount = 0;
 
 // ======================================================
-// 1. SEND SINGLE RECORD TO SUPABASE
+// 1. SEND SINGLE RECORD TO SUPABASE (sensor_data)
 // ======================================================
 bool sendToSupabase(const char* ts, float temp, float hum, float press) {
   if (WiFi.status() != WL_CONNECTED) return false;
 
   HTTPClient http;
-  String url = String(SUPABASE_URL) + "/rest/v1/telemetry";
+  String url = String(SUPABASE_URL) + "/rest/v1/sensor_data";
   
   http.begin(url);
   http.addHeader("Content-Type", "application/json");
@@ -33,10 +33,10 @@ bool sendToSupabase(const char* ts, float temp, float hum, float press) {
   http.addHeader("Prefer", "resolution=merge-duplicates");
 
   StaticJsonDocument<200> doc;
-  doc["created_at"]  = ts;
-  doc["temperature"] = temp;
-  doc["humidity"]    = hum;
-  doc["pressure"]    = press;
+  doc["created_at"] = ts;
+  doc["temp"]       = temp;
+  doc["hum"]        = hum;
+  doc["press"]      = press;
 
   String body;
   serializeJson(doc, body);
@@ -72,7 +72,7 @@ void flushRamBuffer() {
 }
 
 // ======================================================
-// 3. SAVE TELEMETRY (ONLINE OR RAM BUFFER)
+// 3. SAVE TELEMETRY (NORMALIZED TO HH:00:00)
 // ======================================================
 void saveTelemetryData(struct tm* timeinfo, float temp, float hum, float press) {
   char ts[25];
@@ -88,22 +88,22 @@ void saveTelemetryData(struct tm* timeinfo, float temp, float hum, float press) 
   } else {
     if (bufferCount < MAX_OFFLINE_READINGS) {
       strncpy(ramBuffer[bufferCount].timestamp, ts, sizeof(ramBuffer[bufferCount].timestamp));
-      ramBuffer[bufferCount].temp = temp;
-      ramBuffer[bufferCount].hum  = hum;
-      ramBuffer[bufferCount].press  = press;
+      ramBuffer[bufferCount].temp  = temp;
+      ramBuffer[bufferCount].hum   = hum;
+      ramBuffer[bufferCount].press = press;
       bufferCount++;
     }
   }
 }
 
 // ======================================================
-// 4. BLACKOUT HEARTBEAT (UPDATES SINGLE ROW)
+//  4. BLACKOUT HEARTBEAT
 // ======================================================
 void sendHeartbeat() {
   if (WiFi.status() != WL_CONNECTED) return;
 
   static unsigned long lastPing = 0;
-  if (millis() - lastPing < 300000 && lastPing != 0) return;
+  if (millis() - lastPing < 60000 && lastPing != 0) return;
   lastPing = millis();
 
   HTTPClient http;
@@ -122,6 +122,34 @@ void sendHeartbeat() {
 
   http.PATCH(body);
   http.end();
+}
+
+// ======================================================
+//  5. SEND EVENT LOG TO SUPABASE
+// ======================================================
+bool sendLogToSupabase(const char* timestamp, const char* severity, const char* message) {
+  if (WiFi.status() != WL_CONNECTED) return false;
+
+  HTTPClient http;
+  String url = String(SUPABASE_URL) + "/rest/v1/logs";
+  
+  http.begin(url);
+  http.addHeader("Content-Type", "application/json");
+  http.addHeader("apikey", SUPABASE_KEY);
+  http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
+
+  StaticJsonDocument<250> doc;
+  doc["created_at"]    = timestamp;
+  doc["severity"]      = severity;
+  doc["event_message"] = message;
+
+  String body;
+  serializeJson(doc, body);
+
+  int httpCode = http.POST(body);
+  http.end();
+
+  return (httpCode == 200 || httpCode == 201);
 }
 
 #endif

@@ -37,15 +37,32 @@ inline void initDisplayAddons() {
   #endif
 }
 
-inline void handleDisplayAutoWake() {
+inline bool checkAddonDisplayTriggered() {
   #if defined(ADDON_LASER_VL53L0X)
     VL53L0X_RangingMeasurementData_t measure;
     loxAddon.rangingTest(&measure, false);
-    
     if (measure.RangeStatus != 4 && (measure.RangeMilliMeter / 10.0) < 15.0) {
-      triggerDisplayWake();
+      return true;
     }
   #endif
+  return false;
+}
+
+inline bool checkAddonAlarmTriggered() {
+  #if defined(ADDON_LASER_VL53L0X)
+    VL53L0X_RangingMeasurementData_t measure;
+    loxAddon.rangingTest(&measure, false);
+    if (measure.RangeStatus != 4 && (measure.RangeMilliMeter / 10.0) < 150.0) {
+      return true;
+    }
+  #endif
+  return false;
+}
+
+inline void handleDisplayAutoWake() {
+  if (checkAddonDisplayTriggered()) {
+    triggerDisplayWake();
+  }
 
   if (screenActive && (millis() - displayTimerStart > DISPLAY_TIMEOUT_MS)) {
     setDisplayPower(false);

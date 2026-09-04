@@ -4,6 +4,7 @@
 //  https://www.waveshare.com/esp32-c3-zero.htm
 // ======================================================
 #include <WiFi.h>
+#include <Preferences.h>
 #include <time.h>
 
 #include "config.h"
@@ -12,12 +13,14 @@
 #include "lib/sensors.h"
 #include "lib/notifications.h"
 #include "lib/storage_cloud.h"
+#include "lib/alarm.h"
 
 // ======================================================
 //  GLOBAL ALARM & SYSTEM VARIABLES
 // ======================================================
 bool alarmEnabled = false;
 bool alarmTriggered = false;
+Preferences preferences;
 
 // ======================================================
 //  WIFI STATE MACHINE AND TIMERS
@@ -158,12 +161,12 @@ void wifiUpdateState() {
 void checkHourlyTask(struct tm* timeinfo) {
   static int lastExecutedHour = -1;
 
-  if (timeinfo->tm_min == 0 && timeinfo->tm_sec == 0 && timeinfo->tm_hour != lastExecutedHour) {
+  if (timeinfo->tm_min == 5 && timeinfo->tm_hour != lastExecutedHour) {
     lastExecutedHour = timeinfo->tm_hour;
 
-    float temp = readTemperature();
-    float hum  = readHumidity();
-    float lux  = readAmbientLux();
+    float temp  = readTemperature();
+    float hum   = readHumidity();
+    float press = readPressure();
 
     if (!alarmEnabled) {
       triggerDisplayWake();
@@ -171,11 +174,11 @@ void checkHourlyTask(struct tm* timeinfo) {
       char riga1[20];
       char riga2[20];
       snprintf(riga1, sizeof(riga1), "T:%.1fC H:%.0f%%", temp, hum);
-      snprintf(riga2, sizeof(riga2), "Lux: %.0f", lux);
+      snprintf(riga2, sizeof(riga2), "P:%.0fhPa", press);
       showMessage(riga1, riga2);
     }
 
-    saveTelemetryData(timeinfo, temp, hum);
+    saveTelemetryData(timeinfo, temp, hum, press);
   }
 }
 
@@ -183,17 +186,8 @@ void checkHourlyTask(struct tm* timeinfo) {
 //  ALARM VERIFICATION LOGIC
 // ======================================================
 void checkAlarmSystem() {
-  if (!alarmEnabled || alarmTriggered) return;
-
-  if (isMotionDetected()) {
-    delay(100);
-    float distance = readDistanceCM();
-
-    if (distance > 0 && distance < 200.0) {
-      alarmTriggered = true;
-      
-      sendTelegramMessage("🚨 *ALLARME INTRUSIONE!*\nRilevato movimento sospetto!");
-    }
+  if (!alarmEnabled) {
+    return;
   }
 }
 
@@ -202,6 +196,9 @@ void checkAlarmSystem() {
 // ======================================================
 void setup() {
   Serial.begin(115200);
+
+  preferences.begin("domus-alarm", false);
+  alarmEnabled = preferences.getBool("alarm_state", false);
 
   initDisplay();
   initDisplayAddons();

@@ -74,7 +74,7 @@ def generate_monthly_report():
 
     try:
         with open(csv_path, "w", newline="", encoding="utf-8") as f:
-            writer = csv.DictWriter(f, fieldnames=["created_at", "tempe", "hub", "press"])
+            writer = csv.DictWriter(f, fieldnames=["created_at", "temp", "hum", "press"])
             writer.writeheader()
             writer.writerows(rows)
         print(f"File CSV locale salvato: {csv_path}")

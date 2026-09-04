@@ -1,7 +1,7 @@
-#ifndef SENSOR_MOTION_H
-#define SENSOR_MOTION_H
+#ifndef SENSOR_MOTION_PRESENCE_H
+#define SENSOR_MOTION_PRESENCE_H
 
-#include "../config.h"
+#include "../../config.h"
 
 inline void initMotion() {
   #if defined(SENSOR_PIR_HCSR501) || defined(SENSOR_RADAR_RCWL)

@@ -16,15 +16,51 @@
 ├── esp32/
 │   ├── lib/
 │   │   ├── displays/
+│   │   │   ├── addons/
+│   │   │   │   ├── HCSR501.h
+│   │   │   │   ├── TE174.h
+│   │   │   │   └── VL53L0X.h
+│   │   │   ├── lcd/
+│   │   │   │   ├── 16x2.h
+│   │   │   │   └── 20x4.h
+│   │   │   ├── oled/
+│   │   │   │   ├── SH1106.h
+│   │   │   │   └── SSD1306.h
+│   │   │   ├── tft/
+│   │   │   │   ├── ILI9341.h
+│   │   │   │   └── ST7789.h
 │   │   │   ├── display_addons.h
 │   │   │   ├── display_lcd.h
 │   │   │   ├── display_oled.h
 │   │   │   └── display_tft.h
 │   │   ├── sensors/
+│   │   │   ├── ambient/
+│   │   │   │   ├── BH1750.h
+│   │   │   │   ├── LDR.h
+│   │   │   │   ├── MQ135.h
+│   │   │   │   └── TCS34725.h
+│   │   │   ├── climate/
+│   │   │   │   ├── AHTX20.h
+│   │   │   │   ├── BME280.h
+│   │   │   │   ├── BMP280.h
+│   │   │   │   ├── DHT11.h
+│   │   │   │   ├── DHT22.h
+│   │   │   │   ├── DS18B20.h
+│   │   │   │   └── SHT31.h
+│   │   │   ├── distance/
+│   │   │   │   ├── HCSR04.h
+│   │   │   │   ├── US100.h
+│   │   │   │   └── VL53L0X.h
+│   │   │   ├── motion_presence/
+│   │   │   │   ├── HCSR501.h
+│   │   │   │   ├── LD2410.h
+│   │   │   │   ├── RCWL.h
+│   │   │   │   └── TE174.h
+│   │   │   ├── sensor_ambient.h
 │   │   │   ├── sensor_climate.h
 │   │   │   ├── sensor_distance.h
-│   │   │   ├── sensor_light.h
-│   │   │   └── sensor_motion.h
+│   │   │   └── sensor_motion_presence.h
+│   │   ├── alarm.h
 │   │   ├── display.h
 │   │   ├── language.h
 │   │   ├── notifications.h
@@ -73,7 +109,6 @@
 ├── src/
 │   ├── test/
 │   │   ├── bot.py
-│   │   ├── messaggi.md
 │   │   ├── old_test_telegram.py
 │   │   ├── test_alarm.py
 │   │   ├── test_black.py
@@ -94,6 +129,6 @@
 ├── project-tree.txt
 └── README.md
 
-16 directories, 78 files
+24 directories, 105 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***

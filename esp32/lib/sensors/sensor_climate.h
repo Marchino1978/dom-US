@@ -1,7 +1,7 @@
 #ifndef SENSOR_CLIMATE_H
 #define SENSOR_CLIMATE_H
 
-#include "../config.h"
+#include "../../config.h"
 
 #if defined(SENSOR_BME280)
   #include <Adafruit_BME280.h>
