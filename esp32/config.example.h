@@ -38,38 +38,43 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 //#define DISPLAY_TFT_ST7789
 //#define DISPLAY_TFT_ILI9341
 
-// --- Display Addons (Uncomment ONLY ONE) ---
-//#define ADDON_IR_TE174            // IR Obstacle / Proximity sensor (Digital HIGH/LOW)
-#define ADDON_LASER_VL53L0X       // Time-of-Flight Laser sensor (I2C 3.3V)
-//#define ADDON_PIR_HCSR501         // Passive Infrared (5V VCC, 3.3V Native Out)
+// --- Display Addons / Wake-up (Uncomment ONLY ONE) ---
+#define ADDON_LASER_VL53L1X       // Time-of-Flight Laser sensor (I2C 3.3V - Short proximity + 4m Alarm)
+//#define ADDON_PIR_AM312         // Mini Passive Infrared (3.3V Native)
+//#define ADDON_RADAR_RCWL0516    // Microwave Radar / Doppler (4V-28V)
 
-// --- SENSORS
+// --- SENSORS ---
 
 // --- Climate sensor (Uncomment ONLY ONE) ---
-//#define SENSOR_DHT11              // Legacy Temp + Humidity
-//#define SENSOR_DHT22              // Legacy Temp + Humidity
+//#define SENSOR_AHT20              // Compact & Precise Temp + Humidity (I2C 3.3V)
 #define SENSOR_BME280             // Temp + Humidity + Pressure (I2C 3.3V)
 //#define SENSOR_BMP280             // Temp + Pressure ONLY (I2C 3.3V)
-//#define SENSOR_SHT31              // High Precision Temp + Humidity (I2C 3.3V)
-//#define SENSOR_AHT20              // Compact & Precise Temp + Humidity (I2C 3.3V)
+//#define SENSOR_DHT11              // Legacy Temp + Humidity (3.3V / 5V)
+//#define SENSOR_DHT22              // Legacy Temp + Humidity (3.3V / 5V)
 //#define SENSOR_DS18B20            // Waterproof Temp sensor (OneWire)
+//#define SENSOR_SHT31              // High Precision Temp + Humidity (I2C 3.3V)
 
 // --- Motion & Presence sensor (Uncomment ONLY ONE) ---
-#define SENSOR_PIR_HCSR501        // Passive Infrared (5V VCC, 3.3V Native Out)
-//#define SENSOR_RADAR_RCWL         // Microwave Radar (detects through plastic)
-//#define SENSOR_MMWAVE_LD2410      // Human Static Presence Radar (UART)
-//#define SENSOR_IR_TE174           // IR Obstacle / Proximity sensor (Digital HIGH/LOW)
+//#define SENSOR_PIR_AM312          // Mini Passive Infrared (3.3V Native)
+//#define SENSOR_PIR_HCSR501        // Passive Infrared (5V VCC, 3.3V Logic)
+//#define SENSOR_MMWAVE_LD2410      // Micro-movements Radar 24GHz (5V)
+#define SENSOR_RADAR_RCWL0516     // Doppler Microwave Radar (4V-28V)
+//#define SENSOR_IR_TE174           // IR Beam (3.3V / 5V)
 
 // --- Distance sensor (Uncomment ONLY ONE) ---
-//#define SENSOR_ULTRASONIC_HCSR04  // Standard Ultrasonic (REQUIRES 5V Logic Conversion)
-#define SENSOR_ULTRASONIC_US100   // Dual-mode Ultrasonic (3.3V Native - UART or Trigger/Echo)
+//#define SENSOR_ULTRASONIC_HCSR04  // Standard Ultrasonic (5V)
+//#define SENSOR_ULTRASONIC_HCSR04P // Standard Ultrasonic (3.3V Compatible)
+//#define SENSOR_ULTRASONIC_RCWL1601// Ultrasonic Distance sensor (3V-5.5V)
+//#define SENSOR_ULTRASONIC_US100   // Dual-mode Ultrasonic (UART / PWM 3.3V)
 //#define SENSOR_LASER_VL53L0X      // Time-of-Flight Laser sensor (I2C 3.3V)
+#define SENSOR_LASER_VL53L1X      // Time-of-Flight Laser sensor (Up to 4m I2C 3.3V)
 
 // --- Ambient sensor (Uncomment ONLY ONE) ---
-//#define SENSOR_LIGHT_BH1750       // Lux meter (I2C 3.3V)
-//#define SENSOR_LIGHT_LDR          // Basic Photoresistor (Analog 3.3V)
-#define SENSOR_COLOR_TCS34725     // RGB Color & Ambient Light sensor (I2C 3.3V)
-//#define SENSOR_GAS_MQ135          // Air Quality / Gas sensor (Analog)
+//#define SENSOR_LIGHT_BH1750       // Lux meter Digital (I2C 3.3V)
+//#define SENSOR_LIGHT_LDR          // Analog Photoresistor (3.3V)
+//#define SENSOR_GAS_MQ135          // Air Quality / Gas sensor (5V)
+//#define SENSOR_COLOR_TCS34725     // RGB Color & Ambient Light sensor (I2C 3.3V)
+#define SENSOR_LIGHT_VEML7700     // High Precision Lux meter / Human eye response (I2C 3.3V)
 
 // #######################################################
 // 4. PIN MAPPING (Defaults for Waveshare ESP32-C3-Zero)

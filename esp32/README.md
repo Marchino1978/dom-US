@@ -61,9 +61,10 @@ For more information, check the official <strong>Waveshare product page</strong>
         ❌ ILI9341 - Color TFT 2.4"🖼️ [3.3V]<br><br><br><br><br><br><br><br>
       <font color="cyan"><small><b>⚙️ display wake-up ADDONS</b></small></font>
 <br><br>
-        ❌ TE174 - IR Beam🛑 [3.3V / 5V]<br>
-        ⌛ VL53L0X - Laser ToF⚡ [2.8V - 5V]<br>
-        ❌ HCSR501 - Passive Infrared🏃 [5V (3.3V signal)]
+        ❌ AM312 - Mini Passive Infrared (Presence / Wake-up)🏃 [3.3V]<br>
+        ❌ RCWL-0516 - Doppler Microwave (Room Presence / Alarm)📡 [4V - 28V]<br>
+        ❌ VL53L0X - Laser ToF⚡ [2.8V - 5V / I2C]<br>
+        ❌ VL53L1X - Laser ToF (Short proximity + 4m Alarm)⚡ [3.3V / I2C]
       </div>
     </td>
     <td width="50%" align="center" valign="top">
@@ -72,27 +73,32 @@ For more information, check the official <strong>Waveshare product page</strong>
 <br><br>
       <div align="center" style="text-align: left; display: inline-block;">
         <font color="cyan"><small><b>🌡️ CLIMATE</b></small></font><br>
+        ❌ AHT20 - Temp🌡️/Hum💧 [3.3V / I2C]<br>
+        ⌛ BME280 - Temp🌡️/Hum💧/Press🌀 [3.3V / I2C]<br>
+        ❌ BMP280 - Temp🌡️/Press🌀 [3.3V / I2C]<br>
         ✅ DHT11 - Temp🌡️/Hum💧 [3.3V / 5V]<br>
         ❌ DHT22 - Temp🌡️/Hum💧 [3.3V / 5V]<br>
-        ⌛ BME280 - Temp🌡️/Hum💧/Press🌀 [3.3V]<br>
-        ❌ BMP280 - Temp🌡️/Press🌀 [3.3V]<br>
-        ❌ SHT31 - Temp🌡️/Hum💧 [3.3V / 5V]<br>
-        ❌ AHT20 - Temp🌡️/Hum💧 [3.3V]<br>
-        ❌ DS18B20 - Temp🌡️ [3.3V / 5V]<br><br>
+        ❌ DS18B20 - Temp🌡️ [3.3V / 5V]<br>
+        ❌ SHT31 - Temp🌡️/Hum💧 [3.3V / 5V / I2C]<br><br>
         <font color="cyan"><small><b>👥 MOTION & PRESENCE</b></small></font><br>
+        ❌ AM312 - Mini Passive Infrared🏃 [3.3V]<br>
         ⌛ HCSR501 - Passive Infrared🏃 [5V (3.3V signal)]<br>
-        ❌ RCWL - Doppler Microwave📡 [4V - 28V]<br>
         ❌ LD2410 - Micro-movements🧘 [5V]<br>
+        ❌ RCWL-0516 - Doppler Microwave📡 [4V - 28V]<br>
         ❌ TE174 - IR Beam🛑 [3.3V / 5V]<br><br>
         <font color="cyan"><small><b>📏 DISTANCE</b></small></font><br>
         ❌ HCSR04 - Ultrasound🦇 [5V]<br>
-        ⌛ US100 - Ultrasound + Temp📏 [3.3V / 5V]<br>
-        ❌ VL53L0X - Laser ToF⚡ [2.8V - 5V]<br><br>
+        ❌ HCSR04P - Ultrasound🦇 [3.3V / 5V]<br>
+        ❌ RCWL-1601 - Ultrasound🦇 [3V - 5.5V]<br>
+        ⌛ US100 - Ultrasound + Temp (UART / PWM)📏 [3.3V / 5V]<br>
+        ❌ VL53L0X - Laser ToF⚡ [2.8V - 5V / I2C]<br>
+        ❌ VL53L1X - Laser ToF (Up to 4m)⚡ [3.3V / I2C]<br><br>
         <font color="cyan"><small><b>🌍 AMBIENT</b></small></font><br>
-        ❌ BH1750 - Lux (Digital)☀️ [3.3V / 5V]<br>
+        ❌ BH1750 - Lux (Digital)☀️ [3.3V / 5V / I2C]<br>
         ❌ LDR - Analog Photoresistor💡 [3.3V / 5V]<br>
-        ⌛ TCS34725 - RGB + Color Temp🎨 [3.3V / 5V]<br>
-        ❌ MQ135 - Air Quality💨 [5V]
+        ❌ MQ135 - Air Quality💨 [5V]<br>
+        ⌛ TCS34725 - RGB + Color Temp🎨 [3.3V / 5V / I2C]<br>
+        ❌ VEML7700 - Lux (High precision / Human eye)☀️ [3.3V / I2C]
       </div>
     </td>
   </tr>

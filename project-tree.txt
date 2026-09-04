@@ -17,9 +17,10 @@
 │   ├── lib/
 │   │   ├── displays/
 │   │   │   ├── addons/
-│   │   │   │   ├── HCSR501.h
-│   │   │   │   ├── TE174.h
-│   │   │   │   └── VL53L0X.h
+│   │   │   │   ├── AM312.h
+│   │   │   │   ├── RCWL-0516.h
+│   │   │   │   ├── VL53L0X.h
+│   │   │   │   └── VL53L1X.h
 │   │   │   ├── lcd/
 │   │   │   │   ├── 16x2.h
 │   │   │   │   └── 20x4.h
@@ -38,9 +39,10 @@
 │   │   │   │   ├── BH1750.h
 │   │   │   │   ├── LDR.h
 │   │   │   │   ├── MQ135.h
-│   │   │   │   └── TCS34725.h
+│   │   │   │   ├── TCS34725.h
+│   │   │   │   └── VEML7700.h
 │   │   │   ├── climate/
-│   │   │   │   ├── AHTX20.h
+│   │   │   │   ├── AHT20.h
 │   │   │   │   ├── BME280.h
 │   │   │   │   ├── BMP280.h
 │   │   │   │   ├── DHT11.h
@@ -49,12 +51,16 @@
 │   │   │   │   └── SHT31.h
 │   │   │   ├── distance/
 │   │   │   │   ├── HCSR04.h
+│   │   │   │   ├── HCSR04P.h
+│   │   │   │   ├── RCWL-1601.h
 │   │   │   │   ├── US100.h
-│   │   │   │   └── VL53L0X.h
+│   │   │   │   ├── VL53L0X.h
+│   │   │   │   └── VL53L1X.h
 │   │   │   ├── motion_presence/
+│   │   │   │   ├── AM312.h
 │   │   │   │   ├── HCSR501.h
 │   │   │   │   ├── LD2410.h
-│   │   │   │   ├── RCWL.h
+│   │   │   │   ├── RCWL-0516.h
 │   │   │   │   └── TE174.h
 │   │   │   ├── sensor_ambient.h
 │   │   │   ├── sensor_climate.h
@@ -129,6 +135,6 @@
 ├── project-tree.txt
 └── README.md
 
-24 directories, 105 files
+24 directories, 111 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
