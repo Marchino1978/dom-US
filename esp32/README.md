@@ -64,7 +64,7 @@ For more information, check the official <strong>Waveshare product page</strong>
         ❌ AM312 - Mini Passive Infrared🏃 [3.3V]<br>
         ❌ RCWL-0516 - Doppler Microwave📡 [4V - 28V]<br>
         ❌ VL53L0X - Laser ToF⚡ [2.8V - 5V / I2C]<br>
-        ❌ VL53L1X - Laser ToF⚡ [3.3V / I2C]
+        ❌ VL53L1X - Laser ToF (Up to 4m)⚡ [3.3V / I2C]<br><br>
       </div>
     </td>
     <td width="50%" align="center" valign="top">
