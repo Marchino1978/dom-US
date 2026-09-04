@@ -4,6 +4,7 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
+#include <time.h>
 #include "../config.h"
 
 struct OfflineReading {
@@ -150,6 +151,73 @@ bool sendLogToSupabase(const char* timestamp, const char* severity, const char* 
   http.end();
 
   return (httpCode == 200 || httpCode == 201);
+}
+
+// ======================================================
+//  7. BOOT SEQUENCE & BLACKOUT CHECK HANDLER
+// ======================================================
+void handleBootSequence() {
+  if (WiFi.status() != WL_CONNECTED) return;
+
+  HTTPClient http;
+  String url = String(SUPABASE_URL) + "/rest/v1/device_status?id=eq.1&select=last_ping";
+  
+  http.begin(url);
+  http.addHeader("apikey", SUPABASE_KEY);
+  http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
+
+  int httpCode = http.GET();
+  if (httpCode == 200) {
+    String payload = http.getString();
+    DynamicJsonDocument doc(512);
+    deserializeJson(doc, payload);
+
+    if (doc.is<JsonArray>() && doc.size() > 0) {
+      String lastPingStr = doc[0]["last_ping"].as<String>();
+      
+      if (lastPingStr.length() > 10) {
+        struct tm oldTime = {0};
+        int y, m, d, h, min, s;
+        if (sscanf(lastPingStr.c_str(), "%d-%d-%dT%d:%d:%d", &y, &m, &d, &h, &min, &s) == 6) {
+          oldTime.tm_year = y - 1900;
+          oldTime.tm_mon  = m - 1;
+          oldTime.tm_mday = d;
+          oldTime.tm_hour = h;
+          oldTime.tm_min  = min;
+          oldTime.tm_sec  = s;
+
+          time_t oldEpoch = mktime(&oldTime);
+          
+          struct tm nowInfo;
+          if (getLocalTime(&nowInfo)) {
+            time_t nowEpoch = mktime(&nowInfo);
+            long diffSec = nowEpoch - oldEpoch;
+
+            if (diffSec > 600) {
+              int totMinutes = diffSec / 60;
+              int hours = totMinutes / 60;
+              int minutes = totMinutes % 60;
+
+              char fromStr[30], toStr[30], totStr[30], currentTs[30];
+              snprintf(fromStr, sizeof(fromStr), "%02d-%02d-%04d %02d:%02d", d, m, y, h, min);
+              snprintf(toStr, sizeof(toStr), "%02d-%02d-%04d %02d:%02d", 
+                       nowInfo.tm_mday, nowInfo.tm_mon + 1, nowInfo.tm_year + 1900, 
+                       nowInfo.tm_hour, nowInfo.tm_min);
+              snprintf(totStr, sizeof(totStr), "%dh %dm", hours, minutes);
+              snprintf(currentTs, sizeof(currentTs), "%04d-%02d-%02dT%02d:%02d:%02dZ",
+                       nowInfo.tm_year + 1900, nowInfo.tm_mon + 1, nowInfo.tm_mday,
+                       nowInfo.tm_hour, nowInfo.tm_min, nowInfo.tm_sec);
+
+              sendLogToSupabase(currentTs, "warning", "⚡ BLACKOUT DETECTED");
+            }
+          }
+        }
+      }
+    }
+  }
+  http.end();
+  
+  sendHeartbeat();
 }
 
 #endif

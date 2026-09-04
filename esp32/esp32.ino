@@ -110,6 +110,7 @@ void wifiUpdateState() {
         showMessage(TXT_WIFI_CONN, TXT_WIFI_OK_HOME);
         delay(2000);
         syncNtp();
+        handleBootSequence();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
         wifiStart(ssid_office, pass_office, WIFI_CONNECTING_OFFICE, TXT_TRY_OFFICE);
       }
@@ -121,6 +122,7 @@ void wifiUpdateState() {
         showMessage(TXT_WIFI_OK_OFFICE, "");
         delay(2000);
         syncNtp();
+        handleBootSequence();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
         wifiStart(ssid_hotspot, pass_hotspot, WIFI_CONNECTING_HOTSPOT, TXT_TRY_HOTSPOT);
       }
@@ -132,6 +134,7 @@ void wifiUpdateState() {
         showMessage(TXT_WIFI_OK_HOTSPOT, "");
         delay(2000);
         syncNtp();
+        handleBootSequence();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
         wifiState = WIFI_FAIL;
         lastWifiRetry = millis();
