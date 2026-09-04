@@ -54,7 +54,7 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 //#define SENSOR_AHT20              // Compact & Precise Temp + Humidity (I2C 3.3V)
 //#define SENSOR_DS18B20            // Waterproof Temp sensor (OneWire)
 
-// --- Motion sensor (Uncomment ONLY ONE) ---
+// --- Motion & Presence sensor (Uncomment ONLY ONE) ---
 #define SENSOR_PIR_HCSR501        // Passive Infrared (5V VCC, 3.3V Native Out)
 //#define SENSOR_RADAR_RCWL         // Microwave Radar (detects through plastic)
 //#define SENSOR_MMWAVE_LD2410      // Human Static Presence Radar (UART)
