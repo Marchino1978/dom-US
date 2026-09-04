@@ -61,10 +61,10 @@ For more information, check the official <strong>Waveshare product page</strong>
         ❌ ILI9341 - Color TFT 2.4"🖼️ [3.3V]<br><br><br><br><br><br><br><br>
       <font color="cyan"><small><b>⚙️ display wake-up ADDONS</b></small></font>
 <br><br>
-        ❌ AM312 - Mini Passive Infrared (Presence / Wake-up)🏃 [3.3V]<br>
-        ❌ RCWL-0516 - Doppler Microwave (Room Presence / Alarm)📡 [4V - 28V]<br>
+        ❌ AM312 - Mini Passive Infrared🏃 [3.3V]<br>
+        ❌ RCWL-0516 - Doppler Microwave📡 [4V - 28V]<br>
         ❌ VL53L0X - Laser ToF⚡ [2.8V - 5V / I2C]<br>
-        ❌ VL53L1X - Laser ToF (Short proximity + 4m Alarm)⚡ [3.3V / I2C]
+        ❌ VL53L1X - Laser ToF⚡ [3.3V / I2C]
       </div>
     </td>
     <td width="50%" align="center" valign="top">
