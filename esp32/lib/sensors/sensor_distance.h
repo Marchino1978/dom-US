@@ -4,61 +4,28 @@
 #include "../../config.h"
 
 #if defined(SENSOR_ULTRASONIC_US100)
-  #define US100_SERIAL Serial2
-  #define PIN_US100_RX 16
-  #define PIN_US100_TX 17
+  #include "distance/US100.h"
 #elif defined(SENSOR_ULTRASONIC_HCSR04)
+  #include "distance/HCSR04.h"
+#elif defined(SENSOR_ULTRASONIC_HCSR04P)
+  #include "distance/HCSR04P.h"
+#elif defined(SENSOR_ULTRASONIC_RCWL1601)
+  #include "distance/RCWL-1601.h"
 #elif defined(SENSOR_LASER_VL53L0X)
-  #include <Adafruit_VL53L0X.h>
-  Adafruit_VL53L0X lox = Adafruit_VL53L0X();
+  #include "distance/VL53L0X.h"
+#elif defined(SENSOR_LASER_VL53L1X)
+  #include "distance/VL53L1X.h"
 #endif
 
 inline void initDistance() {
-  #if defined(SENSOR_ULTRASONIC_US100)
-    US100_SERIAL.begin(9600, SERIAL_8N1, PIN_US100_RX, PIN_US100_TX);
-  #elif defined(SENSOR_ULTRASONIC_HCSR04)
-    pinMode(PIN_TRIG, OUTPUT);
-    pinMode(PIN_ECHO, INPUT);
-    digitalWrite(PIN_TRIG, LOW);
-  #elif defined(SENSOR_LASER_VL53L0X)
-    lox.begin();
+  #if defined(SENSOR_ULTRASONIC_US100) || defined(SENSOR_ULTRASONIC_HCSR04) || defined(SENSOR_ULTRASONIC_HCSR04P) || defined(SENSOR_ULTRASONIC_RCWL1601) || defined(SENSOR_LASER_VL53L0X) || defined(SENSOR_LASER_VL53L1X)
+    initDistanceHardware();
   #endif
 }
 
 inline float readDistanceCM() {
-  #if defined(SENSOR_ULTRASONIC_US100)
-    while (US100_SERIAL.available()) { US100_SERIAL.read(); }
-    
-    US100_SERIAL.write(0x55);
-    
-    unsigned long startTime = millis();
-    while (US100_SERIAL.available() < 2) {
-      if (millis() - startTime > 100) return -1.0;
-    }
-    
-    unsigned int highByte = US100_SERIAL.read();
-    unsigned int lowByte  = US100_SERIAL.read();
-    float distanceMM = (highByte * 256) + lowByte;
-    
-    return distanceMM / 10.0;
-
-  #elif defined(SENSOR_ULTRASONIC_HCSR04)
-    digitalWrite(PIN_TRIG, HIGH);
-    delayMicroseconds(10);
-    digitalWrite(PIN_TRIG, LOW);
-    
-    long duration = pulseIn(PIN_ECHO, HIGH, 30000);
-    if (duration == 0) return -1.0;
-    return (duration * 0.0343) / 2.0;
-
-  #elif defined(SENSOR_LASER_VL53L0X)
-    VL53L0X_RangingMeasurementData_t measure;
-    lox.rangingTest(&measure, false);
-    if (measure.RangeStatus != 4) {
-      return measure.RangeMilliMeter / 10.0;
-    }
-    return -1.0;
-
+  #if defined(SENSOR_ULTRASONIC_US100) || defined(SENSOR_ULTRASONIC_HCSR04) || defined(SENSOR_ULTRASONIC_HCSR04P) || defined(SENSOR_ULTRASONIC_RCWL1601) || defined(SENSOR_LASER_VL53L0X) || defined(SENSOR_LASER_VL53L1X)
+    return readDistanceValue();
   #else
     return -1.0;
   #endif
@@ -66,17 +33,7 @@ inline float readDistanceCM() {
 
 inline float readUS100Temperature() {
   #if defined(SENSOR_ULTRASONIC_US100)
-    while (US100_SERIAL.available()) { US100_SERIAL.read(); }
-    
-    US100_SERIAL.write(0x50);
-    
-    unsigned long startTime = millis();
-    while (US100_SERIAL.available() < 1) {
-      if (millis() - startTime > 100) return -99.0;
-    }
-    
-    int tempByte = US100_SERIAL.read();
-    return (float)(tempByte - 45);
+    return readUS100TemperatureValue();
   #else
     return -99.0;
   #endif

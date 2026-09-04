@@ -39,42 +39,43 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 //#define DISPLAY_TFT_ILI9341
 
 // --- Display Addons / Wake-up (Uncomment ONLY ONE) ---
-#define ADDON_LASER_VL53L1X       // Time-of-Flight Laser sensor (I2C 3.3V - Short proximity + 4m Alarm)
-//#define ADDON_PIR_AM312         // Mini Passive Infrared (3.3V Native)
-//#define ADDON_RADAR_RCWL0516    // Microwave Radar / Doppler (4V-28V)
+//#define ADDON_PIR_AM312         // Mini Passive Infrared (Presence / Wake-up 3.3V)
+//#define ADDON_RADAR_RCWL0516    // Doppler Microwave (Room Presence / Alarm 4V-28V)
+#define ADDON_LASER_VL53L0X     // Laser ToF (2.8V - 5V / I2C)
+//#define ADDON_LASER_VL53L1X       // Laser ToF (Short proximity + 4m Alarm 3.3V / I2C)
 
 // --- SENSORS ---
 
 // --- Climate sensor (Uncomment ONLY ONE) ---
-//#define SENSOR_AHT20              // Compact & Precise Temp + Humidity (I2C 3.3V)
-#define SENSOR_BME280             // Temp + Humidity + Pressure (I2C 3.3V)
-//#define SENSOR_BMP280             // Temp + Pressure ONLY (I2C 3.3V)
-//#define SENSOR_DHT11              // Legacy Temp + Humidity (3.3V / 5V)
-//#define SENSOR_DHT22              // Legacy Temp + Humidity (3.3V / 5V)
-//#define SENSOR_DS18B20            // Waterproof Temp sensor (OneWire)
-//#define SENSOR_SHT31              // High Precision Temp + Humidity (I2C 3.3V)
+//#define SENSOR_AHT20              // Temp / Hum (3.3V / I2C)
+#define SENSOR_BME280             // Temp / Hum / Press (3.3V / I2C)
+//#define SENSOR_BMP280             // Temp / Press (3.3V / I2C)
+//#define SENSOR_DHT11              // Temp / Hum (3.3V / 5V)
+//#define SENSOR_DHT22              // Temp / Hum (3.3V / 5V)
+//#define SENSOR_DS18B20            // Temp (3.3V / 5V)
+//#define SENSOR_SHT31              // Temp / Hum (3.3V / 5V / I2C)
 
 // --- Motion & Presence sensor (Uncomment ONLY ONE) ---
-//#define SENSOR_PIR_AM312          // Mini Passive Infrared (3.3V Native)
-//#define SENSOR_PIR_HCSR501        // Passive Infrared (5V VCC, 3.3V Logic)
-//#define SENSOR_MMWAVE_LD2410      // Micro-movements Radar 24GHz (5V)
-#define SENSOR_RADAR_RCWL0516     // Doppler Microwave Radar (4V-28V)
+//#define SENSOR_PIR_AM312          // Mini Passive Infrared (3.3V)
+//#define SENSOR_PIR_HCSR501        // Passive Infrared (5V / 3.3V signal)
+//#define SENSOR_MMWAVE_LD2410      // Micro-movements (5V)
+#define SENSOR_RADAR_RCWL0516     // Doppler Microwave (4V - 28V)
 //#define SENSOR_IR_TE174           // IR Beam (3.3V / 5V)
 
 // --- Distance sensor (Uncomment ONLY ONE) ---
-//#define SENSOR_ULTRASONIC_HCSR04  // Standard Ultrasonic (5V)
-//#define SENSOR_ULTRASONIC_HCSR04P // Standard Ultrasonic (3.3V Compatible)
-//#define SENSOR_ULTRASONIC_RCWL1601// Ultrasonic Distance sensor (3V-5.5V)
-//#define SENSOR_ULTRASONIC_US100   // Dual-mode Ultrasonic (UART / PWM 3.3V)
-//#define SENSOR_LASER_VL53L0X      // Time-of-Flight Laser sensor (I2C 3.3V)
-#define SENSOR_LASER_VL53L1X      // Time-of-Flight Laser sensor (Up to 4m I2C 3.3V)
+//#define SENSOR_ULTRASONIC_HCSR04  // Ultrasound (5V)
+//#define SENSOR_ULTRASONIC_HCSR04P // Ultrasound (3.3V / 5V)
+//#define SENSOR_ULTRASONIC_RCWL1601// Ultrasound (3V - 5.5V)
+//#define SENSOR_ULTRASONIC_US100   // Ultrasound + Temp (UART / PWM 3.3V / 5V)
+#define SENSOR_LASER_VL53L0X      // Laser ToF (2.8V - 5V / I2C)
+//#define SENSOR_LASER_VL53L1X      // Laser ToF (Up to 4m 3.3V / I2C)
 
 // --- Ambient sensor (Uncomment ONLY ONE) ---
-//#define SENSOR_LIGHT_BH1750       // Lux meter Digital (I2C 3.3V)
-//#define SENSOR_LIGHT_LDR          // Analog Photoresistor (3.3V)
-//#define SENSOR_GAS_MQ135          // Air Quality / Gas sensor (5V)
-//#define SENSOR_COLOR_TCS34725     // RGB Color & Ambient Light sensor (I2C 3.3V)
-#define SENSOR_LIGHT_VEML7700     // High Precision Lux meter / Human eye response (I2C 3.3V)
+//#define SENSOR_LIGHT_BH1750       // Lux Digital (3.3V / 5V / I2C)
+//#define SENSOR_LIGHT_LDR          // Analog Photoresistor (3.3V / 5V)
+//#define SENSOR_GAS_MQ135          // Air Quality (5V)
+#define SENSOR_COLOR_TCS34725     // RGB + Color Temp (3.3V / 5V / I2C)
+//define SENSOR_LIGHT_VEML7700     // Lux High precision / Human eye (3.3V / I2C)
 
 // #######################################################
 // 4. PIN MAPPING (Defaults for Waveshare ESP32-C3-Zero)
