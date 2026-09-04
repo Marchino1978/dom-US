@@ -27,7 +27,7 @@ def run_domus_backup():
         os.makedirs(folder, exist_ok=True)
         
         with open(file_path, "w", encoding="utf-8") as f:
-            f.write(f"-- BACKUP AUTOMATICO DOM-US (sensor_data): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+            f.write(f"-- AUTOMATIC SENSORS BACKUP: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
             
             for table_name in tables_to_backup:
                 resp = supabase.table(table_name).select("*").execute()
@@ -35,7 +35,7 @@ def run_domus_backup():
                 if not rows:
                     continue
                 
-                f.write(f"-- TABELLA: {table_name}\n")
+                f.write(f"-- TABLE: {table_name}\n")
                 f.write(f"TRUNCATE TABLE {table_name};\n\n")
                 
                 for row in rows:

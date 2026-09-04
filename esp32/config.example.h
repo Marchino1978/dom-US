@@ -95,7 +95,4 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 #define SUPABASE_URL       "https://your-project.supabase.co"
 #define SUPABASE_KEY       "your_publishable_key"
 
-// Heartbeat / Blackout Monitor Config
-#define HEARTBEAT_URL      "https://api.cron-job.org/ping-or-your-endpoint"
-
 #endif

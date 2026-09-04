@@ -52,8 +52,8 @@ def run_logs_backup_and_cleanup():
             return None, None, None
 
         with open(file_path, "w", encoding="utf-8") as f:
-            f.write(f"-- BACKUP MENSILE LOGS DOM-US PERIODO: {start_date} - {end_date}\n\n")
-            f.write("-- TABELLA: logs\n")
+            f.write(f"-- MONTHLY LOG BACKUP: {start_date} - {end_date}\n\n")
+            f.write("-- TABLE: logs\n")
             
             for row in rows:
                 cols = ", ".join(row.keys())
