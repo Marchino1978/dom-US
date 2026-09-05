@@ -82,7 +82,7 @@ char ts[25];
         if (alarmEnabled) {
           sendTelegramMessage("ℹ️ *ALARM IS ALREADY ON*");
           getCurrentIsoTimestamp(ts, sizeof(ts));
-          sendLogToSupabase(ts, "neutral", "ALARM IS ALREADY ON");
+          sendLogToSupabase(ts, "⚪", "ALARM IS ALREADY ON");
         } else {
           alarmEnabled = true;
           preferences.putBool("alarm_state", true);
@@ -90,14 +90,14 @@ char ts[25];
           sendTelegramMessage("🟢 *ALARM ON*");
           
           getCurrentIsoTimestamp(ts, sizeof(ts));
-          sendLogToSupabase(ts, "neutral", "ALARM ARMED by user");
+          sendLogToSupabase(ts, "⚪", "ALARM ARMED by user");
         }
       } 
       else if (text == "/off" || text == "off") {
         if (!alarmEnabled) {
           sendTelegramMessage("ℹ️ *ALARM IS ALREADY OFF*");
           getCurrentIsoTimestamp(ts, sizeof(ts));
-          sendLogToSupabase(ts, "neutral", "ALARM IS ALREADY OFF");
+          sendLogToSupabase(ts, "⚪", "ALARM IS ALREADY OFF");
         } else {
           alarmEnabled = false;
           preferences.putBool("alarm_state", false);
@@ -105,12 +105,12 @@ char ts[25];
           sendTelegramMessage("🔴 *ALARM OFF*");
           
           getCurrentIsoTimestamp(ts, sizeof(ts));
-          sendLogToSupabase(ts, "neutral", "ALARM DISARMED by user");
+          sendLogToSupabase(ts, "⚪", "ALARM DISARMED by user");
         }
       } 
       else if (text == "/status" || text == "status") {
         getCurrentIsoTimestamp(ts, sizeof(ts));
-        sendLogToSupabase(ts, "neutral", "ALARM STATUS requested by user");
+        sendLogToSupabase(ts, "⚪", "ALARM STATUS requested by user");
 
         float temp = readTemperature();
         float hum = readHumidity();
@@ -129,7 +129,7 @@ char ts[25];
         sendTelegramMessage(statusMsg);
         
         getCurrentIsoTimestamp(ts, sizeof(ts));
-        sendLogToSupabase(ts, "warning", "ALARM STATUS sent to user");
+        sendLogToSupabase(ts, "⚪", "ALARM STATUS sent to user");
       }
     }
   }

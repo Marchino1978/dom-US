@@ -87,7 +87,7 @@ void checkAlarmSystem() {
     static bool loggedOffMotion = false;
     if (anyTriggered && !loggedOffMotion) {
       loggedOffMotion = true;
-      sendLogToSupabase(ts, "green", "ℹ️ NOTICE - MOTION DETECTED ignored");
+      sendLogToSupabase(ts, "🟢", "ℹ️ NOTICE - MOTION DETECTED ignored");
     } else if (!anyTriggered) {
       loggedOffMotion = false;
     }
@@ -106,13 +106,13 @@ void checkAlarmSystem() {
       if (anyTriggered) {
         if (activeSensorsCount <= 1) {
           alarmTriggered = true;
-          sendLogToSupabase(ts, "red", "🚨 ALARM - INTRUSION DETECTED");
+          sendLogToSupabase(ts, "🔴", "🚨 ALARM - INTRUSION DETECTED");
           sendTelegramMessage("🚨 *ALARM* - INTRUSION DETECTED");
-          sendLogToSupabase(ts, "yellow", "📁 ALARM sent to user");
+          sendLogToSupabase(ts, "⚪", "📁 ALARM sent to user");
         } else {
           currentAlarmState = STATE_PRE_ALARM;
           preAlarmStartTime = millis();
-          sendLogToSupabase(ts, "yellow", "⚠️ PRE-ALARM - MOTION DETECTED awaiting confirmation");
+          sendLogToSupabase(ts, "🟡", "⚠️ PRE-ALARM - MOTION DETECTED awaiting confirmation");
         }
       }
       break;
@@ -122,13 +122,13 @@ void checkAlarmSystem() {
         currentAlarmState = STATE_IDLE;
         alarmTriggered = true;
         
-        sendLogToSupabase(ts, "red", "🚨 ALARM - INTRUSION DETECTED");
+        sendLogToSupabase(ts, "🔴", "🚨 ALARM - INTRUSION DETECTED");
         sendTelegramMessage("🚨 *ALARM* - INTRUSION DETECTED");
-        sendLogToSupabase(ts, "yellow", "📁 ALARM sent to user");
+        sendLogToSupabase(ts, "⚪", "📁 ALARM sent to user");
       } 
       else if (millis() - preAlarmStartTime > preAlarmWindowMs) {
         currentAlarmState = STATE_IDLE;
-        sendLogToSupabase(ts, "green", "🔍 PRE-ALARM TIMEOUT - INTRUSION NOT CONFIRMED system secured");
+        sendLogToSupabase(ts, "🟢", "🔍 PRE-ALARM TIMEOUT - INTRUSION NOT CONFIRMED system secured");
       }
       break;
   }

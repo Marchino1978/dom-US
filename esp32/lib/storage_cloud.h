@@ -200,27 +200,40 @@ void handleBootSequence() {
               int hours = (totMinutes % 1440) / 60;
               int minutes = totMinutes % 60;
 
-              char fromStr[30], toStr[30], currentTs[30], message[250];
+              char fromStr[30], toStr[30], totStr[30], currentTs[30];
+              char telegramMsg[250], supabaseMsg[150];
+
               snprintf(fromStr, sizeof(fromStr), "%02d-%02d-%04d %02d:%02d", d, m, y, h, min);
               snprintf(toStr, sizeof(toStr), "%02d-%02d-%04d %02d:%02d", 
                        nowInfo.tm_mday, nowInfo.tm_mon + 1, nowInfo.tm_year + 1900, 
                        nowInfo.tm_hour, nowInfo.tm_min);
 
+              if (totMinutes < 60) {
+                snprintf(totStr, sizeof(totStr), "%dm", totMinutes);
+              } else if (totMinutes < 1440) {
+                snprintf(totStr, sizeof(totStr), "%dh %dm", hours, minutes);
+              } else {
+                snprintf(totStr, sizeof(totStr), "%dd %dh %dm", days, hours, minutes);
+              }
+
               snprintf(currentTs, sizeof(currentTs), "%04d-%02d-%02dT%02d:%02d:%02dZ",
                        nowInfo.tm_year + 1900, nowInfo.tm_mon + 1, nowInfo.tm_mday,
                        nowInfo.tm_hour, nowInfo.tm_min, nowInfo.tm_sec);
 
-              snprintf(message, sizeof(message),
+              snprintf(telegramMsg, sizeof(telegramMsg),
                 "⚡ BLACKOUT DETECTED\n"
-                "From    : %s\n"
-                "To      : %s\n"
-                "Days    : %3d\n"
-                "Hours   : %3d\n"
-                "Minutes : %3d",
-                fromStr, toStr, days, hours, minutes
+                "From : %s\n"
+                "To   : %s\n"
+                "TOT  : %s",
+                fromStr, toStr, totStr
               );
 
-              sendLogToSupabase(currentTs, "warning", message);
+              snprintf(supabaseMsg, sizeof(supabaseMsg),
+                "⚡ BLACKOUT DETECTED - %s",
+                totStr
+              );
+
+              sendLogToSupabase(currentTs, "🔴", supabaseMsg);
             }
           }
         }
