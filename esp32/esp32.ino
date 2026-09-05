@@ -9,6 +9,25 @@
 
 #include "config.h"
 #include "lib/language.h"
+
+// ======================================================
+//  SECURITY BLOCK
+// ======================================================
+#if defined(ADDON_PIR_AM312 ) && defined(SENSOR_PIR_AM312 )
+  #error "⚠️ BUILD BLOCKED: Do not enable the same sensor multiple times as both ADDON and SENSOR."
+#endif
+#if defined(ADDON_LASER_RADAR_RCWL0516) && defined(SENSOR_RADAR_RCWL0516)
+  #error "⚠️ BUILD BLOCKED: Do not enable the same sensor multiple times as both ADDON and SENSOR."
+#endif
+#if defined(ADDON_LASER_VL53L0X) && defined(SENSOR_LASER_VL53L0X)
+  #error "⚠️ BUILD BLOCKED: Do not enable the same sensor multiple times as both ADDON and SENSOR."
+#endif
+#if defined(ADDON_LASER_VL53L1X) && defined(SENSOR_LASER_VL53L1X)
+  #error "⚠️ BUILD BLOCKED: Do not enable the same sensor multiple times as both ADDON and SENSOR."
+#endif
+
+
+
 #include "lib/display.h"
 #include "lib/sensors.h"
 #include "lib/notifications.h"

@@ -29,6 +29,7 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 // 3. HARDWARE SELECTION 
 // #######################################################
 // Uncomment ONLY connected hardware
+// WARNING: Do not enable the same sensor as both an ADDON and a SENSOR!
 
 // --- Display (Uncomment ONLY ONE) ---
 #define DISPLAY_LCD_16X2
