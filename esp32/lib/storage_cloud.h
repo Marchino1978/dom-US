@@ -195,20 +195,32 @@ void handleBootSequence() {
 
             if (diffSec > 600) {
               int totMinutes = diffSec / 60;
-              int hours = totMinutes / 60;
+              
+              int days = totMinutes / 1440;
+              int hours = (totMinutes % 1440) / 60;
               int minutes = totMinutes % 60;
 
-              char fromStr[30], toStr[30], totStr[30], currentTs[30];
+              char fromStr[30], toStr[30], currentTs[30], message[250];
               snprintf(fromStr, sizeof(fromStr), "%02d-%02d-%04d %02d:%02d", d, m, y, h, min);
               snprintf(toStr, sizeof(toStr), "%02d-%02d-%04d %02d:%02d", 
                        nowInfo.tm_mday, nowInfo.tm_mon + 1, nowInfo.tm_year + 1900, 
                        nowInfo.tm_hour, nowInfo.tm_min);
-              snprintf(totStr, sizeof(totStr), "%dh %dm", hours, minutes);
+
               snprintf(currentTs, sizeof(currentTs), "%04d-%02d-%02dT%02d:%02d:%02dZ",
                        nowInfo.tm_year + 1900, nowInfo.tm_mon + 1, nowInfo.tm_mday,
                        nowInfo.tm_hour, nowInfo.tm_min, nowInfo.tm_sec);
 
-              sendLogToSupabase(currentTs, "warning", "⚡ BLACKOUT DETECTED");
+              snprintf(message, sizeof(message),
+                "⚡ BLACKOUT DETECTED\n"
+                "From    : %s\n"
+                "To      : %s\n"
+                "Days    : %3d\n"
+                "Hours   : %3d\n"
+                "Minutes : %3d",
+                fromStr, toStr, days, hours, minutes
+              );
+
+              sendLogToSupabase(currentTs, "warning", message);
             }
           }
         }
@@ -221,3 +233,13 @@ void handleBootSequence() {
 }
 
 #endif
+
+
+
+
+
+
+
+
+
+
