@@ -7,15 +7,14 @@ dump_folder() {
   local output="txt/_$2.md"
   : > "$output"
 
-  for file in "$folder"/*; do
-    [ -f "$file" ] || continue
+  find "$folder" -type f | while read -r file; do
 
     local nome_file="${file##*/}"
 
-# ESCLUDE FILE PER ESTENSIONE DALLO SNAPSHOT .md
+    # ESCLUDE FILE PER ESTENSIONE DALLO SNAPSHOT .md
     [[ "$nome_file" == *.zip ]] && continue
 
-# ESCLUDE FILE SPECIFICI DALLO SNAPSHOT .md
+    # ESCLUDE FILE SPECIFICI DALLO SNAPSHOT .md
     [[ "$nome_file" == "README_FIRST.txt" ]] && continue
     [[ "$nome_file" == "README.md" ]] && continue
     [[ "$nome_file" == "TODO.md" ]] && continue
@@ -30,15 +29,25 @@ dump_folder() {
   done
 }
 
-dump_folder "." "root"
+local_output="txt/_root.md"
+: > "$local_output"
+for file in *; do
+  if [ -f "$file" ]; then
+    nome_file="${file##*/}"
+    [[ "$nome_file" == "README.md" || "$nome_file" == "TODO.md" ]] && continue
+    echo "# $file" >> "$local_output"
+    echo "----------------------------------------" >> "$local_output"
+    cat "$file" >> "$local_output"
+    echo -e "\n\n" >> "$local_output"
+  fi
+done
 
 for dir in */; do
   [ -d "$dir" ] || continue
   foldername="${dir%/}"
   
   case "$foldername" in
-
-# ESCLUDE INTERAMENTE QUESTE CARTELLE DALLO SNAPSHOT .md
+    # ESCLUDE INTERAMENTE QUESTE CARTELLE DALLO SNAPSHOT .md
     txt|.git|node_modules|data|public|old|stl|gallery|img|backup_SQL|backup_LOG|.venv|__pycache__) continue ;;
     *) dump_folder "$dir" "$foldername" ;;
   esac
