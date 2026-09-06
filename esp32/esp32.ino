@@ -188,27 +188,11 @@ void checkHourlyTask(struct tm* timeinfo) {
 
     float temp  = readTemperature();
     float hum   = readHumidity();
-    float press = readPressure(); // o readAmbientLux() a seconda di cosa mostri
+    float press = readPressure();
 
     if (!alarmEnabled) {
       triggerDisplayWake();
-
-      char riga1[20];
-      char riga2[20];
-      
-      if (isnan(temp) && isnan(hum)) {
-        snprintf(riga1, sizeof(riga1), "T:-- C H:--%%");
-      } else {
-        snprintf(riga1, sizeof(riga1), "T:%.1fC H:%.0f%%", isnan(temp) ? 0.0 : temp, isnan(hum) ? 0.0 : hum);
-      }
-
-      if (isnan(press)) {
-        snprintf(riga2, sizeof(riga2), "P:-- hPa");
-      } else {
-        snprintf(riga2, sizeof(riga2), "P:%.0fhPa", press);
-      }
-
-      showMessage(riga1, riga2);
+      renderTelemetry(timeinfo, temp, hum, press);
     }
 
     saveTelemetryData(timeinfo, temp, hum, press);
