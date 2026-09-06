@@ -1,4 +1,4 @@
-bho sp#pragma once
+#pragma once
 
 #include "../../../config.h"
 #include <Arduino.h>
