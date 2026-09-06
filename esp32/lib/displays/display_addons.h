@@ -1,5 +1,4 @@
-#ifndef DISPLAY_ADDONS_H
-#define DISPLAY_ADDONS_H
+#pragma once
 
 #include "../config.h"
 
@@ -67,5 +66,3 @@ inline void handleDisplayAutoWake() {
     setDisplayPower(false);
   }
 }
-
-#endif

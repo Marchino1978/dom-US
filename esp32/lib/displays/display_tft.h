@@ -1,5 +1,4 @@
-#ifndef DISPLAY_TFT_H
-#define DISPLAY_TFT_H
+#pragma once
 
 #include "../config.h"
 #include <Adafruit_GFX.h>
@@ -37,5 +36,3 @@ inline void printTFT(const String& line1, const String& line2 = "") {
   tft.setCursor(10, 70);
   tft.println(line2);
 }
-
-#endif

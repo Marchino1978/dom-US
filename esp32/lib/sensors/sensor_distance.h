@@ -1,5 +1,4 @@
-#ifndef SENSOR_DISTANCE_H
-#define SENSOR_DISTANCE_H
+#pragma once
 
 #include "../../config.h"
 
@@ -27,7 +26,7 @@ inline float readDistanceCM() {
   #if defined(SENSOR_ULTRASONIC_HCSR04) || defined(SENSOR_ULTRASONIC_HCSR04P) || defined(SENSOR_ULTRASONIC_RCWL1601) || defined(SENSOR_ULTRASONIC_US100) || defined(SENSOR_LASER_VL53L0X) || defined(SENSOR_LASER_VL53L1X)
     return readDistanceValue();
   #else
-    return -1.0;
+    return NAN;
   #endif
 }
 
@@ -35,8 +34,6 @@ inline float readUS100Temperature() {
   #if defined(SENSOR_ULTRASONIC_US100)
     return readUS100TemperatureValue();
   #else
-    return -99.0;
+    return NAN;
   #endif
 }
-
-#endif

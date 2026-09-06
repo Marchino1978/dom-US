@@ -1,5 +1,4 @@
-#ifndef ALARM_H
-#define ALARM_H
+#pragma once
 
 #include <Arduino.h>
 #include <WiFi.h>
@@ -133,5 +132,3 @@ void checkAlarmSystem() {
       break;
   }
 }
-
-#endif

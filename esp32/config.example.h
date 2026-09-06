@@ -76,7 +76,7 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 //#define SENSOR_LIGHT_LDR          // Analog Photoresistor (3.3V / 5V)
 //#define SENSOR_GAS_MQ135          // Air Quality (5V)
 #define SENSOR_COLOR_TCS34725     // RGB + Color Temp (3.3V / 5V / I2C)
-//define SENSOR_LIGHT_VEML7700     // Lux High precision / Human eye (3.3V / I2C)
+//#define SENSOR_LIGHT_VEML7700     // Lux High precision / Human eye (3.3V / I2C)
 
 // #######################################################
 // 4. PIN MAPPING (Defaults for Waveshare ESP32-C3-Zero)

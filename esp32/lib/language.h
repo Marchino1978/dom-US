@@ -1,12 +1,11 @@
-#ifndef LANGUAGE_H
-#define LANGUAGE_H
+#pragma once
 
 #include "../config.h"
 
 // ======================================================
 // 1. IT
 // ======================================================
-#if CURRENT_LANG == LANG_IT
+#if defined(LANG_IT)
 
   #define TXT_WIFI_CONN       "Connessione WiFi"
   #define TXT_TRY_HOME        "Provo CASA"
@@ -27,7 +26,7 @@
 // ======================================================
 // 2. EN
 // ======================================================
-#elif CURRENT_LANG == LANG_EN
+#elif defined(LANG_EN)
 
   #define TXT_WIFI_CONN       "Connecting WiFi"
   #define TXT_TRY_HOME        "Trying HOME"
@@ -48,7 +47,7 @@
 // ======================================================
 // 3. ES
 // ======================================================
-#elif CURRENT_LANG == LANG_ES
+#elif defined(LANG_ES)
 
   #define TXT_WIFI_CONN       "Conectando WiFi"
   #define TXT_TRY_HOME        "Probando CASA"
@@ -69,7 +68,7 @@
 // ======================================================
 // 4. DE
 // ======================================================
-#elif CURRENT_LANG == LANG_DE
+#elif defined(LANG_DE)
 
   #define TXT_WIFI_CONN       "WLAN verbinden"
   #define TXT_TRY_HOME        "Suche ZUHAUSE"
@@ -90,7 +89,7 @@
 // ======================================================
 // 5. FR
 // ======================================================
-#elif CURRENT_LANG == LANG_FR
+#elif defined(LANG_FR)
 
   #define TXT_WIFI_CONN       "Connexion WiFi"
   #define TXT_TRY_HOME        "Essai MAISON"

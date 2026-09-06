@@ -1,5 +1,4 @@
-#ifndef SENSOR_CLIMATE_H
-#define SENSOR_CLIMATE_H
+#pragma once
 
 #include "../../config.h"
 
@@ -29,7 +28,7 @@ inline float readTemperature() {
   #if defined(SENSOR_AHT20) || defined(SENSOR_BME280) || defined(SENSOR_BMP280) || defined(SENSOR_DHT11) || defined(SENSOR_DHT22) || defined(SENSOR_DS18B20) || defined(SENSOR_SHT31)
     return readTemperatureValue();
   #else
-    return 0.0;
+    return NAN;
   #endif
 }
 
@@ -37,8 +36,6 @@ inline float readHumidity() {
   #if defined(SENSOR_AHT20) || defined(SENSOR_BME280) || defined(SENSOR_BMP280) || defined(SENSOR_DHT11) || defined(SENSOR_DHT22) || defined(SENSOR_DS18B20) || defined(SENSOR_SHT31)
     return readHumidityValue();
   #else
-    return 0.0;
+    return NAN;
   #endif
 }
-
-#endif

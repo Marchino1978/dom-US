@@ -1,5 +1,4 @@
-#ifndef DISPLAY_LCD_H
-#define DISPLAY_LCD_H
+#pragma once
 
 #include "../config.h"
 #include <LiquidCrystal_I2C.h>
@@ -28,5 +27,3 @@ inline void setLCDBacklight(bool state) {
   if (state) lcd.backlight();
   else lcd.noBacklight();
 }
-
-#endif

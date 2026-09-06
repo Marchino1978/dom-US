@@ -1,5 +1,4 @@
-#ifndef DISPLAY_H
-#define DISPLAY_H
+#pragma once
 
 #include "../config.h"
 
@@ -34,5 +33,3 @@ inline void showMessage(const String& line1, const String& line2 = "") {
     printTFT(line1, line2);
   #endif
 }
-
-#endif

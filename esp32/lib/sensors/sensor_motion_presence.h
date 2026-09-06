@@ -1,5 +1,4 @@
-#ifndef SENSOR_MOTION_PRESENCE_H
-#define SENSOR_MOTION_PRESENCE_H
+#pragma once
 
 #include "../../config.h"
 
@@ -28,5 +27,3 @@ inline bool isMotionDetected() {
     return false;
   #endif
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef DISPLAY_OLED_H
-#define DISPLAY_OLED_H
+#pragma once
 
 #include "../config.h"
 #include <Wire.h>
@@ -39,5 +38,3 @@ inline void setOLEDPower(bool state) {
   if (state) oled.ssd1306_command(SSD1306_DISPLAYON);
   else oled.ssd1306_command(SSD1306_DISPLAYOFF);
 }
-
-#endif

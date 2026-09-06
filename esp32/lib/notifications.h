@@ -1,5 +1,4 @@
-#ifndef NOTIFICATIONS_H
-#define NOTIFICATIONS_H
+#pragma once
 
 #include <WiFi.h>
 #include <HTTPClient.h>
@@ -76,7 +75,7 @@ inline void checkTelegramUpdates() {
       text.toLowerCase();
       text.trim();
 
-char ts[25];
+      char ts[25];
 
       if (text == "/on" || text == "on") {
         if (alarmEnabled) {
@@ -135,5 +134,3 @@ char ts[25];
   }
   http.end();
 }
-
-#endif

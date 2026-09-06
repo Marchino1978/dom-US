@@ -1,5 +1,4 @@
-#ifndef STORAGE_CLOUD_H
-#define STORAGE_CLOUD_H
+#pragma once
 
 #include <WiFi.h>
 #include <HTTPClient.h>
@@ -244,15 +243,3 @@ void handleBootSequence() {
   
   sendHeartbeat();
 }
-
-#endif
-
-
-
-
-
-
-
-
-
-

@@ -1,5 +1,4 @@
-#ifndef SENSOR_AMBIENT_H
-#define SENSOR_AMBIENT_H
+#pragma once
 
 #include "../../config.h"
 
@@ -25,8 +24,6 @@ inline float readAmbientLux() {
   #if defined(SENSOR_LIGHT_BH1750) || defined(SENSOR_LIGHT_LDR) || defined(SENSOR_GAS_MQ135) || defined(SENSOR_COLOR_TCS34725) || defined(SENSOR_LIGHT_VEML7700)
     return readAmbientLuxValue();
   #else
-    return 0.0;
+    return NAN;
   #endif
 }
-
-#endif

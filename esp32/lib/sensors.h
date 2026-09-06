@@ -1,5 +1,4 @@
-#ifndef SENSORS_H
-#define SENSORS_H
+#pragma once
 
 #include "../config.h"
 
@@ -77,5 +76,3 @@ inline bool checkDistanceTriggered() {
     return false;
   #endif
 }
-
-#endif
