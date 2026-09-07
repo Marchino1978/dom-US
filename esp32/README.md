@@ -55,8 +55,8 @@ For more information, check the official <strong>Waveshare product page</strong>
       <div align="center" style="text-align: left; display: inline-block;">
         ✅ LCD_16X2 - Alphanumeric📟 [5V / I2C]<br>
         ⌛ LCD_20X4 - Alphanumeric📟 [5V / I2C]<br>
-        ❌ LCD_16X2_RGB - Alphanumeric RGB📟🌈 [5V / I2C]<br>
-        ❌ LCD_20X4_RGB - Alphanumeric RGB📟🌈 [5V / I2C]<br><br>
+        ❌ LCD_16X2_RGB - Alphanumeric RGB📟🌈 [3.3V / I2C]<br>
+        ❌ LCD_20X4_RGB - Alphanumeric RGB📟🌈 [3.3V / I2C]<br><br>
         ❌ SSD1306 - Monochrome OLED 0.96"📺 [3.3V / 5V]<br>
         ❌ SH1106 - Monochrome OLED 1.3"📺 [3.3V / 5V]<br><br>
         ❌ ST7789 - Color TFT 2.0"🖼️ [3.3V]<br>
