@@ -116,17 +116,22 @@ inline void checkTelegramUpdates() {
         float press = readPressure();
         float lux = readAmbientLux();
 
+        String tempStr  = isnan(temp)  ? "---" : String(temp, 0);
+        String humStr   = isnan(hum)   ? "---" : String(hum, 0);
+        String pressStr = isnan(press) ? "---" : String(press, 0);
+        String luxStr   = isnan(lux)   ? "---" : String(lux, 0);
+
         String icona_stato = alarmEnabled ? "🟢" : "🔴";
         String stato = alarmEnabled ? "ON" : "OFF";
 
         String statusMsg = "*ALARM STATUS:* " + icona_stato + " " + stato + "\n";
-        statusMsg += "`🌡️ Temp  :   " + String(temp, 0) + " °C`\n";
-        statusMsg += "`💧 Hum   :   " + String(hum, 0) + " %`\n";
-        statusMsg += "`🌀 Press : " + String(press, 0) + " hPa`\n";
-        statusMsg += "`💡 Light :   " + String(lux, 0) + " Lux`";
+        statusMsg += "`🌡️ Temp  :   " + tempStr + " °C`\n";
+        statusMsg += "`💧 Hum   :   " + humStr + " %`\n";
+        statusMsg += "`🌀 Press : " + pressStr + " hPa`\n";
+        statusMsg += "`💡 Light :   " + luxStr + " Lux`";
 
         sendTelegramMessage(statusMsg);
-        
+    
         getCurrentIsoTimestamp(ts, sizeof(ts));
         sendLogToSupabase(ts, "⚪", "ALARM STATUS sent to user");
       }

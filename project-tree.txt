@@ -23,7 +23,9 @@
 │   │   │   │   └── VL53L1X.h
 │   │   │   ├── lcd/
 │   │   │   │   ├── 16x2.h
-│   │   │   │   └── 20x4.h
+│   │   │   │   ├── 16x2_RGB.h
+│   │   │   │   ├── 20x4.h
+│   │   │   │   └── 20x4_RGB.h
 │   │   │   ├── oled/
 │   │   │   │   ├── SH1106.h
 │   │   │   │   └── SSD1306.h
@@ -124,6 +126,6 @@
 ├── project-tree.txt
 └── README.md
 
-23 directories, 101 files
+23 directories, 103 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***

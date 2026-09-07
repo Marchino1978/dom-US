@@ -34,6 +34,8 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 // --- Display (Uncomment ONLY ONE) ---
 #define DISPLAY_LCD_16X2
 //#define DISPLAY_LCD_20X4
+//#define DISPLAY_LCD_16X2_RGB
+//#define DISPLAY_LCD_20X4_RGB
 //#define DISPLAY_OLED_SSD1306
 //#define DISPLAY_OLED_SH1106
 //#define DISPLAY_TFT_ST7789

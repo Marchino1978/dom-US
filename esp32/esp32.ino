@@ -8,26 +8,61 @@
 #include <time.h>
 
 #include "config.h"
-#include "lib/language.h"
 
 // ======================================================
-//  SECURITY BLOCK
+//  SECURITY BLOCK & CONFLICT RESOLUTION
 // ======================================================
-#if defined(ADDON_PIR_AM312 ) && defined(SENSOR_PIR_AM312 )
-  #error "⚠️ BUILD BLOCKED: Do not enable the same sensor multiple times as both ADDON and SENSOR."
+
+// Cross-category conflict check: ADDON vs SENSOR
+#if defined(ADDON_PIR_AM312) && defined(SENSOR_PIR_AM312)
+#error "⚠️ BUILD BLOCKED: Do not enable the same sensor multiple times as both ADDON and SENSOR."
 #endif
-#if defined(ADDON_LASER_RADAR_RCWL0516) && defined(SENSOR_RADAR_RCWL0516)
-  #error "⚠️ BUILD BLOCKED: Do not enable the same sensor multiple times as both ADDON and SENSOR."
+#if defined(ADDON_RADAR_RCWL0516) && defined(SENSOR_RADAR_RCWL0516)
+#error "⚠️ BUILD BLOCKED: Do not enable the same sensor multiple times as both ADDON and SENSOR."
 #endif
 #if defined(ADDON_LASER_VL53L0X) && defined(SENSOR_LASER_VL53L0X)
-  #error "⚠️ BUILD BLOCKED: Do not enable the same sensor multiple times as both ADDON and SENSOR."
+#error "⚠️ BUILD BLOCKED: Do not enable the same sensor multiple times as both ADDON and SENSOR."
 #endif
 #if defined(ADDON_LASER_VL53L1X) && defined(SENSOR_LASER_VL53L1X)
-  #error "⚠️ BUILD BLOCKED: Do not enable the same sensor multiple times as both ADDON and SENSOR."
+#error "⚠️ BUILD BLOCKED: Do not enable the same sensor multiple times as both ADDON and SENSOR."
 #endif
 
+// Display uniqueness check
+#if (defined(DISPLAY_LCD_16X2) + defined(DISPLAY_LCD_20X4) + \
+     defined(DISPLAY_OLED_SSD1306) + defined(DISPLAY_OLED_SH1106) + \
+     defined(DISPLAY_TFT_ST7789) + defined(DISPLAY_TFT_ILI9341)) > 1
+#error "⚠️ BUILD BLOCKED: You can select ONLY ONE display configuration in config.h."
+#endif
 
+// Climate sensor uniqueness check
+#if (defined(SENSOR_AHT20) + defined(SENSOR_BME280) + defined(SENSOR_BMP280) + \
+     defined(SENSOR_DHT11) + defined(SENSOR_DHT22) + defined(SENSOR_DS18B20) + \
+     defined(SENSOR_SHT31)) > 1
+#error "⚠️ BUILD BLOCKED: You can select ONLY ONE climate sensor in config.h."
+#endif
 
+// Ambient sensor uniqueness check
+#if (defined(SENSOR_LIGHT_BH1750) + defined(SENSOR_LIGHT_LDR) + \
+     defined(SENSOR_GAS_MQ135) + defined(SENSOR_COLOR_TCS34725) + \
+     defined(SENSOR_LIGHT_VEML7700)) > 1
+#error "⚠️ BUILD BLOCKED: You can select ONLY ONE ambient sensor in config.h."
+#endif
+
+// Motion/Presence sensor uniqueness check
+#if (defined(SENSOR_PIR_AM312) + defined(SENSOR_PIR_HCSR501) + \
+     defined(SENSOR_MMWAVE_LD2410) + defined(SENSOR_RADAR_RCWL0516) + \
+     defined(SENSOR_IR_TE174)) > 1
+#error "⚠️ BUILD BLOCKED: You can select ONLY ONE motion/presence sensor in config.h."
+#endif
+
+// Distance sensor uniqueness check
+#if (defined(SENSOR_ULTRASONIC_HCSR04) + defined(SENSOR_ULTRASONIC_HCSR04P) + \
+     defined(SENSOR_ULTRASONIC_RCWL1601) + defined(SENSOR_ULTRASONIC_US100) + \
+     defined(SENSOR_LASER_VL53L0X) + defined(SENSOR_LASER_VL53L1X)) > 1
+#error "⚠️ BUILD BLOCKED: You can select ONLY ONE distance sensor in config.h."
+#endif
+
+#include "lib/language.h"
 #include "lib/display.h"
 #include "lib/sensors.h"
 #include "lib/notifications.h"
