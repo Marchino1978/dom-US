@@ -235,13 +235,13 @@ void checkHourlyTask(struct tm* timeinfo) {
 }
 
 // ======================================================
-//  ALARM VERIFICATION LOGIC
+//  ALARM VERIFICATION LOGIC   //TO BE REMOVED
 // ======================================================
-void checkAlarmSystem() {
-  if (!alarmEnabled) {
-    return;
-  }
-}
+// void checkAlarmSystem() {
+//   if (!alarmEnabled) {
+//     return;
+//   }
+// }
 
 // ======================================================
 //  SETUP AND MAIN LOOP

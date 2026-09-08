@@ -30,13 +30,36 @@ def run_domus_backup():
             f.write(f"-- AUTOMATIC SENSORS BACKUP: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
             
             for table_name in tables_to_backup:
-                resp = supabase.table(table_name).select("*").execute()
-                rows = resp.data
-                if not rows:
+                # Conta quante righe ci sono davvero, PRIMA di scaricarle
+                count_resp = supabase.table(table_name).select("*", count="exact").execute()
+                total_expected = count_resp.count
+                if not total_expected:
                     continue
+
+                # Scarica tutto a pagine di 1000, con ordine stabile (created_at)
+                rows = []
+                page_size = 1000
+                offset = 0
+                while len(rows) < total_expected:
+                    page_resp = supabase.table(table_name) \
+                        .select("*") \
+                        .order("created_at") \
+                        .range(offset, offset + page_size - 1) \
+                        .execute()
+                    page_rows = page_resp.data
+                    if not page_rows:
+                        break  # sicurezza anti-loop infinito
+                    rows.extend(page_rows)
+                    offset += page_size
+
+                # Se manca qualcosa, salta questa tabella invece di scrivere un backup incompleto
+                if len(rows) != total_expected:
+                    print(f"⚠️ ERRORE: tabella {table_name}, attese {total_expected} righe, scaricate {len(rows)}. Salto questa tabella.")
+                    continue
+
+                print(f"Tabella {table_name}: scaricate correttamente {len(rows)} righe su {total_expected} attese.")
                 
                 f.write(f"-- TABLE: {table_name}\n")
-                f.write(f"TRUNCATE TABLE {table_name};\n\n")
                 
                 for row in rows:
                     cols = ", ".join(row.keys())

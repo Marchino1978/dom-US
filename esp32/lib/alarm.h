@@ -38,16 +38,16 @@ void getFormattedTimestamp(char* buffer, size_t maxLen) {
 
 inline int countActiveMotionSensors() {
   int count = 0;
-  
-  #if defined(SENSOR_PIR_HCSR501) || defined(SENSOR_RADAR_RCWL) || defined(SENSOR_MMWAVE_LD2410) || defined(SENSOR_IR_TE174)
+
+  #if defined(SENSOR_PIR_AM312) || defined(SENSOR_PIR_HCSR501) || defined(SENSOR_MMWAVE_LD2410) || defined(SENSOR_RADAR_RCWL0516) || defined(SENSOR_IR_TE174)
     count++;
   #endif
 
-  #if defined(SENSOR_ULTRASONIC_HCSR04) || defined(SENSOR_ULTRASONIC_US100) || defined(SENSOR_LASER_VL53L0X)
+  #if defined(SENSOR_ULTRASONIC_HCSR04) || defined(SENSOR_ULTRASONIC_HCSR04P) || defined(SENSOR_ULTRASONIC_RCWL1601) || defined(SENSOR_ULTRASONIC_US100) || defined(SENSOR_LASER_VL53L0X) || defined(SENSOR_LASER_VL53L1X)
     count++;
   #endif
 
-  #if defined(ADDON_IR_TE174) || defined(ADDON_LASER_VL53L0X) || defined(ADDON_PIR_HCSR501)
+  #if defined(ADDON_PIR_AM312) || defined(ADDON_RADAR_RCWL0516) || defined(ADDON_LASER_VL53L0X) || defined(ADDON_LASER_VL53L1X)
     if (alarmEnabled) {
       count++;
     }

@@ -22,6 +22,9 @@ SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
 GITHUB_TOKEN = os.environ.get("GH_TOKEN")
 GITHUB_REPO = "Marchino1978/dom-US"
 
+def safe_float(value):
+    return float('nan') if value is None else float(value)
+
 def get_previous_month_range():
     today = datetime.utcnow().date()
     first_day_this_month = today.replace(day=1)
@@ -69,8 +72,8 @@ def generate_monthly_report():
             print(f"Errore query Supabase: {e}")
             
     if not rows:
-        print("Nessun dato trovato, inserisco riga di fallback.")
-        rows = [{"created_at": start_date, "temp": 0, "hum": 0, "press": 0}]
+        print("Nessun dato trovato, inserisco riga di fallback (NaN).")
+        rows = [{"created_at": start_date, "temp": float('nan'), "hum": float('nan'), "press": float('nan')}]
 
     try:
         with open(csv_path, "w", newline="", encoding="utf-8") as f:
@@ -98,14 +101,9 @@ def generate_monthly_report():
                 except Exception:
                     dt = dt_raw
             dates.append(dt)
-            temperatures.append(float(r.get("temp", 0) or 0))
-            humidities.append(float(r.get("hum", 0) or 0))
-
-            val_pressione = r.get("press")
-            if val_pressione is None:
-                pressures.append(float('nan'))
-            else:
-                pressures.append(float(val_pressione))
+            temperatures.append(safe_float(r.get("temp")))
+            humidities.append(safe_float(r.get("hum")))
+            pressures.append(safe_float(r.get("press")))
 
         fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(12, 10))
         

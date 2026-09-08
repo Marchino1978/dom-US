@@ -39,17 +39,43 @@ def run_logs_backup_and_cleanup():
     try:
         supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
         os.makedirs(folder, exist_ok=True)
-        
-        resp = supabase.table("logs") \
-            .select("*") \
+
+        # Conta quante righe ci sono davvero per il periodo, PRIMA di scaricarle
+        count_resp = supabase.table("logs") \
+            .select("*", count="exact") \
             .gte("created_at", start_date) \
             .lte("created_at", end_date) \
             .execute()
-        
-        rows = resp.data
-        if not rows:
+        total_expected = count_resp.count
+
+        if not total_expected:
             print(f"Nessun log trovato per il periodo {start_date} - {end_date}.")
             return None, None, None
+
+        # Scarica tutto a pagine di 1000, finché non hai preso tutte le righe attese
+        rows = []
+        page_size = 1000
+        offset = 0
+        while len(rows) < total_expected:
+            page_resp = supabase.table("logs") \
+                .select("*") \
+                .gte("created_at", start_date) \
+                .lte("created_at", end_date) \
+                .order("created_at") \
+                .range(offset, offset + page_size - 1) \
+                .execute()
+            page_rows = page_resp.data
+            if not page_rows:
+                break  # sicurezza anti-loop infinito
+            rows.extend(page_rows)
+            offset += page_size
+
+        # Controllo di sicurezza: se non ho scaricato tutto quello che c'era, blocco tutto
+        if len(rows) != total_expected:
+            print(f"⚠️ ERRORE: attesi {total_expected} log, scaricati {len(rows)}. Backup ANNULLATO per sicurezza.")
+            return None, None, None
+
+        print(f"Scaricati correttamente {len(rows)} log su {total_expected} attesi.")
 
         with open(file_path, "w", encoding="utf-8") as f:
             f.write(f"-- MONTHLY LOG BACKUP: {start_date} - {end_date}\n\n")
