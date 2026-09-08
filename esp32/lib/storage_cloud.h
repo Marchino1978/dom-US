@@ -1,6 +1,7 @@
 #pragma once
 
 #include <WiFi.h>
+#include <WiFiClientSecure.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 #include <time.h>
@@ -13,20 +14,31 @@ struct OfflineReading {
   float press;
 };
 
-const int MAX_OFFLINE_READINGS = 48;
+struct OfflineLog {
+  char timestamp[25];
+  char severity[10];
+  char message[100];
+};
+
+const int MAX_OFFLINE_READINGS = 72;
+const int MAX_OFFLINE_LOGS = 500;
+
 OfflineReading ramBuffer[MAX_OFFLINE_READINGS];
 int bufferCount = 0;
 
-// ======================================================
-// 1. SEND SINGLE RECORD TO SUPABASE (sensor_data)
-// ======================================================
+OfflineLog logBuffer[MAX_OFFLINE_LOGS];
+int logBufferCount = 0;
+
 bool sendToSupabase(const char* ts, float temp, float hum, float press) {
   if (WiFi.status() != WL_CONNECTED) return false;
+
+  WiFiClientSecure client;
+  client.setInsecure();
 
   HTTPClient http;
   String url = String(SUPABASE_URL) + "/rest/v1/sensor_data";
   
-  http.begin(url);
+  http.begin(client, url);
   http.addHeader("Content-Type", "application/json");
   http.addHeader("apikey", SUPABASE_KEY);
   http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
@@ -34,9 +46,9 @@ bool sendToSupabase(const char* ts, float temp, float hum, float press) {
 
   StaticJsonDocument<200> doc;
   doc["created_at"] = ts;
-  doc["temp"]       = temp;
-  doc["hum"]        = hum;
-  doc["press"]      = press;
+  doc["temp"]        = temp;
+  doc["hum"]         = hum;
+  doc["press"]       = press;
 
   String body;
   serializeJson(doc, body);
@@ -47,9 +59,34 @@ bool sendToSupabase(const char* ts, float temp, float hum, float press) {
   return (httpCode == 200 || httpCode == 201);
 }
 
-// ======================================================
-// 2. FLUSH RAM BUFFER WHEN WIFI IS BACK
-// ======================================================
+bool sendLogToSupabaseDirect(const char* timestamp, const char* severity, const char* message) {
+  if (WiFi.status() != WL_CONNECTED) return false;
+
+  WiFiClientSecure client;
+  client.setInsecure();
+
+  HTTPClient http;
+  String url = String(SUPABASE_URL) + "/rest/v1/logs";
+  
+  http.begin(client, url);
+  http.addHeader("Content-Type", "application/json");
+  http.addHeader("apikey", SUPABASE_KEY);
+  http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
+
+  StaticJsonDocument<250> doc;
+  doc["created_at"]    = timestamp;
+  doc["severity"]      = severity;
+  doc["event_message"] = message;
+
+  String body;
+  serializeJson(doc, body);
+
+  int httpCode = http.POST(body);
+  http.end();
+
+  return (httpCode == 200 || httpCode == 201);
+}
+
 void flushRamBuffer() {
   if (bufferCount == 0 || WiFi.status() != WL_CONNECTED) return;
 
@@ -71,9 +108,43 @@ void flushRamBuffer() {
   }
 }
 
-// ======================================================
-// 3. SAVE TELEMETRY (NORMALIZED TO HH:00:00)
-// ======================================================
+void flushLogBuffer() {
+  if (logBufferCount == 0 || WiFi.status() != WL_CONNECTED) return;
+
+  int sentSuccessfully = 0;
+  for (int i = 0; i < logBufferCount; i++) {
+    bool ok = sendLogToSupabaseDirect(logBuffer[i].timestamp, logBuffer[i].severity, logBuffer[i].message);
+    if (ok) {
+      sentSuccessfully++;
+    } else {
+      break;
+    }
+  }
+
+  if (sentSuccessfully > 0) {
+    for (int i = sentSuccessfully; i < logBufferCount; i++) {
+      logBuffer[i - sentSuccessfully] = logBuffer[i];
+    }
+    logBufferCount -= sentSuccessfully;
+  }
+}
+
+bool sendLogToSupabase(const char* timestamp, const char* severity, const char* message) {
+  if (WiFi.status() == WL_CONNECTED) {
+    flushLogBuffer();
+    return sendLogToSupabaseDirect(timestamp, severity, message);
+  } else {
+    if (logBufferCount < MAX_OFFLINE_LOGS) {
+      strncpy(logBuffer[logBufferCount].timestamp, timestamp, sizeof(logBuffer[logBufferCount].timestamp));
+      strncpy(logBuffer[logBufferCount].severity, severity, sizeof(logBuffer[logBufferCount].severity));
+      strncpy(logBuffer[logBufferCount].message, message, sizeof(logBuffer[logBufferCount].message));
+      logBufferCount++;
+      return true;
+    }
+    return false;
+  }
+}
+
 void saveTelemetryData(struct tm* timeinfo, float temp, float hum, float press) {
   char ts[25];
   snprintf(ts, sizeof(ts), "%04d-%02d-%02dT%02d:00:00Z",
@@ -84,6 +155,7 @@ void saveTelemetryData(struct tm* timeinfo, float temp, float hum, float press) 
 
   if (WiFi.status() == WL_CONNECTED) {
     flushRamBuffer();
+    flushLogBuffer();
     sendToSupabase(ts, temp, hum, press);
   } else {
     if (bufferCount < MAX_OFFLINE_READINGS) {
@@ -96,9 +168,6 @@ void saveTelemetryData(struct tm* timeinfo, float temp, float hum, float press) 
   }
 }
 
-// ======================================================
-//  4. BLACKOUT HEARTBEAT
-// ======================================================
 void sendHeartbeat() {
   if (WiFi.status() != WL_CONNECTED) return;
 
@@ -106,10 +175,13 @@ void sendHeartbeat() {
   if (millis() - lastPing < 60000 && lastPing != 0) return;
   lastPing = millis();
 
+  WiFiClientSecure client;
+  client.setInsecure();
+
   HTTPClient http;
   String url = String(SUPABASE_URL) + "/rest/v1/device_status?id=eq.1";
   
-  http.begin(url);
+  http.begin(client, url);
   http.addHeader("Content-Type", "application/json");
   http.addHeader("apikey", SUPABASE_KEY);
   http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
@@ -124,44 +196,19 @@ void sendHeartbeat() {
   http.end();
 }
 
-// ======================================================
-//  5. SEND EVENT LOG TO SUPABASE
-// ======================================================
-bool sendLogToSupabase(const char* timestamp, const char* severity, const char* message) {
-  if (WiFi.status() != WL_CONNECTED) return false;
-
-  HTTPClient http;
-  String url = String(SUPABASE_URL) + "/rest/v1/logs";
-  
-  http.begin(url);
-  http.addHeader("Content-Type", "application/json");
-  http.addHeader("apikey", SUPABASE_KEY);
-  http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
-
-  StaticJsonDocument<250> doc;
-  doc["created_at"]    = timestamp;
-  doc["severity"]      = severity;
-  doc["event_message"] = message;
-
-  String body;
-  serializeJson(doc, body);
-
-  int httpCode = http.POST(body);
-  http.end();
-
-  return (httpCode == 200 || httpCode == 201);
-}
-
-// ======================================================
-//  7. BOOT SEQUENCE & BLACKOUT CHECK HANDLER
-// ======================================================
 void handleBootSequence() {
   if (WiFi.status() != WL_CONNECTED) return;
+
+  flushRamBuffer();
+  flushLogBuffer();
+
+  WiFiClientSecure client;
+  client.setInsecure();
 
   HTTPClient http;
   String url = String(SUPABASE_URL) + "/rest/v1/device_status?id=eq.1&select=last_ping";
   
-  http.begin(url);
+  http.begin(client, url);
   http.addHeader("apikey", SUPABASE_KEY);
   http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
 

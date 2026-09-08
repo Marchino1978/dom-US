@@ -1,10 +1,11 @@
 #pragma once
 
 #include <WiFi.h>
+#include <WiFiClientSecure.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
-#include <Preferences.h>
 #include <time.h>
+#include <Preferences.h>
 #include "../config.h"
 #include "sensors.h"
 #include "storage_cloud.h"
@@ -30,10 +31,13 @@ inline void getCurrentIsoTimestamp(char* buffer, size_t maxLen) {
 inline void sendTelegramMessage(String message) {
   if (WiFi.status() != WL_CONNECTED) return;
 
+  WiFiClientSecure client;
+  client.setInsecure();
+
   HTTPClient http;
   String url = "https://api.telegram.org/bot" + String(TELEGRAM_TOKEN) + "/sendMessage";
   
-  http.begin(url);
+  http.begin(client, url);
   http.addHeader("Content-Type", "application/json");
 
   StaticJsonDocument<512> doc;
@@ -56,11 +60,15 @@ inline void checkTelegramUpdates() {
   lastCheck = millis();
 
   static long lastUpdateId = 0;
+
+  WiFiClientSecure client;
+  client.setInsecure();
+
   HTTPClient http;
   String url = "https://api.telegram.org/bot" + String(TELEGRAM_TOKEN) + 
                "/getUpdates?offset=" + String(lastUpdateId + 1) + "&timeout=0";
 
-  http.begin(url);
+  http.begin(client, url);
   int httpCode = http.GET();
 
   if (httpCode == 200) {
