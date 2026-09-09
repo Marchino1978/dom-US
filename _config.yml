@@ -1,1 +1,10 @@
 theme: jekyll-theme-hacker
+
+title: "A smart home IoT ecosystem built with ESP32-C3 mini and Supabase."
+description: "Features zero-false-alarm power outage detection via Telegram, offline sensor data buffering (temp/humidity/pressure), web dashboard charts, and an integrated security alarm system."
+url: "https://marchino1978.github.io"
+baseurl: "/dom-US"
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
