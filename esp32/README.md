@@ -61,7 +61,7 @@ For more information, check the official <strong>Waveshare product page</strong>
         ❌ SH1106 - Monochrome OLED 1.3"📺 [3.3V / 5V]<br><br>
         ❌ ST7789 - Color TFT 2.0"🖼️ [3.3V]<br>
         ❌ ILI9341 - Color TFT 2.4"🖼️ [3.3V]<br><br><br><br><br><br><br><br>
-      <font color="cyan"><small><b>⚙️ display wake-up ADDONS</b></small></font>
+      <font color="cyan"><small><b>⚙️ ADDONS [display wake-up / alarm] </b></small></font>
 <br><br>
         ❌ AM312 - Mini Passive Infrared🏃 [3.3V]<br>
         ❌ RCWL-0516 - Doppler Microwave📡 [4V - 28V]<br>
