@@ -1,10 +1,9 @@
 #pragma once
 
 #include "../config.h"
+#include "checks.h"
 
-#if defined(SENSOR_DHT11) || defined(SENSOR_DHT22) || defined(SENSOR_BMP280) || \
-    defined(SENSOR_BME280) || defined(SENSOR_SHT31) || defined(SENSOR_AHT20) || \
-    defined(SENSOR_DS18B20)
+#ifdef MODULE_TELEMETRY_ACTIVE
   #include "sensors/sensor_climate.h"
 #endif
 
@@ -27,9 +26,7 @@
 #endif
 
 inline void initSensors() {
-  #if defined(SENSOR_DHT11) || defined(SENSOR_DHT22) || defined(SENSOR_BMP280) || \
-      defined(SENSOR_BME280) || defined(SENSOR_SHT31) || defined(SENSOR_AHT20) || \
-      defined(SENSOR_DS18B20)
+  #ifdef MODULE_TELEMETRY_ACTIVE
     initClimate();
   #endif
 

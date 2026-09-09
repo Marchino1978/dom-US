@@ -1,9 +1,13 @@
 #pragma once
 
+#include "../config.h"
+#include "checks.h"
+
+#ifdef MODULE_ALARM_ACTIVE
+
 #include <Arduino.h>
 #include <WiFi.h>
 #include <time.h>
-#include "../config.h"
 #include "sensors.h"
 #include "display.h"
 #include "notifications.h"
@@ -36,26 +40,6 @@ void getFormattedTimestamp(char* buffer, size_t maxLen) {
   }
 }
 
-inline int countActiveMotionSensors() {
-  int count = 0;
-
-  #if defined(SENSOR_PIR_AM312) || defined(SENSOR_PIR_HCSR501) || defined(SENSOR_MMWAVE_LD2410) || defined(SENSOR_RADAR_RCWL0516) || defined(SENSOR_IR_TE174)
-    count++;
-  #endif
-
-  #if defined(SENSOR_ULTRASONIC_HCSR04) || defined(SENSOR_ULTRASONIC_HCSR04P) || defined(SENSOR_ULTRASONIC_RCWL1601) || defined(SENSOR_ULTRASONIC_US100) || defined(SENSOR_LASER_VL53L0X) || defined(SENSOR_LASER_VL53L1X)
-    count++;
-  #endif
-
-  #if defined(ADDON_PIR_AM312) || defined(ADDON_RADAR_RCWL0516) || defined(ADDON_LASER_VL53L0X) || defined(ADDON_LASER_VL53L1X)
-    if (alarmEnabled) {
-      count++;
-    }
-  #endif
-
-  return count;
-}
-
 // ======================================================
 //  MAIN ALARM SYSTEM LOGIC
 // ======================================================
@@ -67,7 +51,7 @@ void checkAlarmSystem() {
   bool trigDistance = checkDistanceTriggered();
   bool trigAddon    = alarmEnabled ? checkAddonAlarmTriggered() : false;
 
-  int activeSensorsCount = countActiveMotionSensors();
+  int activeSensorsCount = ACTIVE_ALARM_SENSORS;
   bool anyTriggered = (trigMotion || trigDistance || trigAddon);
 
   // ----------------------------------------------------
@@ -77,11 +61,8 @@ void checkAlarmSystem() {
     currentAlarmState = STATE_IDLE;
     alarmTriggered = false;
 
-    #if defined(ADDON_IR_TE174) || defined(ADDON_LASER_VL53L0X) || defined(ADDON_PIR_HCSR501)
-      if (checkAddonDisplayTriggered()) {
-        triggerDisplayWake();
-      }
-    #endif
+    // NOTE: addon display wake-up is handled exclusively by
+    // handleDisplayAutoWake() in the main loop() while the alarm is off.
 
     static bool loggedOffMotion = false;
     if (anyTriggered && !loggedOffMotion) {
@@ -132,3 +113,5 @@ void checkAlarmSystem() {
       break;
   }
 }
+
+#endif // MODULE_ALARM_ACTIVE

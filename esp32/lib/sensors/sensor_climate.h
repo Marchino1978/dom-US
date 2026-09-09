@@ -39,3 +39,13 @@ inline float readHumidity() {
     return NAN;
   #endif
 }
+
+// Only BME280/BMP280 provide pressure. All other climate drivers must NOT
+// implement readPressureValue() - the NAN fallback below covers them.
+inline float readPressure() {
+  #if defined(SENSOR_BME280) || defined(SENSOR_BMP280)
+    return readPressureValue();
+  #else
+    return NAN;
+  #endif
+}
