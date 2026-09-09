@@ -61,9 +61,6 @@ void checkAlarmSystem() {
     currentAlarmState = STATE_IDLE;
     alarmTriggered = false;
 
-    // NOTE: addon display wake-up is handled exclusively by
-    // handleDisplayAutoWake() in the main loop() while the alarm is off.
-
     static bool loggedOffMotion = false;
     if (anyTriggered && !loggedOffMotion) {
       loggedOffMotion = true;

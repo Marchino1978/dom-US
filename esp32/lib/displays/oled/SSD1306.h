@@ -1,4 +1,3 @@
-1306 · H
 #pragma once
  
 #include "../../../config.h"

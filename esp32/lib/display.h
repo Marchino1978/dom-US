@@ -2,9 +2,6 @@
 #include "../config.h"
 #include "checks.h"
 
-// display_addons.h provides generic backlight/wake handling (needed by any
-// display, with or without an addon) AND checkAddonAlarmTriggered() (needed
-// by lib/alarm.h even with an addon alone, no display selected).
 #if defined(MODULE_DISPLAY_ACTIVE) || defined(HAS_WAKEUP_ADDON)
   #include "displays/display_addons.h"
 #endif
