@@ -98,7 +98,7 @@ For more information, check the official <strong>Waveshare product page</strong>
         ❌ BH1750 - Lux (Digital)☀️ [3.3V / 5V / I2C]<br>
         ❌ LDR - Analog Photoresistor💡 [3.3V / 5V]<br>
         ❌ MQ135 - Air Quality💨 [5V]<br>
-        ⌛ TCS34725 - RGB + Color Temp🎨 [3.3V / 5V / I2C]<br>
+        ⌛ TCS34725 - RGB+ColorTemp🎨 [3.3V / 5V / I2C]<br>
         ❌ VEML7700 - Lux (High precision)☀️ [3.3V / I2C]
       </div>
     </td>
