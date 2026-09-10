@@ -15,7 +15,7 @@
       <font color="cyan"><b>monthly report [table]</b></font>
     </td>
   </tr>
-  <br>
+  <br><br><br>
   <!-- TELEGRAM MSG -->
   <tr>
     <td width="50%" align="center" valign="top">
