@@ -20,11 +20,11 @@
   <tr>
     <td width="50%" align="center" valign="top">
       <img src="../img/telegram_blackout_connection.jpeg" alt="Messaggio del bot Telegram dom-US con lo stato del sistema di allarme e lettura dati ambientali in tempo reale | Telegram bot dom-US message showing alarm system status and real-time environmental data readings" width="100%"><br>
-      <font color="red"><b>BLACKOUT/CONNECTION messages [TELEGRAM]</b></font>
+      <font color="cyan"><b>BLACKOUT/CONNECTION messages [TELEGRAM]</b></font>
     </td>
     <td width="50%" align="center" valign="top">
       <img src="../img/telegram_alarm_status.jpeg" alt="Messaggio di allarme del bot Telegram dom-US per intrusione rilevata | Telegram bot dom-US warning message reporting an intrusion alarm" width="100%"><br>
-      <font color="red"><b>ALARM/STATUS messages [TELEGRAM]</b></font>
+      <font color="cyan"><b>ALARM/STATUS messages [TELEGRAM]</b></font>
     </td>
   </tr>
 
@@ -32,11 +32,11 @@
   <tr>
     <td width="50%" align="center" valign="top">
       <img src="../img/web-LOG.png" alt="Log degli eventi dell'allarme visualizzato dalla web dashboard dell'applicazione dom-US. | Alarm event log displayed on the dom-US application web dashboard." width="100%"><br>
-      <font color="red"><b>alarm LOG [web]</b></font>
+      <font color="cyan"><b>alarm LOG [web]</b></font>
     </td>
     <td width="50%" align="center" valign="top">
       <img src="../img/sql-LOG.png" alt="Record e dati grezzi del log dell'allarme estratti direttamente dal database SQL. | Alarm log records and raw data extracted directly from the SQL database." width="100%"><br>
-      <font color="red"><b>alarm LOG [SQL]</b></font>
+      <font color="cyan"><b>alarm LOG [SQL]</b></font>
     </td>
   </tr>
 
@@ -44,11 +44,11 @@
   <tr>
     <td width="50%" align="center" valign="top">
       <img src="../img/work-in-progress.png" alt="Illustrazione in stile fumetto di un laboratorio maker con stampante 3D, microcontrollore ESP32 su breadboard, saldatore e laptop con codice, sormontata da un cartello di legno 'WORK IN PROGRESS' | Comic-style illustration of a maker workshop with a 3D printer, ESP32 breadboard setup, soldering iron, and code on a laptop, topped with a wooden 'WORK IN PROGRESS' sign" width="100%"><br>
-      <font color="red"><b>XYZ</b></font>
+      <font color="cyan"><b>XYZ</b></font>
     </td>
     <td width="50%" align="center" valign="top">
       <img src="../img/work-in-progress.png" alt="Illustrazione in stile fumetto di un laboratorio maker con stampante 3D, microcontrollore ESP32 su breadboard, saldatore e laptop con codice, sormontata da un cartello di legno 'WORK IN PROGRESS' | Comic-style illustration of a maker workshop with a 3D printer, ESP32 breadboard setup, soldering iron, and code on a laptop, topped with a wooden 'WORK IN PROGRESS' sign" width="100%"><br>
-      <font color="red"><b>XYZ</b></font>
+      <font color="cyan"><b>XYZ</b></font>
     </td>
   </tr>
 
@@ -56,11 +56,11 @@
   <tr>
     <td width="50%" align="center" valign="top">
       <img src="../img/work-in-progress.png" alt="Illustrazione in stile fumetto di un laboratorio maker con stampante 3D, microcontrollore ESP32 su breadboard, saldatore e laptop con codice, sormontata da un cartello di legno 'WORK IN PROGRESS' | Comic-style illustration of a maker workshop with a 3D printer, ESP32 breadboard setup, soldering iron, and code on a laptop, topped with a wooden 'WORK IN PROGRESS' sign" width="100%"><br>
-      <font color="red"><b>XYZ</b></font>
+      <font color="cyan"><b>XYZ</b></font>
     </td>
     <td width="50%" align="center" valign="top">
       <img src="../img/work-in-progress.png" alt="Illustrazione in stile fumetto di un laboratorio maker con stampante 3D, microcontrollore ESP32 su breadboard, saldatore e laptop con codice, sormontata da un cartello di legno 'WORK IN PROGRESS' | Comic-style illustration of a maker workshop with a 3D printer, ESP32 breadboard setup, soldering iron, and code on a laptop, topped with a wooden 'WORK IN PROGRESS' sign" width="100%"><br>
-      <font color="red"><b>XYZ</b></font>
+      <font color="cyan"><b>XYZ</b></font>
     </td>
   </tr>
 </table>
