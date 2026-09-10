@@ -93,7 +93,7 @@ For more information, check the official <strong>Waveshare product page</strong>
         ❌ RCWL-1601 - <small>Ultrasound🦇 [3V - 5.5V]</small><br>
         ⌛ US100 - <small>Ultrasound + Temp (UART / PWM)📏 [3.3V / 5V]</small><br>
         ❌ VL53L0X - <small>Laser ToF⚡ [2.8V - 5V / I2C]</small><br>
-        ❌ VL53L1X - <small>Laser ToF <small>(Up to 4m)⚡ [3.3V / I2C]</small><br><br>
+        ❌ VL53L1X - <small>Laser ToF (Up to 4m)⚡ [3.3V / I2C]</small><br><br>
         <div style="text-align: center;"><font color="cyan"><b>🌍 AMBIENT 🌍</b></font></div>
         ❌ BH1750 - <small>Lux (Digital)☀️ [3.3V / 5V / I2C]</small><br>
         ❌ LDR - <small>Analog Photoresistor💡 [3.3V / 5V]</small><br>
