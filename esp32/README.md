@@ -99,7 +99,7 @@ For more information, check the official <strong>Waveshare product page</strong>
         ❌ LDR - <small>Analog Photoresistor💡 [3.3V / 5V]</small><br>
         ❌ MQ135 - <small>Air Quality💨 [5V]</small><br>
         ⌛ TCS34725 - <small>RGB + Color Temp🎨 [3.3V / 5V / I2C]</small><br>
-        ❌ VEML7700 - <small>Lux (High precision / Human eye)☀️ [3.3V / I2C]</small>
+        ❌ VEML7700 - <small>Lux (High prec. / Human eye)☀️ [3.3V / I2C]</small>
       </div>
     </td>
   </tr>
