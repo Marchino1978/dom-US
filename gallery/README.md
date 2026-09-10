@@ -12,10 +12,10 @@
     </td>
     <td width="50%" align="center" valign="top">
       <img src="../img/monthly_report_table.png" alt="Tabella con i log orari di temperatura, umidità e pressione | Data table showing hourly temperature, humidity, and pressure logs" width="100%"><br>
-      <font color="cyan"><b>monthly report [table]</b></font><br>
+      <font color="cyan"><b>monthly report [table]</b></font>
     </td>
   </tr>
-
+  <br>
   <!-- TELEGRAM MSG -->
   <tr>
     <td width="50%" align="center" valign="top">
