@@ -69,8 +69,8 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 //#define SENSOR_ULTRASONIC_HCSR04  // Ultrasound (5V)
 //#define SENSOR_ULTRASONIC_HCSR04P // Ultrasound (3.3V / 5V)
 //#define SENSOR_ULTRASONIC_RCWL1601// Ultrasound (3V - 5.5V)
-//#define SENSOR_ULTRASONIC_US100   // Ultrasound + Temp (UART / PWM 3.3V / 5V)
-#define SENSOR_LASER_VL53L0X      // Laser ToF (2.8V - 5V / I2C)
+#define SENSOR_ULTRASONIC_US100   // Ultrasound + Temp (UART / PWM 3.3V / 5V)
+//#define SENSOR_LASER_VL53L0X      // Laser ToF (2.8V - 5V / I2C)
 //#define SENSOR_LASER_VL53L1X      // Laser ToF (Up to 4m 3.3V / I2C)
 
 // --- Ambient sensor (Uncomment ONLY ONE) ---
