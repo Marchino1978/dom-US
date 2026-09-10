@@ -91,15 +91,15 @@ For more information, check the official <strong>Waveshare product page</strong>
         ❌ HCSR04 - Ultrasound🦇 [5V]<br>
         ❌ HCSR04P - Ultrasound🦇 [3.3V / 5V]<br>
         ❌ RCWL-1601 - Ultrasound🦇 [3V - 5.5V]<br>
-        ⌛ US100 - Ultrasound+Temp (UART/PWM)📏 [3.3V / 5V]<br>
+        ⌛ US100 - Ultrasound + Temp (UART / PWM)📏 [3.3V / 5V]<br>
         ❌ VL53L0X - Laser ToF⚡ [2.8V - 5V / I2C]<br>
         ❌ VL53L1X - Laser ToF (Up to 4m)⚡ [3.3V / I2C]<br><br>
         <div style="text-align: center;"><font color="cyan"><b>🌍 AMBIENT 🌍</b></font></div>
         ❌ BH1750 - Lux (Digital)☀️ [3.3V / 5V / I2C]<br>
         ❌ LDR - Analog Photoresistor💡 [3.3V / 5V]<br>
         ❌ MQ135 - Air Quality💨 [5V]<br>
-        ⌛ TCS34725 - RGB+ColorTemp🎨 [3.3V / 5V / I2C]<br>
-        ❌ VEML7700 - Lux (High precision)☀️ [3.3V / I2C]
+        ⌛ TCS34725 - RGB + Color Temp🎨 [3.3V / 5V / I2C]<br>
+        ❌ VEML7700 - Lux <sall>(High precision / Human eye)</small>☀️ [3.3V / I2C]
       </div>
     </td>
   </tr>
