@@ -9,6 +9,7 @@
 
 #include "config.h"
 #include "lib/checks.h"
+
 #include "lib/language.h"
 #include "lib/display.h"
 #include "lib/sensors.h"
@@ -168,27 +169,46 @@ void checkHourlyTask(struct tm* timeinfo) {
   if (timeinfo->tm_min == 5 && timeinfo->tm_hour != lastExecutedHour) {
     lastExecutedHour = timeinfo->tm_hour;
 
-    float temp  = readTemperature();
-    float hum   = readHumidity();
-    float press = readPressure();
-
-    if (!alarmEnabled) {
-      triggerDisplayWake();
-      renderTelemetry(timeinfo, temp, hum, press);
-    }
+    #ifdef MODULE_TELEMETRY_ACTIVE
+      float temp  = readTemperature();
+      float hum   = readHumidity();
+      float press = readPressure();
+    #else
+      float temp  = NAN;
+      float hum   = NAN;
+      float press = NAN;
+    #endif
 
     saveTelemetryData(timeinfo, temp, hum, press);
   }
 }
 
 // ======================================================
-//  ALARM VERIFICATION LOGIC   //TO BE REMOVED
+//  CONTINUOUS CLIMATE DISPLAY TASK (independent of the
+//  hourly Supabase upload above)
 // ======================================================
-// void checkAlarmSystem() {
-//   if (!alarmEnabled) {
-//     return;
-//   }
-// }
+void checkClimateDisplayTask() {
+  #if defined(MODULE_TELEMETRY_ACTIVE) && defined(MODULE_DISPLAY_ACTIVE)
+    static unsigned long lastRun = 0;
+    static bool wasActive = false;
+    const unsigned long climateDisplayIntervalMs = 60000;
+
+    bool activeNow  = isDisplayActive();
+    bool justWokeUp = activeNow && !wasActive;
+    wasActive = activeNow;
+
+    // Refresh immediately on the wake transition (instant data on wake-up),
+    // otherwise stick to the regular 60s cadence.
+    if (!justWokeUp && (millis() - lastRun < climateDisplayIntervalMs)) return;
+    lastRun = millis();
+
+    float temp  = readTemperature();
+    float hum   = readHumidity();
+    float press = readPressure();
+
+    refreshClimateDisplay(temp, hum, press);
+  #endif
+}
 
 // ======================================================
 //  SETUP AND MAIN LOOP
@@ -199,8 +219,14 @@ void setup() {
   preferences.begin("domus-alarm", false);
   alarmEnabled = preferences.getBool("alarm_state", false);
 
-  initDisplay();
-  initDisplayAddons();
+  #ifdef MODULE_DISPLAY_ACTIVE
+    initDisplay();
+  #endif
+
+  #if defined(MODULE_DISPLAY_ACTIVE) || defined(HAS_WAKEUP_ADDON)
+    initDisplayAddons();
+  #endif
+
   initSensors();
 
   wifiState = WIFI_IDLE;
@@ -219,11 +245,19 @@ void loop() {
     checkHourlyTask(&timeinfo);
   }
 
-  if (!alarmEnabled) {
-    handleDisplayAutoWake();
-  }
+  checkClimateDisplayTask();
+
+  #if defined(MODULE_DISPLAY_ACTIVE) || defined(HAS_WAKEUP_ADDON)
+    if (!alarmEnabled) {
+      handleDisplayAutoWake();
+    }
+  #endif
 
   checkTelegramUpdates();
-  checkAlarmSystem();
+
+  #ifdef MODULE_ALARM_ACTIVE
+    checkAlarmSystem();
+  #endif
+
   sendHeartbeat();
 }

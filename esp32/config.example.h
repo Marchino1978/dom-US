@@ -41,7 +41,7 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 //#define DISPLAY_TFT_ST7789
 //#define DISPLAY_TFT_ILI9341
 
-// --- ADDONS [display wake-up / alarm] (Uncomment ONLY ONE) ---
+// --- Addons [display wake-up / alarm] (Uncomment ONLY ONE) ---
 //#define ADDON_PIR_AM312         // Mini Passive Infrared (Presence / Wake-up 3.3V)
 //#define ADDON_RADAR_RCWL0516    // Doppler Microwave (Room Presence / Alarm 4V-28V)
 #define ADDON_LASER_VL53L0X     // Laser ToF (2.8V - 5V / I2C)

@@ -24,6 +24,10 @@ inline void setDisplayPower(bool state) {
   digitalWrite(LCD_BL, state ? HIGH : LOW);
 }
 
+inline bool isDisplayActive() {
+  return screenActive;
+}
+
 inline void triggerDisplayWake() {
   displayTimerStart = millis();
   if (!screenActive) {
