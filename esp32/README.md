@@ -50,15 +50,18 @@ For more information, check the official <strong>Waveshare product page</strong>
   <tr>
     <td width="50%" align="center" valign="top">
       <img src="../img/display.jpeg" alt="Collezione di vari display per microcontrollori su un tavolo di legno, inclusi LCD alfanumerici retroilluminati, piccoli OLED colorati e display TFT più grandi, collegati a una breadboard | Collection of various microcontroller displays on a wooden table, including backlit alphanumeric LCDs, small color OLEDs, and larger TFT displays, connected to a breadboard" width="100%">
-      <font color="cyan"><br><b>displays (LCD, OLED, TFT)</b></font>
+      <font color="cyan"><br><b>displays</b></font>
 <br><br>
       <div align="center" style="text-align: left; display: inline-block;">
+        <div style="text-align: center;"><font color="cyan"><b>📟 LCD 📟</b></font></div>
         ✅ LCD_16X2 - <small>Alphanumeric📟 [5V / I2C]</small><br>
         ⌛ LCD_20X4 - <small>Alphanumeric📟 [5V / I2C]</small><br>
         ❌ LCD_16X2_RGB - <small>Alphanumeric RGB 📟🌈 [3.3V / I2C]</small><br>
         ❌ LCD_20X4_RGB - <small>Alphanumeric RGB 📟🌈 [3.3V / I2C]</small><br><br>
+        <div style="text-align: center;"><font color="cyan"><b>📺 OLED 📺</b></font></div>
         ❌ SSD1306 - <small>Monochrome OLED 0.96"📺 [3.3V / 5V]</small><br>
         ❌ SH1106 - <small>Monochrome OLED 1.3"📺 [3.3V / 5V]</small><br><br>
+        <div style="text-align: center;"><font color="cyan"><b>🖼️ TFT 🖼️</b></font></div>
         ❌ ST7789 - <small>Color TFT 2.0"🖼️ [3.3V]</small><br>
         ❌ ILI9341 - <small>Color TFT 2.4"🖼️ [3.3V]</small><br><br>
       <div style="text-align: center;"><font color="cyan"><b>⚙️ ADDONS [display wake-up / alarm] ⚙️</b></font></div>
