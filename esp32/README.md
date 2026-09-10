@@ -74,7 +74,7 @@ For more information, check the official <strong>Waveshare product page</strong>
       <font color="cyan"><br><b>sensors</b></font>
 <br><br>
       <div align="center" style="text-align: left; display: inline-block;">
-        <font color="cyan"><b>🌡️ CLIMATE</b></font><br>
+        <div style="text-align: center;"><font color="cyan"><b>🌡️ CLIMATE</b></font><br></div>
         ❌ AHT20 - Temp🌡️/Hum💧 [3.3V / I2C]<br>
         ⌛ BME280 - Temp🌡️/Hum💧/Press🌀 [3.3V / I2C]<br>
         ❌ BMP280 - Temp🌡️/Press🌀 [3.3V / I2C]<br>
