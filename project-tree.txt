@@ -80,7 +80,7 @@
 │   ├── config.h
 │   ├── esp32.ino
 │   ├── README.md
-│   ├── TELEGRAM commands.md
+│   ├── TELEGRAM_commands.txt
 │   └── TODO.md
 ├── gallery/
 │   └── README.md
