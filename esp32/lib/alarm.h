@@ -26,22 +26,18 @@ static unsigned long preAlarmStartTime = 0;
 const unsigned long preAlarmWindowMs = 5000;
 
 void getFormattedTimestamp(char* buffer, size_t maxLen) {
-  struct tm localCheck;
-  if (!getLocalTime(&localCheck)) {
+  struct tm timeinfo;
+  if (getLocalTime(&timeinfo)) {
+    snprintf(buffer, maxLen, "%04d-%02d-%02dT%02d:%02d:%02dZ",
+             timeinfo.tm_year + 1900,
+             timeinfo.tm_mon + 1,
+             timeinfo.tm_mday,
+             timeinfo.tm_hour,
+             timeinfo.tm_min,
+             timeinfo.tm_sec);
+  } else {
     snprintf(buffer, maxLen, "2026-09-01T00:00:00Z");
-    return;
   }
-  time_t now;
-  time(&now);
-  struct tm utcTime;
-  gmtime_r(&now, &utcTime);
-  snprintf(buffer, maxLen, "%04d-%02d-%02dT%02d:%02d:%02dZ",
-           utcTime.tm_year + 1900,
-           utcTime.tm_mon + 1,
-           utcTime.tm_mday,
-           utcTime.tm_hour,
-           utcTime.tm_min,
-           utcTime.tm_sec);
 }
 
 // ======================================================

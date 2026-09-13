@@ -146,17 +146,12 @@ bool sendLogToSupabase(const char* timestamp, const char* severity, const char* 
 }
 
 void saveTelemetryData(struct tm* timeinfo, float temp, float hum, float press) {
-  struct tm localCopy = *timeinfo;
-  time_t epoch = mktime(&localCopy);
-  struct tm utcTime;
-  gmtime_r(&epoch, &utcTime);
-
   char ts[25];
   snprintf(ts, sizeof(ts), "%04d-%02d-%02dT%02d:00:00Z",
-           utcTime.tm_year + 1900,
-           utcTime.tm_mon + 1,
-           utcTime.tm_mday,
-           utcTime.tm_hour);
+           timeinfo->tm_year + 1900,
+           timeinfo->tm_mon + 1,
+           timeinfo->tm_mday,
+           timeinfo->tm_hour);
 
   if (WiFi.status() == WL_CONNECTED) {
     flushRamBuffer();
