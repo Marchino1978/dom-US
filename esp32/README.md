@@ -41,7 +41,7 @@ For more information, check the official <strong>Waveshare product page</strong>
 
 <div align="center">
 
-✅ Verified & Working &nbsp;&nbsp;|&nbsp;&nbsp; ⌛ Testing in Progress &nbsp;&nbsp;|&nbsp;&nbsp; ❌ Planned / To Test
+✅ Verified & Working &nbsp;&nbsp;|&nbsp;&nbsp; ⌛ Testing in Progress &nbsp;&nbsp;|&nbsp;&nbsp; ❌ Planned / To Test &nbsp;&nbsp;|&nbsp;&nbsp; 🗑️ Discarded / Not Used 
 
 </div>
 
@@ -54,8 +54,8 @@ For more information, check the official <strong>Waveshare product page</strong>
 <br><br>
       <div align="center" style="text-align: left; display: inline-block;">
         <div style="text-align: center;"><font color="cyan"><b>📟 LCD 📟</b></font></div>
-        ✅ LCD_16X2 - <small>Alphanumeric📟 [5V / I2C]</small><br>
-        ⌛ LCD_20X4 - <small>Alphanumeric📟 [5V / I2C]</small><br>
+        ✅ LCD_16X2 - <small>Alphanumeric📟 [3.3V / I2C]</small><br>
+        ⌛ LCD_20X4 - <small>Alphanumeric📟 [3.3V / I2C]</small><br>
         ❌ LCD_16X2_RGB - <small>Alphanumeric RGB 📟🌈 [3.3V / I2C]</small><br>
         ❌ LCD_20X4_RGB - <small>Alphanumeric RGB 📟🌈 [3.3V / I2C]</small><br><br>
         <div style="text-align: center;"><font color="cyan"><b>📺 OLED 📺</b></font></div>
@@ -66,7 +66,7 @@ For more information, check the official <strong>Waveshare product page</strong>
         ❌ ILI9341 - <small>Color TFT 2.4"🖼️ [3.3V]</small><br><br>
       <div style="text-align: center;"><font color="cyan"><b>⚙️ ADDONS [display wake-up / alarm] ⚙️</b></font></div>
         ❌ AM312 - <small>Mini Passive Infrared🏃 [3.3V]</small><br>
-        ❌ RCWL-0516 - <small>Doppler Microwave📡 [4V - 28V]</small><br>
+        🗑️ RCWL-0516 - <small>Doppler Microwave📡 [4V - 28V]</small><br>
         ❌ VL53L0X - <small>Laser ToF⚡ [2.8V - 5V / I2C]</small><br>
         ❌ VL53L1X - <small>Laser ToF (Up to 4m)⚡ [3.3V / I2C]</small>
       </div>
@@ -87,11 +87,11 @@ For more information, check the official <strong>Waveshare product page</strong>
         <div style="text-align: center;"><font color="cyan"><b>👥 MOTION & PRESENCE 👥</b></font></div>
         ❌ AM312 - <small>Mini Passive Infrared🏃 [3.3V]</small><br>
         ⌛ HCSR501 - <small>Passive Infrared🏃 [5V (3.3V signal)]</small><br>
-        ❌ LD2410 - <small>Micro-movements🧘 [5V]</small><br>
-        ❌ RCWL-0516 - <small>Doppler Microwave📡 [4V - 28V]</small><br>
+        🗑️ LD2410 - <small>Micro-movements🧘 [5V]</small><br>
+        🗑️ RCWL-0516 - <small>Doppler Microwave📡 [4V - 28V]</small><br>
         ❌ TE174 - <small>IR Beam🛑 [3.3V / 5V]</small><br><br>
         <div style="text-align: center;"><font color="cyan"><b>📏 DISTANCE 📏</b></font></div>
-        ❌ HCSR04 - <small>Ultrasound🦇 [5V]</small><br>
+        🗑️ HCSR04 - <small>Ultrasound🦇 [5V]</small><br>
         ❌ HCSR04P - <small>Ultrasound🦇 [3.3V / 5V]</small><br>
         ❌ RCWL-1601 - <small>Ultrasound🦇 [3V - 5.5V]</small><br>
         ⌛ US100 - <small>Ultrasound + Temp (UART / PWM)📏 [3.3V / 5V]</small><br>
@@ -100,7 +100,7 @@ For more information, check the official <strong>Waveshare product page</strong>
         <div style="text-align: center;"><font color="cyan"><b>🌍 AMBIENT 🌍</b></font></div>
         ❌ BH1750 - <small>Lux (Digital)☀️ [3.3V / 5V / I2C]</small><br>
         ❌ LDR - <small>Analog Photoresistor💡 [3.3V / 5V]</small><br>
-        ❌ MQ135 - <small>Air Quality💨 [5V]</small><br>
+        🗑️ MQ135 - <small>Air Quality💨 [5V]</small><br>
         ⌛ TCS34725 - <small>RGB + Color Temp🎨 [3.3V / 5V / I2C]</small><br>
         ❌ VEML7700 - <small>Lux (HP / Human eye)☀️ [3.3V / I2C]</small>
       </div>
