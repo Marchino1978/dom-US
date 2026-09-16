@@ -90,6 +90,7 @@
 │       ├── backup_supabase.yml
 │       └── monthly_report.yml
 ├── img/
+│   ├── 404.jpeg
 │   ├── display.jpeg
 │   ├── esp32-c3-zero-front.jpg
 │   ├── esp32-c3-zero-rear.jpg
@@ -125,12 +126,13 @@
 ├── stl/
 │   ├── index.html
 │   └── README.md
+├── 404.html
 ├── _config.yml
 ├── .gitignore
 ├── project-tree.txt
 ├── README.md
 └── robots.txt
 
-23 directories, 108 files
+23 directories, 110 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
