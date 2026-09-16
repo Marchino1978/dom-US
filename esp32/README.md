@@ -41,7 +41,7 @@ For more information, check the official <strong>Waveshare product page</strong>
 
 <div align="center">
 
-✅ Verified & Working &nbsp;&nbsp;|&nbsp;&nbsp; ⌛ Testing in Progress &nbsp;&nbsp;|&nbsp;&nbsp; ❌ Planned / To Test &nbsp;&nbsp;|&nbsp;&nbsp; 🗑️ Discarded / Not Used 
+✅ Verified & Working | ⌛ Testing in Progress | ❌ Planned / To Test | 🗑️ Discarded / Not Used 
 
 </div>
 
