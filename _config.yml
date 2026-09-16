@@ -17,6 +17,8 @@ exclude:
   - scripts/
   - src/
   - txt/
+  - "img/README.md"
+  - "stl/README.md"
 
 defaults:
   - scope:
