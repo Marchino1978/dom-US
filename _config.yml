@@ -13,7 +13,6 @@ exclude:
   - backup_LOG/
   - backup_SQL/
   - data/
-  - public/
   - scripts/
   - src/
   - txt/
