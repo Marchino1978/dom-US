@@ -8,3 +8,22 @@ baseurl: "/dom-US"
 plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
+
+exclude:
+  - backup_LOG/
+  - backup_SQL/
+  - data/
+  - public/
+  - scripts/
+  - src/
+  - txt/
+
+defaults:
+  - scope:
+      path: "img"
+    values:
+      sitemap: false
+  - scope:
+      path: "stl"
+    values:
+      sitemap: false
