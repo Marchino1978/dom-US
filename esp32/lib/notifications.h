@@ -11,6 +11,7 @@
 #include "storage_cloud.h"
 
 extern bool alarmEnabled;
+extern bool alarmTriggered;
 extern Preferences preferences;
 
 inline void getCurrentIsoTimestamp(char* buffer, size_t maxLen) {
@@ -115,6 +116,21 @@ inline void checkTelegramUpdates() {
           sendLogToSupabase(ts, "⚪", "ALARM DISARMED by user");
         }
       } 
+      else if (text == "/reset" || text == "reset") {
+        getCurrentIsoTimestamp(ts, sizeof(ts));
+
+        if (!alarmEnabled) {
+          sendTelegramMessage("ℹ️ *ALARM IS OFF*, nothing to reset");
+          sendLogToSupabase(ts, "⚪", "RESET requested but ALARM is OFF");
+        } else if (!alarmTriggered) {
+          sendTelegramMessage("ℹ️ *ALARM NOT TRIGGERED*, nothing to reset");
+          sendLogToSupabase(ts, "⚪", "RESET requested but ALARM not triggered");
+        } else {
+          alarmTriggered = false;
+          sendTelegramMessage("🟢 *ALARM RESET*, system re-armed");
+          sendLogToSupabase(ts, "⚪", "ALARM RESET by user, remains ARMED");
+        }
+      }
       else if (text == "/status" || text == "status") {
         getCurrentIsoTimestamp(ts, sizeof(ts));
         sendLogToSupabase(ts, "⚪", "ALARM STATUS requested by user");

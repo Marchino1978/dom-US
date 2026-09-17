@@ -23,7 +23,9 @@ enum AlarmState {
 
 static AlarmState currentAlarmState = STATE_IDLE;
 static unsigned long preAlarmStartTime = 0;
+static unsigned long triggeredStartTime = 0;
 const unsigned long preAlarmWindowMs = 5000;
+const unsigned long autoResetMs = 300000;
 
 void getFormattedTimestamp(char* buffer, size_t maxLen) {
   struct tm timeinfo;
@@ -74,7 +76,14 @@ void checkAlarmSystem() {
   // ----------------------------------------------------
   // CASE 2: ALARM ENABLED (ON)
   // ----------------------------------------------------
-  if (alarmTriggered) return;
+  if (alarmTriggered) {
+    if (millis() - triggeredStartTime > autoResetMs) {
+      alarmTriggered = false;
+      sendTelegramMessage("🟢 *ALARM AUTO-RESET*, system re-armed");
+      sendLogToSupabase(ts, "⚪", "ALARM AUTO-RESET after timeout, remains ARMED");
+    }
+    return;
+  }
 
   int triggeredCount = (trigMotion ? 1 : 0) + (trigDistance ? 1 : 0) + (trigAddon ? 1 : 0);
 
@@ -83,6 +92,7 @@ void checkAlarmSystem() {
       if (anyTriggered) {
         if (activeSensorsCount <= 1) {
           alarmTriggered = true;
+          triggeredStartTime = millis();
           sendLogToSupabase(ts, "🔴", "🚨 ALARM - INTRUSION DETECTED");
           sendTelegramMessage("🚨 *ALARM* - INTRUSION DETECTED");
           sendLogToSupabase(ts, "⚪", "📁 ALARM sent to user");
@@ -98,6 +108,7 @@ void checkAlarmSystem() {
       if (triggeredCount >= 2 || (activeSensorsCount == 1 && triggeredCount >= 1)) {
         currentAlarmState = STATE_IDLE;
         alarmTriggered = true;
+        triggeredStartTime = millis();
         
         sendLogToSupabase(ts, "🔴", "🚨 ALARM - INTRUSION DETECTED");
         sendTelegramMessage("🚨 *ALARM* - INTRUSION DETECTED");
