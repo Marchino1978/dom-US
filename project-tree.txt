@@ -96,7 +96,7 @@
 │   ├── esp32-c3-zero-rear.jpg
 │   ├── esp32-s3-zero-front.jpg
 │   ├── esp32-s3-zero-rear.jpg
-│   ├── index.html
+│   ├── index.md
 │   ├── ino_lib.png
 │   ├── monthly_report_chart.png
 │   ├── monthly_report_table.png
@@ -124,9 +124,9 @@
 │   ├── monthly_report.py
 │   └── README.md
 ├── stl/
-│   ├── index.html
+│   ├── index.md
 │   └── README.md
-├── 404.html
+├── 404.md
 ├── _config.yml
 ├── .gitignore
 ├── project-tree.txt
