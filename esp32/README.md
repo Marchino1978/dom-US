@@ -182,34 +182,12 @@ available soon and ready for implementation
       </a>
     </td>
     <td>
-      <a href="../">
+      <a href="./">
         <img src="https://capsule-render.vercel.app/api?type=pulse&height=750&width=750&color=7928ca&text=go%20to%20GALLERY&fontSize=75&fontColor=00f5ff" width="250">
       </a>
     </td>
   </tr>
 </table>
-
-
-<table align="center" cellspacing="0" cellpadding="0">
-  <tr>
-    <td>
-      <a href="../README.md">
-        <img src="https://capsule-render.vercel.app/api?type=pulse&height=750&width=750&color=7928ca&text=go%20to%20GALLERY&fontSize=75&fontColor=00f5ff" width="250">
-      </a>
-    </td>
-    <td>
-      <a href="./>
-        <img src="https://capsule-render.vercel.app/api?type=pulse&height=750&width=750&color=7928ca&text=go%20to%20GALLERY&fontSize=75&fontColor=00f5ff" width="250">
-      </a>
-    </td>
-    <td>
-      <a href="../>
-        <img src="https://capsule-render.vercel.app/api?type=pulse&height=750&width=750&color=7928ca&text=go%20to%20GALLERY&fontSize=75&fontColor=00f5ff" width="250">
-      </a>
-    </td>
-  </tr>
-</table>
-
 
 <!-- 
 HTML, supabase, github, raspberry, esp32, telegram, dashboard, sql, charts, iot, smarthome-iot, home-automation, supabase-postgresql-integration, raspberry-pi-400-project, domotic, arduino-ide, data-logger, embedded-cpp, iot-dashboard, power-outage-monitoring, security-alarm, smart-home, telegram-bot, esp32-c3, esp32-c3-zero
