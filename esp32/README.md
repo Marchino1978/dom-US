@@ -181,13 +181,11 @@ available soon and ready for implementation
         <img src="https://capsule-render.vercel.app/api?type=pulse&height=750&width=750&color=7928ca&text=go%20to%20GALLERY&fontSize=75&fontColor=00f5ff" width="250">
       </a>
     </td>
-
     <td>
       <a href="../">
         <img src="https://capsule-render.vercel.app/api?type=pulse&height=750&width=750&color=7928ca&text=go%20to%20GALLERY&fontSize=75&fontColor=00f5ff" width="250">
       </a>
     </td>
-
   </tr>
 </table>
 
