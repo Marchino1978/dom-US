@@ -15,6 +15,7 @@
 │   ├── report_2026_08.csv
 │   └── report_2026_08.png
 ├── diagrams/
+│   ├── logic_diagrams.txt
 │   └── README.md
 ├── esp32/
 │   ├── lib/
@@ -135,6 +136,6 @@
 ├── README.md
 └── robots.txt
 
-24 directories, 111 files
+24 directories, 112 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
