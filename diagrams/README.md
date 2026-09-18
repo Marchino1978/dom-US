@@ -254,6 +254,75 @@ DETAIL SCHEMA - BLACKOUT / CONNECTION
   |    bulk send backlog    |
   +-------------------------+
 
+
+
+****************************************
+WIRING COLOR LEGEND
+****************************************
+
+╔══════════════════════════════════════════════════════════════════╦═════════════╗
+║ USE / CATEGORY                                                   ║ CABLE COLOR ║
+╠══════════════════════════════════════════════════════════════════╬═════════════╣
+║ POWER LINES                                                      ║             ║
+║ Positive Power Supply (VCC / 3.3V / 5V)                          ║         Red ║ 🟥
+║ Ground / GND                                                     ║       Black ║ ⬛
+╠══════════════════════════════════════════════════════════════════╬═════════════╣
+║ SIGNAL LINES                                                     ║             ║
+║ Clock signals (SCL / SCK) or PWM signals                         ║      Yellow ║ 🟨
+╠══════════════════════════════════════════════════════════════════╬═════════════╣
+║ DATA LINES                                                       ║             ║
+║ Data lines (SDA / MOSI) or analog signals                        ║       Green ║ 🟩
+║ Receive data lines (RX) or negative power lines                  ║        Blue ║ 🟦
+║ Transmit data lines (TX) or reset                                ║      Orange ║ 🟧
+╠══════════════════════════════════════════════════════════════════╬═════════════╣
+║ GENERAL PURPOSE LINES                                            ║             ║
+║ Generic data lines (GPIO) or enable/chip select pins (Enable/CS) ║       White ║ ⬜
+║ Generic data lines (GPIO) or enable/chip select pins (Enable/CS) ║       Brown ║ 🟫
+║ Generic data lines (GPIO) or enable/chip select pins (Enable/CS) ║      Purple ║ 🟪
+║ Generic data lines (GPIO) or enable/chip select pins (Enable/CS) ║        Gray ║ ⚫
+╚══════════════════════════════════════════════════════════════════╩═════════════╝
+
+
+
+****************************************
+PLUG/JACK WIRING
+****************************************
+
+╔══════════════════════════════════════════╦══════════╦══════════════════╗
+║ FUNCTION                                 ║ RJ45 PIN ║ T568B COLOR      ║
+╠══════════════════════════════════════════╬══════════╬══════════════════╣
+║ Positive Power Supply (VCC 3.3V)         ║ Pin 1    ║ White-Orange     ║ ⬜🟧
+║ I2C Data Bus (SDA) - BME280 / VEML7700   ║ Pin 2    ║ Orange           ║ 🟧🟧
+║ Ground Reference (GND)                   ║ Pin 3    ║ White-Green      ║ ⬜🟩
+║ Serial Receive Line (RX) - US-100        ║ Pin 4    ║ Blue             ║ 🟦🟦
+║ Serial Transmit Line (TX) - US-100       ║ Pin 5    ║ White-Blue       ║ ⬜🟦
+║ I2C Clock Bus (SCL) - BME280 / VEML7700  ║ Pin 6    ║ Green            ║ 🟩🟩
+║ Digital PIR Signal (OUT) - AM312         ║ Pin 7    ║ White-Brown      ║ ⬜🟫
+║ Dedicated PIR Ground (GND) - AM312       ║ Pin 8    ║ Brown            ║ 🟫🟫
+╚══════════════════════════════════════════╩══════════╩══════════════════╝
+
+
+
+****************************************
+CABLE PAIRS SCHEME
+****************************************
+
+ PAIR 1
+ ⬜🟦 Serial Transmit Line (TX) - US-100
+ 🟦🟦 Serial Receive Line (RX) - US-100
+
+ PAIR 2
+ ⬜🟧 Positive Power Supply (VCC 3.3V)
+ 🟧🟧 I2C Data Bus (SDA) - BME280 / VEML7700
+
+ PAIR 3
+ ⬜🟩 Ground Reference (GND)
+ 🟩🟩 I2C Clock Bus (SCL) - BME280 / VEML7700
+
+ PAIR 4
+ ⬜🟫 Digital PIR Signal (OUT) - AM312
+ 🟫🟫 Dedicated PIR Ground (GND) - AM312
+
 ```
 {% endraw %}
 
