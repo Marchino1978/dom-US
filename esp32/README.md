@@ -1,7 +1,3 @@
----
-permalink: /
----
-
 <p align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=0:ff0080,100:7928ca&fontColor=00f5ff&height=100&section=header&text=ESP32&fontSize=50"
   alt="ESP32" />
@@ -176,7 +172,7 @@ available soon and ready for implementation
 <table align="center" cellspacing="0" cellpadding="0">
   <tr>
     <td>
-      <a href="../">
+       <a href="../README.md">
         <img src="https://capsule-render.vercel.app/api?type=pulse&height=750&width=750&color=7928ca&text=go%20to%20HOME&fontSize=75&fontColor=00f5ff" width="250">
       </a>
     </td>
