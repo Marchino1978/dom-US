@@ -13,7 +13,7 @@ exclude:
   - backup_LOG/
   - backup_SQL/
   - data/
-#  - diagrams/
+  - diagrams/
   - scripts/
   - src/
   - txt/
@@ -21,10 +21,6 @@ exclude:
   - "stl/README.md"
 
 defaults:
-  - scope:
-      path: "diagrams"
-    values:
-      sitemap: false
   - scope:
       path: "img"
     values:
