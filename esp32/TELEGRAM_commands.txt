@@ -1,12 +1,3 @@
-**/off** /on- ALARM OFF
-**/on** - ALARM ON
-**/reset** - ALARM RESET
-**/status** - ALARM STATUS
-
-
-
-
-
 off - ALARM OFF
 on - ALARM ON
 reset - ALARM RESET
