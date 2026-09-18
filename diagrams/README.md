@@ -9,6 +9,20 @@ Logic Diagrams, Schematics and Wiring
 
 </div>
 
+<style>
+  /* Forza la pagina a usare più spazio orizzontale per i diagrammi */
+  .page-content, .wrapper, main, article {
+    max-width: 1200px !important;
+    width: 95% !important;
+  }
+  /* Rimpicciolisce leggermente il font dell'ASCII art per farlo stare negli schermi più piccoli */
+  pre code {
+    font-size: 13px !important;
+    white-space: pre !important;
+    overflow-x: auto !important;
+  }
+</style>
+
 {% raw %}
 ```text
 
