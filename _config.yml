@@ -11,9 +11,9 @@ plugins:
 
 exclude:
   - backup_LOG/
-#  - backup_SQL/
+  - backup_SQL/
   - data/
-  - diagrams/
+#  - diagrams/
   - scripts/
   - src/
   - txt/
