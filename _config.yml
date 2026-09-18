@@ -11,7 +11,7 @@ plugins:
 
 exclude:
   - backup_LOG/
-  - backup_SQL/
+#  - backup_SQL/
   - data/
   - diagrams/
   - scripts/
@@ -21,6 +21,10 @@ exclude:
   - "stl/README.md"
 
 defaults:
+  - scope:
+      path: "diagrams"
+    values:
+      sitemap: false
   - scope:
       path: "img"
     values:
