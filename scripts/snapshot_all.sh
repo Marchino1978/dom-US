@@ -19,6 +19,7 @@ dump_folder() {
     [[ "$nome_file" == "README.md" ]] && continue
     [[ "$nome_file" == "TODO.md" ]] && continue
     [[ "$nome_file" == "config.h" ]] && continue
+    [[ "$nome_file" == "test.py" ]] && continue
 
     echo "# $file" >> "$output"
     echo "----------------------------------------" >> "$output"

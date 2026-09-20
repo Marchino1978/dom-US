@@ -72,3 +72,4 @@ data/*.json.bak
 img/LOG.png
 img/sql_LOG.png
 src/test/
+scripts/test.py
