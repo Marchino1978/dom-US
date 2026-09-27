@@ -99,8 +99,6 @@
 │   ├── display.jpeg
 │   ├── esp32-c3-zero-front.jpg
 │   ├── esp32-c3-zero-rear.jpg
-│   ├── esp32-s3-zero-front.jpg
-│   ├── esp32-s3-zero-rear.jpg
 │   ├── index.md
 │   ├── ino_lib.png
 │   ├── monthly_report_chart.png
@@ -140,6 +138,6 @@
 ├── README.md
 └── robots.txt
 
-24 directories, 116 files
+24 directories, 114 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
