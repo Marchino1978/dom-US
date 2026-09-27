@@ -10,7 +10,7 @@ sitemap: false
 
 ![ACCESS UNAUTHORIZED - Lab CLOSED]({{ '/img/UNAUTHORIZED.jpeg' | relative_url }})
 
-<meta http-equiv="refresh" content="3; url={{ '/' | relative_url }}">
+<meta http-equiv="refresh" content="5; url={{ '/' | relative_url }}">
 
 <script>
     setTimeout(function() {
