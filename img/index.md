@@ -6,7 +6,7 @@ sitemap: false
 
 # 🚫ACCESS UNAUTHORIZED🚫
 
-### You are being redirected to the 🏠HOME PAGE🏠 in 3 seconds...
+### You are being redirected to the 🏠HOME PAGE🏠 in 5 seconds...
 
 ![ACCESS UNAUTHORIZED - Lab CLOSED]({{ '/img/UNAUTHORIZED.jpeg' | relative_url }})
 
@@ -15,5 +15,5 @@ sitemap: false
 <script>
     setTimeout(function() {
         window.location.href = "{{ '/' | relative_url }}";
-    }, 3000);
+    }, 5000);
 </script>
