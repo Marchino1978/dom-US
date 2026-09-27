@@ -4,9 +4,9 @@
 │   ├── backup_LOG_2026_08.sql
 │   └── README.md
 ├── backup_SQL/
-│   ├── backup_supabase_2026_08_31.sql
 │   ├── backup_supabase_2026_09_07.sql
 │   ├── backup_supabase_2026_09_14.sql
+│   ├── backup_supabase_2026_09_21.sql
 │   └── README.md
 ├── data/
 │   ├── README.md
@@ -113,6 +113,7 @@
 │   ├── stl.png
 │   ├── telegram_alarm_status.jpeg
 │   ├── telegram_blackout_connection.jpeg
+│   ├── UNAUTHORIZED.jpeg
 │   ├── web-LOG.png
 │   └── work-in-progress.png
 ├── public/
@@ -139,6 +140,6 @@
 ├── README.md
 └── robots.txt
 
-24 directories, 115 files
+24 directories, 116 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***

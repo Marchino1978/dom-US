@@ -8,6 +8,8 @@ sitemap: false
 
 ### You are being redirected to the 🏠HOME PAGE🏠 in 3 seconds...
 
+![ACCESS UNAUTHORIZED - Lab CLOSED]({{ '/img/UNAUTHORIZED.jpeg' | relative_url }})
+
 <meta http-equiv="refresh" content="3; url={{ '/' | relative_url }}">
 
 <script>
