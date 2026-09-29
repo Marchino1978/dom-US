@@ -1,15 +1,9 @@
-// ======================================================
-//  DEMO SKETCH Tested and fully working on: 
-//  Waveshare ESP32-C3 mini
-//  https://www.waveshare.com/esp32-c3-zero.htm
-// ======================================================
 #include <WiFi.h>
 #include <Preferences.h>
 #include <time.h>
 
 #include "config.h"
 #include "lib/checks.h"
-
 #include "lib/language.h"
 #include "lib/display.h"
 #include "lib/sensors.h"
@@ -17,16 +11,10 @@
 #include "lib/storage_cloud.h"
 #include "lib/alarm.h"
 
-// ======================================================
-//  GLOBAL ALARM & SYSTEM VARIABLES
-// ======================================================
 bool alarmEnabled = false;
 bool alarmTriggered = false;
 Preferences preferences;
 
-// ======================================================
-//  WIFI STATE MACHINE AND TIMERS
-// ======================================================
 enum WifiState {
   WIFI_IDLE,
   WIFI_CONNECTING_HOME,
@@ -42,11 +30,9 @@ unsigned long lastWifiRetry    = 0;
 const unsigned long wifiTimeoutMs    = 15000;
 const unsigned long wifiRetryDelayMs = 30000;
 
-// ======================================================
-//  NTP SYNCHRONIZATION
-// ======================================================
 void syncNtp() {
   showMessage(TXT_WIFI_CONN, TXT_NTP_CONN);
+  Serial.println("NTP SYNC START");
   delay(1000);
   
   configTzTime("CET-1CEST,M3.5.0,M10.5.0/3", "pool.ntp.org", "time.nist.gov");
@@ -60,11 +46,13 @@ void syncNtp() {
 
   if (!getLocalTime(&timeinfo)) {
     showMessage(TXT_WIFI_CONN, TXT_NTP_FAIL);
+    Serial.println("NTP SYNC FAIL");
     delay(3000);
     return;
   }
 
   showMessage(TXT_WIFI_CONN, TXT_NTP_OK);
+  Serial.println("NTP SYNC OK");
   delay(1500);
 
   char ora[32];
@@ -79,9 +67,6 @@ void syncNtp() {
   delay(2000);
 }
 
-// ======================================================
-//  WIFI START
-// ======================================================
 void wifiStart(const char* ssid, const char* pass, WifiState nextState, const char* msg) {
   WiFi.disconnect(true, true);
   WiFi.mode(WIFI_STA);
@@ -92,12 +77,11 @@ void wifiStart(const char* ssid, const char* pass, WifiState nextState, const ch
   wifiState = nextState;
 
   showMessage(TXT_WIFI_CONN, msg);
+  Serial.print("WIFI TRY: ");
+  Serial.println(ssid);
   delay(1000);
 }
 
-// ======================================================
-//  WIFI STATE MACHINE UPDATE
-// ======================================================
 void wifiUpdateState() {
   wl_status_t st = WiFi.status();
   switch (wifiState) {
@@ -110,10 +94,12 @@ void wifiUpdateState() {
       if (st == WL_CONNECTED) {
         wifiState = WIFI_CONNECTED;
         showMessage(TXT_WIFI_CONN, TXT_WIFI_OK_HOME);
+        Serial.println("WIFI CONNECTED: HOME");
         delay(2000);
         syncNtp();
         handleBootSequence();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
+        Serial.println("WIFI HOME TIMEOUT, trying OFFICE");
         wifiStart(ssid_office, pass_office, WIFI_CONNECTING_OFFICE, TXT_TRY_OFFICE);
       }
       break;
@@ -122,10 +108,12 @@ void wifiUpdateState() {
       if (st == WL_CONNECTED) {
         wifiState = WIFI_CONNECTED;
         showMessage(TXT_WIFI_OK_OFFICE, "");
+        Serial.println("WIFI CONNECTED: OFFICE");
         delay(2000);
         syncNtp();
         handleBootSequence();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
+        Serial.println("WIFI OFFICE TIMEOUT, trying HOTSPOT");
         wifiStart(ssid_hotspot, pass_hotspot, WIFI_CONNECTING_HOTSPOT, TXT_TRY_HOTSPOT);
       }
       break;
@@ -134,6 +122,7 @@ void wifiUpdateState() {
       if (st == WL_CONNECTED) {
         wifiState = WIFI_CONNECTED;
         showMessage(TXT_WIFI_OK_HOTSPOT, "");
+        Serial.println("WIFI CONNECTED: HOTSPOT");
         delay(2000);
         syncNtp();
         handleBootSequence();
@@ -141,6 +130,7 @@ void wifiUpdateState() {
         wifiState = WIFI_FAIL;
         lastWifiRetry = millis();
         showMessage(TXT_WIFI_CONN, TXT_WIFI_FAIL);
+        Serial.println("WIFI HOTSPOT TIMEOUT, all attempts FAILED");
       }
       break;
 
@@ -149,20 +139,19 @@ void wifiUpdateState() {
         wifiState = WIFI_FAIL;
         lastWifiRetry = millis();
         showMessage(TXT_WIFI_CONN, TXT_WIFI_LOST);
+        Serial.println("WIFI CONNECTION LOST");
       }
       break;
 
     case WIFI_FAIL:
       if (millis() - lastWifiRetry > wifiRetryDelayMs) {
+        Serial.println("WIFI RETRY: HOME");
         wifiStart(ssid_home, pass_home, WIFI_CONNECTING_HOME, TXT_TRY_HOME);
       }
       break;
   }
 }
 
-// ======================================================
-//  HOURLY TELEMETRY TASK
-// ======================================================
 void checkHourlyTask(struct tm* timeinfo) {
   static int lastExecutedHour = -1;
 
@@ -183,10 +172,6 @@ void checkHourlyTask(struct tm* timeinfo) {
   }
 }
 
-// ======================================================
-//  CONTINUOUS CLIMATE DISPLAY TASK (independent of the
-//  hourly Supabase upload above)
-// ======================================================
 void checkClimateDisplayTask() {
   #if defined(MODULE_TELEMETRY_ACTIVE) && defined(MODULE_DISPLAY_ACTIVE)
     static unsigned long lastRun = 0;
@@ -197,8 +182,6 @@ void checkClimateDisplayTask() {
     bool justWokeUp = activeNow && !wasActive;
     wasActive = activeNow;
 
-    // Refresh immediately on the wake transition (instant data on wake-up),
-    // otherwise stick to the regular 60s cadence.
     if (!justWokeUp && (millis() - lastRun < climateDisplayIntervalMs)) return;
     lastRun = millis();
 
@@ -210,11 +193,10 @@ void checkClimateDisplayTask() {
   #endif
 }
 
-// ======================================================
-//  SETUP AND MAIN LOOP
-// ======================================================
 void setup() {
   Serial.begin(115200);
+  delay(1000);
+  Serial.println("BOOT START");
 
   preferences.begin("domus-alarm", false);
   alarmEnabled = preferences.getBool("alarm_state", false);

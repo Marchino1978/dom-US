@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../config.h"
  
 #if defined(DISPLAY_LCD_16X2)

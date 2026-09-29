@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../config.h"
 
 #if defined(DISPLAY_TFT_ST7789)

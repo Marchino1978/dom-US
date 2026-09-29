@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../config.h"
 
 #if defined(DISPLAY_OLED_SSD1306)

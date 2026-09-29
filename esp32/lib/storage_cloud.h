@@ -5,7 +5,10 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 #include <time.h>
+
 #include "../config.h"
+
+void sendTelegramMessage(String message);
 
 struct OfflineReading {
   char timestamp[25];
@@ -56,6 +59,9 @@ bool sendToSupabase(const char* ts, float temp, float hum, float press) {
   int httpCode = http.POST(body);
   http.end();
 
+  Serial.print("SUPABASE sensor_data POST code: ");
+  Serial.println(httpCode);
+
   return (httpCode == 200 || httpCode == 201);
 }
 
@@ -83,6 +89,9 @@ bool sendLogToSupabaseDirect(const char* timestamp, const char* severity, const 
 
   int httpCode = http.POST(body);
   http.end();
+
+  Serial.print("SUPABASE logs POST code: ");
+  Serial.println(httpCode);
 
   return (httpCode == 200 || httpCode == 201);
 }
@@ -175,6 +184,22 @@ void sendHeartbeat() {
   if (millis() - lastPing < 60000 && lastPing != 0) return;
   lastPing = millis();
 
+  Serial.println("HEARTBEAT: sending ping");
+
+  struct tm timeinfo;
+  char ts[25];
+  if (getLocalTime(&timeinfo)) {
+    snprintf(ts, sizeof(ts), "%04d-%02d-%02dT%02d:%02d:%02dZ",
+             timeinfo.tm_year + 1900,
+             timeinfo.tm_mon + 1,
+             timeinfo.tm_mday,
+             timeinfo.tm_hour,
+             timeinfo.tm_min,
+             timeinfo.tm_sec);
+  } else {
+    strncpy(ts, "2026-09-01T00:00:00Z", sizeof(ts));
+  }
+
   WiFiClientSecure client;
   client.setInsecure();
 
@@ -187,17 +212,22 @@ void sendHeartbeat() {
   http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
 
   StaticJsonDocument<100> doc;
-  doc["last_ping"] = "now()";
+  doc["last_ping"] = ts;
 
   String body;
   serializeJson(doc, body);
 
-  http.PATCH(body);
+  int httpCode = http.PATCH(body);
   http.end();
+
+  Serial.print("HEARTBEAT PATCH code: ");
+  Serial.println(httpCode);
 }
 
 void handleBootSequence() {
   if (WiFi.status() != WL_CONNECTED) return;
+
+  Serial.println("BOOT SEQUENCE: checking last_ping");
 
   flushRamBuffer();
   flushLogBuffer();
@@ -213,6 +243,9 @@ void handleBootSequence() {
   http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
 
   int httpCode = http.GET();
+  Serial.print("BOOT SEQUENCE GET code: ");
+  Serial.println(httpCode);
+
   if (httpCode == 200) {
     String payload = http.getString();
     DynamicJsonDocument doc(512);
@@ -220,17 +253,19 @@ void handleBootSequence() {
 
     if (doc.is<JsonArray>() && doc.size() > 0) {
       String lastPingStr = doc[0]["last_ping"].as<String>();
+      Serial.print("last_ping raw: ");
+      Serial.println(lastPingStr);
       
       if (lastPingStr.length() > 10) {
         struct tm oldTime = {0};
         int y, m, d, h, min, s;
         if (sscanf(lastPingStr.c_str(), "%d-%d-%dT%d:%d:%d", &y, &m, &d, &h, &min, &s) == 6) {
           oldTime.tm_year = y - 1900;
-          oldTime.tm_mon  = m - 1;
+          oldTime.tm_mon = m - 1;
           oldTime.tm_mday = d;
           oldTime.tm_hour = h;
-          oldTime.tm_min  = min;
-          oldTime.tm_sec  = s;
+          oldTime.tm_min = min;
+          oldTime.tm_sec = s;
 
           time_t oldEpoch = mktime(&oldTime);
           
@@ -239,7 +274,11 @@ void handleBootSequence() {
             time_t nowEpoch = mktime(&nowInfo);
             long diffSec = nowEpoch - oldEpoch;
 
+            Serial.print("diffSec: ");
+            Serial.println(diffSec);
+
             if (diffSec > 600) {
+              Serial.println("BLACKOUT DETECTED");
               int totMinutes = diffSec / 60;
               
               int days = totMinutes / 1440;
@@ -267,10 +306,12 @@ void handleBootSequence() {
                        nowInfo.tm_hour, nowInfo.tm_min, nowInfo.tm_sec);
 
               snprintf(telegramMsg, sizeof(telegramMsg),
-                "⚡ BLACKOUT DETECTED\n"
+                "⚡ *BLACKOUT DETECTED*\n"
+                "```\n"
                 "From : %s\n"
                 "To   : %s\n"
-                "TOT  : %s",
+                "TOT  : %s\n"
+                "```",
                 fromStr, toStr, totStr
               );
 
@@ -280,6 +321,7 @@ void handleBootSequence() {
               );
 
               sendLogToSupabase(currentTs, "🔴", supabaseMsg);
+              sendTelegramMessage(telegramMsg);
             }
           }
         }

@@ -3,9 +3,7 @@
 #include "../config.h"
 #include "checks.h"
 
-#ifdef MODULE_TELEMETRY_ACTIVE
-  #include "sensors/sensor_climate.h"
-#endif
+#include "sensors/sensor_climate.h"
 
 #if defined(SENSOR_PIR_AM312) || defined(SENSOR_PIR_HCSR501) || \
     defined(SENSOR_RADAR_RCWL0516) || defined(SENSOR_MMWAVE_LD2410) || \
@@ -19,11 +17,7 @@
   #include "sensors/sensor_distance.h"
 #endif
 
-#if defined(SENSOR_LIGHT_BH1750) || defined(SENSOR_LIGHT_LDR) || \
-    defined(SENSOR_COLOR_TCS34725) || defined(SENSOR_GAS_MQ135) || \
-    defined(SENSOR_LIGHT_VEML7700)
-  #include "sensors/sensor_ambient.h"
-#endif
+#include "sensors/sensor_ambient.h"
 
 inline void initSensors() {
   #ifdef MODULE_TELEMETRY_ACTIVE

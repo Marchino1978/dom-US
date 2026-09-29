@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../config.h"
 #include "checks.h"
 
@@ -79,5 +80,9 @@ inline void refreshClimateDisplay(float temp, float hum, float press) {
 
   showMessage(tempStr + "C  " + humStr + "%", pressStr + "hPa");
 }
+
+#else
+
+inline void showMessage(const String& line1, const String& line2 = "") {}
 
 #endif // MODULE_DISPLAY_ACTIVE

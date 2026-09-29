@@ -6,6 +6,7 @@
 #include <ArduinoJson.h>
 #include <time.h>
 #include <Preferences.h>
+
 #include "../config.h"
 #include "sensors.h"
 #include "storage_cloud.h"
@@ -148,11 +149,18 @@ inline void checkTelegramUpdates() {
         String icona_stato = alarmEnabled ? "🟢" : "🔴";
         String stato = alarmEnabled ? "ON" : "OFF";
 
-        String statusMsg = "*ALARM STATUS:* " + icona_stato + " " + stato + "\n";
-        statusMsg += "`🌡️ Temp  :   " + tempStr + " °C`\n";
-        statusMsg += "`💧 Hum   :   " + humStr + " %`\n";
-        statusMsg += "`🌀 Press : " + pressStr + " hPa`\n";
-        statusMsg += "`💡 Light :   " + luxStr + " Lux`";
+        char rigaTemp[25], rigaHum[25], rigaPress[25], rigaLux[25];
+
+        snprintf(rigaTemp,  sizeof(rigaTemp),  "`%-5s : %4s %-3s`", "Temp",  tempStr.c_str(),  "°C");
+        snprintf(rigaHum,   sizeof(rigaHum),   "`%-5s : %4s %-3s`", "Hum",   humStr.c_str(),   "%");
+        snprintf(rigaPress, sizeof(rigaPress), "`%-5s : %4s %-3s`", "Press", pressStr.c_str(), "hPa");
+        snprintf(rigaLux,   sizeof(rigaLux),   "`%-5s : %4s %-3s`", "Light", luxStr.c_str(),   "Lux");
+
+        String statusMsg = "*ALARM STATUS:* " + icona_stato + " *" + stato + "*\n\n";
+        statusMsg += "🌡️ " + String(rigaTemp) + "\n";
+        statusMsg += "💧 " + String(rigaHum) + "\n";
+        statusMsg += "🌀 " + String(rigaPress) + "\n";
+        statusMsg += "💡 " + String(rigaLux);
 
         sendTelegramMessage(statusMsg);
     
