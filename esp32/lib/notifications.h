@@ -121,15 +121,15 @@ inline void checkTelegramUpdates() {
         getCurrentIsoTimestamp(ts, sizeof(ts));
 
         if (!alarmEnabled) {
-          sendTelegramMessage("ℹ️ *ALARM IS OFF*, nothing to reset");
+          sendTelegramMessage("ℹ️ *ALARM IS OFF* - nothing to reset");
           sendLogToSupabase(ts, "⚪", "RESET requested but ALARM is OFF");
         } else if (!alarmTriggered) {
-          sendTelegramMessage("ℹ️ *ALARM NOT TRIGGERED*, nothing to reset");
+          sendTelegramMessage("ℹ️ *ALARM NOT TRIGGERED* - nothing to reset");
           sendLogToSupabase(ts, "⚪", "RESET requested but ALARM not triggered");
         } else {
           alarmTriggered = false;
-          sendTelegramMessage("🟢 *ALARM RESET*, system re-armed");
-          sendLogToSupabase(ts, "⚪", "ALARM RESET by user, remains ARMED");
+          sendTelegramMessage("🟢 *ALARM RESET* by user - system re-armed");
+          sendLogToSupabase(ts, "⚪", "ALARM RESET by user - system re-armed");
         }
       }
       else if (text == "/status" || text == "status") {

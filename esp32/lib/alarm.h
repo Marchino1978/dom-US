@@ -80,8 +80,8 @@ void checkAlarmSystem() {
   if (alarmTriggered) {
     if (millis() - triggeredStartTime > autoResetMs) {
       alarmTriggered = false;
-      sendTelegramMessage("🟢 *ALARM AUTO-RESET*, system re-armed");
-      sendLogToSupabase(ts, "⚪", "ALARM AUTO-RESET after timeout, remains ARMED");
+      sendTelegramMessage("🟢 *ALARM AUTO-RESET* - system re-armed");
+      sendLogToSupabase(ts, "⚪", "ALARM AUTO-RESET - system re-armed");
     }
     return;
   }
