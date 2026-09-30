@@ -28,6 +28,12 @@
 #error "⚠️ BUILD BLOCKED: You can select ONLY ONE display configuration in config.h."
 #endif
 
+// Addon uniqueness check
+#if (defined(ADDON_PIR_AM312) + defined(ADDON_RADAR_RCWL0516) + \
+     defined(ADDON_LASER_VL53L0X) + defined(ADDON_LASER_VL53L1X)) > 1
+#error "⚠️ BUILD BLOCKED: You can select ONLY ONE addon configuration in config.h."
+#endif
+
 // Climate sensor uniqueness check
 #if (defined(SENSOR_AHT20) + defined(SENSOR_BME280) + defined(SENSOR_BMP280) + \
      defined(SENSOR_DHT11) + defined(SENSOR_DHT22) + defined(SENSOR_DS18B20) + \

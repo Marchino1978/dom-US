@@ -5,7 +5,6 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 #include <time.h>
-
 #include "../config.h"
 
 void sendTelegramMessage(String message);
@@ -261,11 +260,12 @@ void handleBootSequence() {
         int y, m, d, h, min, s;
         if (sscanf(lastPingStr.c_str(), "%d-%d-%dT%d:%d:%d", &y, &m, &d, &h, &min, &s) == 6) {
           oldTime.tm_year = y - 1900;
-          oldTime.tm_mon = m - 1;
+          oldTime.tm_mon  = m - 1;
           oldTime.tm_mday = d;
           oldTime.tm_hour = h;
-          oldTime.tm_min = min;
-          oldTime.tm_sec = s;
+          oldTime.tm_min  = min;
+          oldTime.tm_sec  = s;
+          oldTime.tm_isdst = -1;
 
           time_t oldEpoch = mktime(&oldTime);
           
@@ -274,6 +274,19 @@ void handleBootSequence() {
             time_t nowEpoch = mktime(&nowInfo);
             long diffSec = nowEpoch - oldEpoch;
 
+            char nowStr[25];
+            snprintf(nowStr, sizeof(nowStr), "%04d-%02d-%02dT%02d:%02d:%02d",
+                     nowInfo.tm_year + 1900, nowInfo.tm_mon + 1, nowInfo.tm_mday,
+                     nowInfo.tm_hour, nowInfo.tm_min, nowInfo.tm_sec);
+
+            Serial.print("last_ping (parsed): ");
+            Serial.println(lastPingStr);
+            Serial.print("now (local): ");
+            Serial.println(nowStr);
+            Serial.print("oldEpoch: ");
+            Serial.println((long)oldEpoch);
+            Serial.print("nowEpoch: ");
+            Serial.println((long)nowEpoch);
             Serial.print("diffSec: ");
             Serial.println(diffSec);
 
@@ -286,6 +299,7 @@ void handleBootSequence() {
               int minutes = totMinutes % 60;
 
               char fromStr[30], toStr[30], totStr[30], currentTs[30];
+              char rigaFrom[35], rigaTo[35], rigaTot[35];
               char telegramMsg[250], supabaseMsg[150];
 
               snprintf(fromStr, sizeof(fromStr), "%02d-%02d-%04d %02d:%02d", d, m, y, h, min);
@@ -305,14 +319,13 @@ void handleBootSequence() {
                        nowInfo.tm_year + 1900, nowInfo.tm_mon + 1, nowInfo.tm_mday,
                        nowInfo.tm_hour, nowInfo.tm_min, nowInfo.tm_sec);
 
+              snprintf(rigaFrom, sizeof(rigaFrom), "`%-5s: %s`", "From", fromStr);
+              snprintf(rigaTo,   sizeof(rigaTo),   "`%-5s: %s`", "To",   toStr);
+              snprintf(rigaTot,  sizeof(rigaTot),  "`%-5s: %s`", "TOT",  totStr);
+
               snprintf(telegramMsg, sizeof(telegramMsg),
-                "⚡ *BLACKOUT DETECTED*\n"
-                "```\n"
-                "From : %s\n"
-                "To   : %s\n"
-                "TOT  : %s\n"
-                "```",
-                fromStr, toStr, totStr
+                "⚡ *BLACKOUT DETECTED*\n%s\n%s\n%s",
+                rigaFrom, rigaTo, rigaTot
               );
 
               snprintf(supabaseMsg, sizeof(supabaseMsg),

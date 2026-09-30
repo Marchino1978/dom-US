@@ -106,7 +106,7 @@ void checkAlarmSystem() {
       break;
 
     case STATE_PRE_ALARM:
-      if (triggeredCount >= 2 || (activeSensorsCount == 1 && triggeredCount >= 1)) {
+      if (triggeredCount >= 2) {
         currentAlarmState = STATE_IDLE;
         alarmTriggered = true;
         triggeredStartTime = millis();
