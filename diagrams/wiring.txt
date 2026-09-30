@@ -48,7 +48,7 @@
  🟦🟦 Serial Receive Line (RX) - US-100
 
  PAIR 2
- ⬜🟧 Positive Power Supply (VCC 3.3V)
+ ⬜🟧 Positive Power Supply (VCC 3.3V)         #####SOSTITUIRE
  🟧🟧 I2C Data Bus (SDA) - BME280 / VEML7700
 
  PAIR 3
@@ -57,4 +57,4 @@
 
  PAIR 4
  ⬜🟫 Digital PIR Signal (OUT) - AM312
- 🟫🟫 Dedicated PIR Ground (GND) - AM312
+ 🟫🟫 Dedicated PIR Ground (GND) - AM312       #####SOSTITUIRE
