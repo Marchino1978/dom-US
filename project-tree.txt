@@ -2,18 +2,21 @@
 ├── backup_LOG/
 │   ├── backup_LOG_2026_07.sql
 │   ├── backup_LOG_2026_08.sql
+│   ├── backup_LOG_2026_09.sql
 │   └── README.md
 ├── backup_SQL/
-│   ├── backup_supabase_2026_09_14.sql
 │   ├── backup_supabase_2026_09_21.sql
 │   ├── backup_supabase_2026_09_28.sql
+│   ├── backup_supabase_2026_10_01.sql
 │   └── README.md
 ├── data/
 │   ├── README.md
 │   ├── report_2026_07.csv
 │   ├── report_2026_07.png
 │   ├── report_2026_08.csv
-│   └── report_2026_08.png
+│   ├── report_2026_08.png
+│   ├── report_2026_09.csv
+│   └── report_2026_09.png
 ├── diagrams/
 │   ├── led.txt
 │   ├── logic_diagrams.txt
@@ -140,6 +143,6 @@
 ├── README.md
 └── robots.txt
 
-24 directories, 116 files
+24 directories, 119 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
