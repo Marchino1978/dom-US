@@ -88,6 +88,7 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 
 #define PIN_DHT          4        // Data pin for DHT11/DHT22/DS18B20
 #define PIN_MOTION       5        // Signal pin for PIR/Radar
+#define PIN_OBSTACLE     3        // Signal pin for TE174 IR beam (active LOW)
 #define PIN_TRIG         6        // Trigger pin for Ultrasonic sensor
 #define PIN_ECHO         7        // Echo pin for Ultrasonic sensor
 #define PIN_ANALOG       1        // Analog input (LDR / MQ135)

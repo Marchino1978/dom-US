@@ -52,7 +52,11 @@ void checkAlarmSystem() {
 
   bool trigMotion   = checkMotionTriggered();
   bool trigDistance = checkDistanceTriggered();
-  bool trigAddon    = alarmEnabled ? checkAddonAlarmTriggered() : false;
+  #ifdef HAS_WAKEUP_ADDON
+    bool trigAddon  = alarmEnabled ? checkAddonAlarmTriggered() : false;
+  #else
+    bool trigAddon  = false;
+  #endif
 
   int activeSensorsCount = ACTIVE_ALARM_SENSORS;
   bool anyTriggered = (trigMotion || trigDistance || trigAddon);

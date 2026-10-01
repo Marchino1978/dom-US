@@ -82,7 +82,7 @@
 #endif
 
 // Alarm module: active if any motion/presence, distance sensor OR addon is configured.
-// A standalone addon (no dedicated alarm sensor) is enough to enable a minimal alarm.
+// An addon requires a display (see HAS_WAKEUP_ADDON check below), so it never stands alone.
 #if defined(SENSOR_PIR_AM312) || defined(SENSOR_PIR_HCSR501) || defined(SENSOR_MMWAVE_LD2410) || \
     defined(SENSOR_RADAR_RCWL0516) || defined(SENSOR_IR_TE174) || \
     defined(SENSOR_ULTRASONIC_HCSR04) || defined(SENSOR_ULTRASONIC_HCSR04P) || \
@@ -99,24 +99,33 @@
 
 // Total count of physical sensors contributing to the alarm logic (dedicated + addons).
 // Addons always count here: their alarm-trigger function is gated by alarmEnabled at runtime.
+// At most one device per category is allowed (uniqueness checks above),
+// so each category contributes 0 or 1 to the total.
 #ifdef MODULE_ALARM_ACTIVE
-  #define ACTIVE_ALARM_SENSORS ( \
-    (defined(SENSOR_PIR_AM312) ? 1 : 0) + \
-    (defined(SENSOR_PIR_HCSR501) ? 1 : 0) + \
-    (defined(SENSOR_MMWAVE_LD2410) ? 1 : 0) + \
-    (defined(SENSOR_RADAR_RCWL0516) ? 1 : 0) + \
-    (defined(SENSOR_IR_TE174) ? 1 : 0) + \
-    (defined(SENSOR_ULTRASONIC_HCSR04) ? 1 : 0) + \
-    (defined(SENSOR_ULTRASONIC_HCSR04P) ? 1 : 0) + \
-    (defined(SENSOR_ULTRASONIC_RCWL1601) ? 1 : 0) + \
-    (defined(SENSOR_ULTRASONIC_US100) ? 1 : 0) + \
-    (defined(SENSOR_LASER_VL53L0X) ? 1 : 0) + \
-    (defined(SENSOR_LASER_VL53L1X) ? 1 : 0) + \
-    (defined(ADDON_PIR_AM312) ? 1 : 0) + \
-    (defined(ADDON_RADAR_RCWL0516) ? 1 : 0) + \
-    (defined(ADDON_LASER_VL53L0X) ? 1 : 0) + \
-    (defined(ADDON_LASER_VL53L1X) ? 1 : 0) \
-  )
+  #if defined(SENSOR_PIR_AM312) || defined(SENSOR_PIR_HCSR501) || \
+      defined(SENSOR_MMWAVE_LD2410) || defined(SENSOR_RADAR_RCWL0516) || \
+      defined(SENSOR_IR_TE174)
+    #define ALARM_COUNT_MOTION 1
+  #else
+    #define ALARM_COUNT_MOTION 0
+  #endif
+
+  #if defined(SENSOR_ULTRASONIC_HCSR04) || defined(SENSOR_ULTRASONIC_HCSR04P) || \
+      defined(SENSOR_ULTRASONIC_RCWL1601) || defined(SENSOR_ULTRASONIC_US100) || \
+      defined(SENSOR_LASER_VL53L0X) || defined(SENSOR_LASER_VL53L1X)
+    #define ALARM_COUNT_DISTANCE 1
+  #else
+    #define ALARM_COUNT_DISTANCE 0
+  #endif
+
+  #if defined(ADDON_PIR_AM312) || defined(ADDON_RADAR_RCWL0516) || \
+      defined(ADDON_LASER_VL53L0X) || defined(ADDON_LASER_VL53L1X)
+    #define ALARM_COUNT_ADDON 1
+  #else
+    #define ALARM_COUNT_ADDON 0
+  #endif
+
+  #define ACTIVE_ALARM_SENSORS (ALARM_COUNT_MOTION + ALARM_COUNT_DISTANCE + ALARM_COUNT_ADDON)
 #endif
 
 // Light sensor presence (drives display dimming). Gas sensor (MQ135) excluded on purpose:
@@ -130,6 +139,10 @@
 #if defined(ADDON_PIR_AM312) || defined(ADDON_RADAR_RCWL0516) || \
     defined(ADDON_LASER_VL53L0X) || defined(ADDON_LASER_VL53L1X)
   #define HAS_WAKEUP_ADDON
+#endif
+
+#if defined(HAS_WAKEUP_ADDON) && !defined(MODULE_DISPLAY_ACTIVE)
+#error "BUILD BLOCKED: An addon requires a display to be selected in config.h."
 #endif
 
 // Automatic display profile assignment
