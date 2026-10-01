@@ -2,7 +2,7 @@ name: backup_supabase
 
 on:
   schedule:
-    - cron: '0 21 * * 1'
+    - cron: '0 20 * * 1'
   workflow_dispatch:
 
 jobs:
