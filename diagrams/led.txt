@@ -3,18 +3,13 @@
 ╔═══════════════════════════════╦═══════════════════╦═══════════════════════╦═══════════╗
 ║ EVENT                         ║ STATE             ║ PATTERN               ║ COLOR     ║
 ╠═══════════════════════════════╬═══════════════════╬═══════════════════════╬═══════════╣
-║ WIFI/SSID Searching           ║ BOOT_WIFI_SEARCH  ║ Breathe (fade in/out) ║      Blue ║ 🔵🔅🔆🔅🔵
-║ WIFI connection done          ║ WIFI_CONNECTED    ║ Fast blink            ║      Blue ║ 🔵💥🔵💥🔵
+║ WIFI                          ║ WIFI              ║ Fast blink            ║      Blue ║ 🔵💥🔵💥🔵
 ╠═══════════════════════════════╬═══════════════════╬═══════════════════════╬═══════════╣
-║ NTP synchronization done      ║ NTP_SYNC          ║ Fast blink            ║    Orange ║ 🟠💥🟠💥🟠
+║ NTP                           ║ NTP               ║ Fast blink            ║    Orange ║ 🟠💥🟠💥🟠
 ╠═══════════════════════════════╬═══════════════════╬═══════════════════════╬═══════════╣
 ║ Waiting                       ║ IDLE              ║ Breathe (fade in/out) ║    Yellow ║ 🟡🔅🔆🔅🟡 
 ╠═══════════════════════════════╬═══════════════════╬═══════════════════════╬═══════════╣
-║ Interaction detected          ║ INTERACTION       ║ Fast blink            ║     Green ║ 🟢💥🟢💥🟢
-║ Data analysis in progress     ║ PROCESSING        ║ Breathe               ║     Green ║ 🟢🔅🔆🔅🟢
-║ Positive Outcome              ║ SUCCESS           ║ Solid                 ║     Green ║ 🟢🟢🟢🟢🟢
-╠═══════════════════════════════╬═══════════════════╬═══════════════════════╬═══════════╣
-║ Pause (anti-flood/pin-guard)  ║ FREEZE            ║ Fast blink            ║    Purple ║ 🟣💥🟣💥🟣
+║ Working (sending/receiving)   ║ WORK              ║ Fast blink            ║     Green ║ 🟢💥🟢💥🟢
 ╠═══════════════════════════════╬═══════════════════╬═══════════════════════╬═══════════╣
 ║ Unresolved reserved error     ║ ERROR             ║ Solid                 ║       Red ║ 🔴🔴🔴🔴🔴
 ╚═══════════════════════════════╩═══════════════════╩═══════════════════════╩═══════════╝

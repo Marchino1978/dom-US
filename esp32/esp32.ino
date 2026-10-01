@@ -10,6 +10,7 @@
 #include "lib/notifications.h"
 #include "lib/storage_cloud.h"
 #include "lib/alarm.h"
+#include "lib/led_status.h"
 
 bool alarmEnabled = false;
 bool alarmTriggered = false;
@@ -31,29 +32,30 @@ const unsigned long wifiTimeoutMs    = 15000;
 const unsigned long wifiRetryDelayMs = 30000;
 
 void syncNtp() {
+  setLedState(LED_STATE_NTP);
   showMessage(TXT_WIFI_CONN, TXT_NTP_CONN);
   Serial.println("NTP SYNC START");
-  delay(1000);
+  ledDelay(1000);
   
   configTzTime("CET-1CEST,M3.5.0,M10.5.0/3", "pool.ntp.org", "time.nist.gov");
 
   struct tm timeinfo;
   int tentativi = 0;
   while (!getLocalTime(&timeinfo) && tentativi < 20) {
-    delay(200);
+    ledDelay(200);
     tentativi++;
   }
 
   if (!getLocalTime(&timeinfo)) {
     showMessage(TXT_WIFI_CONN, TXT_NTP_FAIL);
     Serial.println("NTP SYNC FAIL");
-    delay(3000);
+    ledDelay(3000);
     return;
   }
 
   showMessage(TXT_WIFI_CONN, TXT_NTP_OK);
   Serial.println("NTP SYNC OK");
-  delay(1500);
+  ledDelay(1500);
 
   char ora[32];
   snprintf(ora, sizeof(ora), TXT_TIME_LABEL, 
@@ -64,7 +66,7 @@ void syncNtp() {
            timeinfo.tm_year + 1900);
            
   showMessage(ora, "");
-  delay(2000);
+  ledDelay(2000);
 }
 
 void wifiStart(const char* ssid, const char* pass, WifiState nextState, const char* msg) {
@@ -75,11 +77,12 @@ void wifiStart(const char* ssid, const char* pass, WifiState nextState, const ch
 
   wifiAttemptStart = millis();
   wifiState = nextState;
+  setLedState(LED_STATE_WIFI);
 
   showMessage(TXT_WIFI_CONN, msg);
   Serial.print("WIFI TRY: ");
   Serial.println(ssid);
-  delay(1000);
+  ledDelay(1000);
 }
 
 void wifiUpdateState() {
@@ -95,7 +98,7 @@ void wifiUpdateState() {
         wifiState = WIFI_CONNECTED;
         showMessage(TXT_WIFI_CONN, TXT_WIFI_OK_HOME);
         Serial.println("WIFI CONNECTED: HOME");
-        delay(2000);
+        ledDelay(2000);
         syncNtp();
         handleBootSequence();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
@@ -109,7 +112,7 @@ void wifiUpdateState() {
         wifiState = WIFI_CONNECTED;
         showMessage(TXT_WIFI_OK_OFFICE, "");
         Serial.println("WIFI CONNECTED: OFFICE");
-        delay(2000);
+        ledDelay(2000);
         syncNtp();
         handleBootSequence();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
@@ -123,7 +126,7 @@ void wifiUpdateState() {
         wifiState = WIFI_CONNECTED;
         showMessage(TXT_WIFI_OK_HOTSPOT, "");
         Serial.println("WIFI CONNECTED: HOTSPOT");
-        delay(2000);
+        ledDelay(2000);
         syncNtp();
         handleBootSequence();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
@@ -139,6 +142,7 @@ void wifiUpdateState() {
         wifiState = WIFI_FAIL;
         lastWifiRetry = millis();
         showMessage(TXT_WIFI_CONN, TXT_WIFI_LOST);
+        setLedState(LED_STATE_WIFI);
         Serial.println("WIFI CONNECTION LOST");
       }
       break;
@@ -210,12 +214,14 @@ void setup() {
   #endif
 
   initSensors();
+  initLed();
 
   wifiState = WIFI_IDLE;
 }
 
 void loop() {
   wifiUpdateState();
+  updateLed();
 
   if (wifiState != WIFI_CONNECTED) {
     delay(20);

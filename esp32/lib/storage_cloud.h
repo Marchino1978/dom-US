@@ -5,7 +5,9 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 #include <time.h>
+
 #include "../config.h"
+#include "led_status.h"
 
 void sendTelegramMessage(String message);
 
@@ -33,6 +35,7 @@ int logBufferCount = 0;
 
 bool sendToSupabase(const char* ts, float temp, float hum, float press) {
   if (WiFi.status() != WL_CONNECTED) return false;
+  ledWork();
 
   WiFiClientSecure client;
   client.setInsecure();
@@ -66,6 +69,7 @@ bool sendToSupabase(const char* ts, float temp, float hum, float press) {
 
 bool sendLogToSupabaseDirect(const char* timestamp, const char* severity, const char* message) {
   if (WiFi.status() != WL_CONNECTED) return false;
+  ledWork();
 
   WiFiClientSecure client;
   client.setInsecure();
@@ -184,6 +188,7 @@ void sendHeartbeat() {
   lastPing = millis();
 
   Serial.println("HEARTBEAT: sending ping");
+  ledWork();
 
   struct tm timeinfo;
   char ts[25];
@@ -344,4 +349,5 @@ void handleBootSequence() {
   http.end();
   
   sendHeartbeat();
+  setLedState(LED_STATE_IDLE);
 }

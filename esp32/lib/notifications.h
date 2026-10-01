@@ -10,6 +10,7 @@
 #include "../config.h"
 #include "sensors.h"
 #include "storage_cloud.h"
+#include "led_status.h"
 
 extern bool alarmEnabled;
 extern bool alarmTriggered;
@@ -32,6 +33,7 @@ inline void getCurrentIsoTimestamp(char* buffer, size_t maxLen) {
 
 inline void sendTelegramMessage(String message) {
   if (WiFi.status() != WL_CONNECTED) return;
+  ledWork();
 
   WiFiClientSecure client;
   client.setInsecure();
@@ -81,6 +83,7 @@ inline void checkTelegramUpdates() {
     JsonArray result = doc["result"].as<JsonArray>();
     for (JsonObject update : result) {
       lastUpdateId = update["update_id"];
+      ledWork();
       String text = update["message"]["text"].as<String>();
       text.toLowerCase();
       text.trim();
