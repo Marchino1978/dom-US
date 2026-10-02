@@ -1,13 +1,10 @@
 #pragma once
 
 #include "../../../config.h"
+
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_BMP280.h>
-
-// ======================================================
-// Write your code and declarations below this line
-// ======================================================
 
 #define BMP280_I2C_ADDRESS 0x77
  
