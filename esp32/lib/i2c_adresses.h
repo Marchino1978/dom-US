@@ -32,40 +32,101 @@ struct I2cScanResult {
 
 // Entries sharing an address are checked in table order; WHO_AM_I entries are probed first.
 static const I2cDeviceInfo i2cDatabase[] = {
-  { 0x23, "BH1750",                  "Digital light sensor (lux)",              I2C_NO_WHOAMI, false, 0x00 },
-  { 0x5C, "BH1750 (ADDR high)",      "Digital light sensor (lux)",              I2C_NO_WHOAMI, false, 0x00 },
 
-  { 0x29, "VL53L0X",                 "Laser ToF distance sensor (2 m)",         0x00C0,        false, 0xEE },
-  { 0x29, "VL53L1X",                 "Laser ToF distance sensor (4 m)",         0x010F,        true,  0xEA },
-  { 0x29, "TCS34725",                "RGB color and color temperature sensor",  0x0092,        false, 0x44 },
+  // DISPLAYS
+  // --- DISPLAYS AND VISUAL INDICATORS ---
+  { 0x3C, "SSD1306 / SH1106 OLED",   "0.96\" / 1.3\" graphic display",          I2C_NO_WHOAMI, false, 0x00 },
+  { 0x3D, "SSD1306 OLED (ADDR high)","0.96\" graphic display",                  I2C_NO_WHOAMI, false, 0x00 },
+  { 0x27, "PCF8574 LCD backpack",    "I2C adapter for 16x2 / 20x4 LCD",         I2C_NO_WHOAMI, false, 0x00 },
+  { 0x3F, "PCF8574A LCD backpack",   "I2C adapter for 16x2 / 20x4 LCD",         I2C_NO_WHOAMI, false, 0x00 },
+  { 0x70, "HT16K33 / Max7219 I2C",   "LED matrix / 7-segment display driver",   I2C_NO_WHOAMI, false, 0x00 },
+  { 0x71, "HT16K33 (ADDR high)",     "LED matrix / 7-segment display driver",   I2C_NO_WHOAMI, false, 0x00 },
+  { 0x3E, "DFRobot RGB LCD",         "LCD controller of RGB backlight display", I2C_NO_WHOAMI, false, 0x00 },
+  { 0x2D, "DFRobot RGB backlight",   "RGB backlight driver (new revision)",     I2C_NO_WHOAMI, false, 0x00 },
+  { 0x60, "DFRobot RGB backlight",   "RGB backlight driver (old revision)",     I2C_NO_WHOAMI, false, 0x00 },
 
-  { 0x10, "VEML7700",                "High precision ambient light sensor",     0x0007,        false, 0x81 },
-
+  // CLIMATE
+  // --- TEMPERATURE, HUMIDITY AND PRESSURE SENSORS ---
+  { 0x38, "AHT10",                   "Temperature and humidity sensor",         I2C_NO_WHOAMI, false, 0x00 },
+  { 0x38, "AHT20",                   "Temperature and humidity sensor",         I2C_NO_WHOAMI, false, 0x00 },
+  { 0x44, "SHT30",                   "Temperature and humidity sensor",         I2C_NO_WHOAMI, false, 0x00 },
+  { 0x45, "SHT30 (ADDR high)",       "Temperature and humidity sensor",         I2C_NO_WHOAMI, false, 0x00 },
+  { 0x44, "SHT31",                   "Temperature and humidity sensor",         I2C_NO_WHOAMI, false, 0x00 },
+  { 0x45, "SHT31 (ADDR high)",       "Temperature and humidity sensor",         I2C_NO_WHOAMI, false, 0x00 },
+  { 0x44, "SHT40",                   "Temperature and humidity sensor",         0x89,          false, 0x00 },
+  { 0x45, "SHT40 (ADDR high)",       "Temperature and humidity sensor",         0x89,          false, 0x00 },
+  { 0x5C, "DHT12",                   "Temperature and humidity sensor",         I2C_NO_WHOAMI, false, 0x00 },
+  { 0x18, "MCP9808",                 "Microchip Precision Temp Sensor",         0x07,          false, 0x04 },
+  { 0x48, "LM75A",                   "Digital Temp Sensor & Watchdog",          0x01,          false, 0x00 },
   { 0x76, "BME280",                  "Temperature, humidity, pressure sensor",  0x00D0,        false, 0x60 },
   { 0x76, "BMP280",                  "Temperature and pressure sensor",         0x00D0,        false, 0x58 },
   { 0x77, "BME280",                  "Temperature, humidity, pressure sensor",  0x00D0,        false, 0x60 },
   { 0x77, "BMP280",                  "Temperature and pressure sensor",         0x00D0,        false, 0x58 },
 
-  { 0x38, "AHT20",                   "Temperature and humidity sensor",         I2C_NO_WHOAMI, false, 0x00 },
-  { 0x44, "SHT31",                   "Temperature and humidity sensor",         I2C_NO_WHOAMI, false, 0x00 },
-  { 0x45, "SHT31 (ADDR high)",       "Temperature and humidity sensor",         I2C_NO_WHOAMI, false, 0x00 },
+  // MOTION & PRESENCE
+  // --- xxx SENSORS ---
 
-  { 0x27, "PCF8574 LCD backpack",    "I2C adapter for 16x2 / 20x4 LCD",         I2C_NO_WHOAMI, false, 0x00 },
-  { 0x3F, "PCF8574A LCD backpack",   "I2C adapter for 16x2 / 20x4 LCD",         I2C_NO_WHOAMI, false, 0x00 },
-  { 0x3E, "DFRobot RGB LCD",         "LCD controller of RGB backlight display", I2C_NO_WHOAMI, false, 0x00 },
-  { 0x2D, "DFRobot RGB backlight",   "RGB backlight driver (new revision)",     I2C_NO_WHOAMI, false, 0x00 },
-  { 0x60, "DFRobot RGB backlight",   "RGB backlight driver (old revision)",     I2C_NO_WHOAMI, false, 0x00 },
+  // DISTANCE
+  // --- PROXIMITY SENSORS ---
+  { 0x29, "VL53L0X",                 "Laser ToF distance sensor (2 m)",         0x00C0,        false, 0xEE },
+  { 0x29, "VL53L1X",                 "Laser ToF distance sensor (4 m)",         0x010F,        true,  0xEA },
 
-  { 0x3C, "SSD1306 / SH1106 OLED",   "0.96\" / 1.3\" graphic display",          I2C_NO_WHOAMI, false, 0x00 },
-  { 0x3D, "SSD1306 OLED (ADDR high)","0.96\" graphic display",                  I2C_NO_WHOAMI, false, 0x00 },
+  // AMBIENT
+  // --- LIGHT AND COLOR SENSORS ---
+  // --- GAS AND AIR QUALITY SENSORS ---
+  { 0x23, "BH1750",                  "Digital light sensor (lux)",              I2C_NO_WHOAMI, false, 0x00 },
+  { 0x5C, "BH1750 (ADDR high)",      "Digital light sensor (lux)",              I2C_NO_WHOAMI, false, 0x00 },
+  { 0x39, "TSL2561",                 "Dual-diode digital light sensor",         0x000A,        false, 0x50 },
+  { 0x29, "TSL2591",                 "High dynamic range digital light sensor", 0x00B2,        false, 0x50 },
+  { 0x29, "TCS34725",                "RGB color and color temperature sensor",  0x0092,        false, 0x44 },
+  { 0x10, "VEML7700",                "High precision ambient light sensor",     0x0007,        false, 0x81 },
+  { 0x39, "APDS-9960",               "Gesture, proximity, light & RGB sensor",  0x0092,        false, 0xAB },
+  { 0x76, "BME680",                  "Environmental 4-in-1 Gas Sensor",         0xD0,          false, 0x61 },
+  { 0x77, "BME680 (ADDR high)",      "Environmental 4-in-1 Gas Sensor",         0xD0,          false, 0x61 },
+  { 0x76, "BME688",                  "Environmental Gas Sensor with AI",        0xD0,          false, 0x61 },
+  { 0x77, "BME688 (ADDR high)",      "Environmental Gas Sensor with AI",        0xD0,          false, 0x61 },
+  { 0x58, "SGP30",                   "TVOC and eCO2 gas sensor",                I2C_NO_WHOAMI, false, 0x00 },
+  { 0x59, "SGP40",                   "VOC index gas sensor",                    I2C_NO_WHOAMI, false, 0x00 },
+  { 0x5A, "CCS811",                  "VOC sensor for indoor air quality",       0x0020,        false, 0x81 },
+  { 0x5B, "CCS811 (ADDR high)",      "VOC sensor for indoor air quality",       0x0020,        false, 0x81 },
+  { 0x61, "SCD30",                   "NDIR CO2, temperature & humidity sensor", I2C_NO_WHOAMI, false, 0x00 },
+  { 0x62, "SCD40 / SCD41",           "Photoacoustic CO2 sensor",                I2C_NO_WHOAMI, false, 0x00 },
 
+  // --- GYROSCOPES, ACCELEROMETERS AND COMPASSES (IMU) ---
   { 0x68, "MPU6050",                 "6-axis gyroscope and accelerometer",      0x0075,        false, 0x68 },
   { 0x69, "MPU6050 (AD0 high)",      "6-axis gyroscope and accelerometer",      0x0075,        false, 0x68 },
-  { 0x68, "DS3231",                  "Real time clock",                         I2C_NO_WHOAMI, false, 0x00 },
+  { 0x68, "MPU6500",                 "6-axis gyroscope and accelerometer",      0x0075,        false, 0x70 },
+  { 0x69, "MPU6500 (AD0 high)",      "6-axis gyroscope and accelerometer",      0x0075,        false, 0x70 },
+  { 0x68, "MPU9250",                 "9-axis gyroscope, accel & magnetometer",  0x0075,        false, 0x71 },
+  { 0x69, "MPU9250 (AD0 high)",      "9-axis gyroscope, accel & magnetometer",  0x0075,        false, 0x71 },
+  { 0x53, "ADXL345",                 "3-axis accelerometer (low power)",        0x0000,        false, 0xE5 },
+  { 0x1D, "ADXL345 (ADDR high)",     "3-axis accelerometer (low power)",        0x0000,        false, 0xE5 },
+  { 0x0D, "QMC5883L",                "3-axis digital compass / magnetometer",   0x000D,        false, 0xFF },
+  { 0x1E, "HMC5883L",                "3-axis digital compass / magnetometer",   0x000A,        false, 0x48 },
+  { 0x1E, "LSM303DLHC (Mag)",        "3-axis magnetometer",                     0x000A,        false, 0x48 },
+  { 0x32, "LSM303DLHC (Acc)",        "3-axis accelerometer",                    0x000F,        false, 0x33 },
 
+  // --- GPIO EXPANDERS, ADC CONVERTERS AND PWM DRIVERS ---
   { 0x48, "ADS1115",                 "16-bit analog to digital converter",      I2C_NO_WHOAMI, false, 0x00 },
-  { 0x40, "INA219",                  "Current and power monitor",               I2C_NO_WHOAMI, false, 0x00 },
-  { 0x50, "AT24C EEPROM",            "Serial EEPROM",                           I2C_NO_WHOAMI, false, 0x00 }
+  { 0x49, "ADS1115 (ADDR vcc)",      "16-bit analog to digital converter",      I2C_NO_WHOAMI, false, 0x00 },
+  { 0x4A, "ADS1115 (ADDR sda)",      "16-bit analog to digital converter",      I2C_NO_WHOAMI, false, 0x00 },
+  { 0x4B, "ADS1115 (ADDR scl)",      "16-bit analog to digital converter",      I2C_NO_WHOAMI, false, 0x00 },
+  { 0x20, "PCF8574 / MCP23017 (000)","8-bit or 16-bit I/O Expander",            I2C_NO_WHOAMI, false, 0x00 },
+  { 0x21, "PCF8574 / MCP23017 (001)","8-bit or 16-bit I/O Expander",            I2C_NO_WHOAMI, false, 0x00 },
+  { 0x22, "PCF8574 / MCP23017 (010)","8-bit or 16-bit I/O Expander",            I2C_NO_WHOAMI, false, 0x00 },
+  { 0x23, "PCF8574 / MCP23017 (011)","8-bit or 16-bit I/O Expander",            I2C_NO_WHOAMI, false, 0x00 },
+  { 0x24, "PCF8574 / MCP23017 (100)","8-bit or 16-bit I/O Expander",            I2C_NO_WHOAMI, false, 0x00 },
+  { 0x25, "PCF8574 / MCP23017 (101)","8-bit or 16-bit I/O Expander",            I2C_NO_WHOAMI, false, 0x00 },
+  { 0x26, "PCF8574 / MCP23017 (110)","8-bit or 16-bit I/O Expander",            I2C_NO_WHOAMI, false, 0x00 },
+  { 0x27, "PCF8574 / MCP23017 (111)","8-bit or 16-bit I/O Expander",            I2C_NO_WHOAMI, false, 0x00 },
+  { 0x30, "PCF8574A (000)",          "8-bit I/O Expander (A-Variant)",          I2C_NO_WHOAMI, false, 0x00 },
+  { 0x37, "PCF8574A (111)",          "8-bit I/O Expander (A-Variant)",          I2C_NO_WHOAMI, false, 0x00 },
+  { 0x40, "INA219 / PCA9685 (00000)","Current Monitor / 16-ch PWM Driver",      I2C_NO_WHOAMI, false, 0x00 },
+
+  // --- RTC CLOCKS AND MEMORIES ---
+  { 0x68, "DS3231 / DS1307 RTC",     "Real time clock",                         I2C_NO_WHOAMI, false, 0x00 },
+  { 0x50, "AT24C EEPROM (Base)",     "Serial EEPROM",                           I2C_NO_WHOAMI, false, 0x00 },
+  { 0x57, "AT24C32 EEPROM (RTC Mod)","Serial EEPROM (On RTC Board)",            I2C_NO_WHOAMI, false, 0x00 }
 };
 
 static const size_t i2cDatabaseSize = sizeof(i2cDatabase) / sizeof(i2cDatabase[0]);
