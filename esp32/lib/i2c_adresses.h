@@ -167,25 +167,37 @@ inline void buildI2cDeviceMessage(int index, char* out, size_t maxLen) {
 
   const char* name = "Unknown";
   const char* info = "Not in the database";
-  char statusStr[44];
+  const char* statusIcon = "🔴";
+  char statusStr[40];
 
   if (r.status == I2C_STATUS_CONFIRMED) {
     name = r.entry->name;
     info = r.entry->info;
-    snprintf(statusStr, sizeof(statusStr), "🟢 Confirmed (ID 0x%02X)", r.readValue);
+    statusIcon = "🟢";
+    snprintf(statusStr, sizeof(statusStr), "Confirmed (ID 0x%02X)", r.readValue);
   } else if (r.status == I2C_STATUS_CANDIDATE) {
     name = r.entry->name;
     info = r.entry->info;
+    statusIcon = "🟡";
     if (r.entry->whoAmIReg == I2C_NO_WHOAMI) {
-      snprintf(statusStr, sizeof(statusStr), "🟡 Candidate (no ID register)");
+      snprintf(statusStr, sizeof(statusStr), "Candidate (no ID register)");
     } else {
-      snprintf(statusStr, sizeof(statusStr), "🟡 Candidate (ID mismatch)");
+      snprintf(statusStr, sizeof(statusStr), "Candidate (ID mismatch)");
     }
   } else {
-    snprintf(statusStr, sizeof(statusStr), "🔴 Unrecognized");
+    snprintf(statusStr, sizeof(statusStr), "Unrecognized");
   }
 
   snprintf(out, maxLen,
-           "📍 `Address: 0x%02X`\n├─ `Device : %s`\n├─ `Status : %s`\n└─ `Info   : %s`",
-           r.address, name, statusStr, info);
+           "📍 `%-7s : 0x%02X`\n"
+           "🛠️ `%-7s : %s`\n"
+           "%s `%-7s : %s`\n"
+           "🆔 `%-7s : %s`",
+           "Address", r.address,
+           "Device", name,
+           statusIcon, "Status", statusStr,
+           "Info", info);
 }
+
+// change 📝 with 📦 or 📟 ⚙️ 🛠️
+// change ℹ️ with 🗒️ or 🆔
