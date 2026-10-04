@@ -20,6 +20,11 @@
 #error "⚠️ BUILD BLOCKED: Do not enable the same sensor multiple times as both ADDON and SENSOR."
 #endif
 
+// Shared UART conflict: US100 and LD2410 both use Serial1 on PIN_TRIG / PIN_ECHO
+#if defined(SENSOR_ULTRASONIC_US100) && defined(SENSOR_MMWAVE_LD2410)
+#error "⚠️ BUILD BLOCKED: US100 and LD2410 share the same UART (Serial1) and pins, enable only one of them."
+#endif
+
 // Display uniqueness check
 #if (defined(DISPLAY_LCD_16X2) + defined(DISPLAY_LCD_20X4) + \
      defined(DISPLAY_LCD_16X2_RGB) + defined(DISPLAY_LCD_20X4_RGB) + \

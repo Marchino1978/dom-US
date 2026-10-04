@@ -1,4 +1,4 @@
-#pragma once
+spiega#pragma once
 
 #include "../config.h"
 
