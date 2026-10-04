@@ -65,7 +65,6 @@ For more information, check the official <strong>Waveshare product page</strong>
         ❌ ST7789 - <small>Color TFT 2.0"🖼️ [3.3V]</small><br>
         ❌ ILI9341 - <small>Color TFT 2.4"🖼️ [3.3V]</small><br><br>
       <div style="text-align: center;"><font color="cyan"><b>⚙️ ADDONS [display wake-up / alarm] ⚙️</b></font></div>
-        ❌ AM312 - <small>Mini Passive Infrared🏃 [3.3V]</small><br>
         🗑️ RCWL-0516 - <small>Doppler Microwave📡 [4V - 28V]</small><br>
         ❌ VL53L0X - <small>Laser ToF⚡ [2.8V - 5V / I2C]</small><br>
         ❌ VL53L1X - <small>Laser ToF (Up to 4m)⚡ [3.3V / I2C]</small>
@@ -100,7 +99,6 @@ For more information, check the official <strong>Waveshare product page</strong>
         <div style="text-align: center;"><font color="cyan"><b>🌍 AMBIENT 🌍</b></font></div>
         ❌ BH1750 - <small>Lux (Digital)☀️ [3.3V / 5V / I2C]</small><br>
         ❌ LDR - <small>Analog Photoresistor💡 [3.3V / 5V]</small><br>
-        🗑️ MQ135 - <small>Air Quality💨 [5V]</small><br>
         ⌛ TCS34725 - <small>RGB + Color Temp🎨 [3.3V / 5V / I2C]</small><br>
         ❌ VEML7700 - <small>Lux (HP / Human eye)☀️ [3.3V / I2C]</small>
       </div>

@@ -4,10 +4,6 @@
 
 #include <Arduino.h>
 
-// ======================================================
-// Write your code and declarations below this line
-// ======================================================
-
 #define TE174_DEBOUNCE_MS 50
  
 static unsigned long te174LastChange = 0;

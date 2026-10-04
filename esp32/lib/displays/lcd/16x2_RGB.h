@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../config.h"
+
 #include <Arduino.h>
 #include <Wire.h>
 #include <DFRobot_RGBLCD1602.h>
