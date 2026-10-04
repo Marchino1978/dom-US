@@ -122,6 +122,7 @@
 │   ├── LOG.html
 │   └── README.md
 ├── scripts/
+│   ├── i2c.py
 │   ├── push.sh*
 │   ├── README.md
 │   ├── snapshot_all.sh*
@@ -142,6 +143,6 @@
 ├── README.md
 └── robots.txt
 
-24 directories, 118 files
+24 directories, 119 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
