@@ -1,3 +1,4 @@
+i2c_scan - SCAN I2C ADRESSES
 off - ALARM OFF
 on - ALARM ON
 reset - ALARM RESET

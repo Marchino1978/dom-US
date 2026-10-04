@@ -11,6 +11,7 @@
 #include "sensors.h"
 #include "storage_cloud.h"
 #include "led_status.h"
+#include "i2c_adresses.h"
 
 extern bool alarmEnabled;
 extern bool alarmTriggered;
@@ -44,7 +45,7 @@ inline void sendTelegramMessage(String message) {
   http.begin(client, url);
   http.addHeader("Content-Type", "application/json");
 
-  StaticJsonDocument<512> doc;
+  StaticJsonDocument<1024> doc;
   doc["chat_id"] = TELEGRAM_CHAT_ID;
   doc["text"] = message;
   doc["parse_mode"] = "Markdown";
@@ -54,6 +55,87 @@ inline void sendTelegramMessage(String message) {
 
   http.POST(requestBody);
   http.end();
+}
+
+inline void sendTelegramYesNo(String message, const char* yesData, const char* noData) {
+  if (WiFi.status() != WL_CONNECTED) return;
+  ledWork();
+
+  WiFiClientSecure client;
+  client.setInsecure();
+
+  HTTPClient http;
+  String url = "https://api.telegram.org/bot" + String(TELEGRAM_TOKEN) + "/sendMessage";
+
+  http.begin(client, url);
+  http.addHeader("Content-Type", "application/json");
+
+  StaticJsonDocument<1024> doc;
+  doc["chat_id"] = TELEGRAM_CHAT_ID;
+  doc["text"] = message;
+  doc["parse_mode"] = "Markdown";
+
+  JsonObject markup = doc.createNestedObject("reply_markup");
+  JsonArray keyboard = markup.createNestedArray("inline_keyboard");
+  JsonArray row = keyboard.createNestedArray();
+
+  JsonObject btnYes = row.createNestedObject();
+  btnYes["text"] = "YES";
+  btnYes["callback_data"] = yesData;
+
+  JsonObject btnNo = row.createNestedObject();
+  btnNo["text"] = "NO";
+  btnNo["callback_data"] = noData;
+
+  String requestBody;
+  serializeJson(doc, requestBody);
+
+  http.POST(requestBody);
+  http.end();
+}
+
+inline void answerTelegramCallback(const String& callbackId) {
+  if (WiFi.status() != WL_CONNECTED) return;
+
+  WiFiClientSecure client;
+  client.setInsecure();
+
+  HTTPClient http;
+  String url = "https://api.telegram.org/bot" + String(TELEGRAM_TOKEN) + "/answerCallbackQuery";
+
+  http.begin(client, url);
+  http.addHeader("Content-Type", "application/json");
+
+  StaticJsonDocument<256> doc;
+  doc["callback_query_id"] = callbackId;
+
+  String requestBody;
+  serializeJson(doc, requestBody);
+
+  http.POST(requestBody);
+  http.end();
+}
+
+inline void handleI2cCallback(const String& data) {
+  char ts[25];
+  getCurrentIsoTimestamp(ts, sizeof(ts));
+
+  if (data == "i2c_yes") {
+    if (!i2cResultsValid) {
+      sendTelegramMessage("ℹ️ *I2C SCAN DATA NOT AVAILABLE* - run /i2c\\_scan again");
+      return;
+    }
+
+    char buf[300];
+    for (int i = 0; i < i2cResultCount; i++) {
+      buildI2cDeviceMessage(i, buf, sizeof(buf));
+      sendTelegramMessage(String(buf));
+    }
+    i2cResultsValid = false;
+    sendLogToSupabase(ts, "⚪", "I2C SCAN details sent to user");
+  } else if (data == "i2c_no") {
+    i2cResultsValid = false;
+  }
 }
 
 inline void checkTelegramUpdates() {
@@ -77,13 +159,30 @@ inline void checkTelegramUpdates() {
 
   if (httpCode == 200) {
     String payload = http.getString();
+
+    StaticJsonDocument<256> filter;
+    filter["result"][0]["update_id"] = true;
+    filter["result"][0]["message"]["text"] = true;
+    filter["result"][0]["callback_query"]["id"] = true;
+    filter["result"][0]["callback_query"]["data"] = true;
+
     DynamicJsonDocument doc(2048);
-    deserializeJson(doc, payload);
+    deserializeJson(doc, payload, DeserializationOption::Filter(filter));
 
     JsonArray result = doc["result"].as<JsonArray>();
     for (JsonObject update : result) {
       lastUpdateId = update["update_id"];
       ledWork();
+
+      JsonObject callback = update["callback_query"];
+      if (!callback.isNull()) {
+        String callbackId = callback["id"].as<String>();
+        String callbackData = callback["data"].as<String>();
+        answerTelegramCallback(callbackId);
+        handleI2cCallback(callbackData);
+        continue;
+      }
+
       String text = update["message"]["text"].as<String>();
       text.toLowerCase();
       text.trim();
@@ -133,6 +232,21 @@ inline void checkTelegramUpdates() {
           alarmTriggered = false;
           sendTelegramMessage("🟢 *ALARM RESET* by user - system re-armed");
           sendLogToSupabase(ts, "⚪", "ALARM RESET by user - system re-armed");
+        }
+      }
+      else if (text == "/i2c_scan" || text == "i2c_scan") {
+        getCurrentIsoTimestamp(ts, sizeof(ts));
+        sendLogToSupabase(ts, "⚪", "I2C SCAN requested by user");
+
+        runI2cScan();
+
+        char summary[160];
+        buildI2cSummaryMessage(summary, sizeof(summary));
+
+        if (i2cTotalFound > 0) {
+          sendTelegramYesNo(String(summary), "i2c_yes", "i2c_no");
+        } else {
+          sendTelegramMessage(String(summary));
         }
       }
       else if (text == "/status" || text == "status") {
