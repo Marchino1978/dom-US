@@ -16,7 +16,7 @@
     </td>
   </tr>
 
-  <!-- TELEGRAM MSG -->
+  <!-- TELEGRAM MSG 1 -->
   <tr>
     <td width="50%" align="center" valign="top">
       <img src="../img/telegram_blackout_connection.jpeg" alt="Messaggio del bot Telegram dom-US con lo stato del sistema di allarme e lettura dati ambientali in tempo reale | Telegram bot dom-US message showing alarm system status and real-time environmental data readings" width="100%"><br>
@@ -25,6 +25,18 @@
     <td width="50%" align="center" valign="top">
       <img src="../img/telegram_alarm_status.jpeg" alt="Messaggio di allarme del bot Telegram dom-US per intrusione rilevata | Telegram bot dom-US warning message reporting an intrusion alarm" width="100%"><br>
       <font color="cyan"><b>ALARM/STATUS messages [TELEGRAM]</b></font>
+    </td>
+  </tr>
+
+  <!-- TELEGRAM MSG 2 -->
+  <tr>
+    <td width="50%" align="center" valign="top">
+      <img src="../img/i2c.jpg" alt="Messaggio del bot Telegram dom-US con risultati scansione bus i2c | Telegram bot dom-US message showing i2c bus scan results" width="100%"><br>
+      <font color="cyan"><b>SCAN I2C ADRESSES</b></font>
+    </td>
+    <td width="50%" align="center" valign="top">
+      <img src="../img/work-in-progress.png" alt="Illustrazione in stile fumetto di un laboratorio maker con stampante 3D, microcontrollore ESP32 su breadboard, saldatore e laptop con codice, sormontata da un cartello di legno 'WORK IN PROGRESS' | Comic-style illustration of a maker workshop with a 3D printer, ESP32 breadboard setup, soldering iron, and code on a laptop, topped with a wooden 'WORK IN PROGRESS' sign" width="100%"><br>
+      <font color="cyan"><b>XYZ</b></font>
     </td>
   </tr>
 
@@ -37,18 +49,6 @@
     <td width="50%" align="center" valign="top">
       <img src="../img/sql-LOG.png" alt="Record e dati grezzi del log dell'allarme estratti direttamente dal database SQL. | Alarm log records and raw data extracted directly from the SQL database." width="100%"><br>
       <font color="cyan"><b>alarm LOG [SQL]</b></font>
-    </td>
-  </tr>
-
-  <!-- XYZ -->
-  <tr>
-    <td width="50%" align="center" valign="top">
-      <img src="../img/i2c.jpg" alt="Messaggio del bot Telegram dom-US con risultati scansione bus i2c | Telegram bot dom-US message showing i2c bus scan results" width="100%"><br>
-      <font color="cyan"><b>SCAN I2C ADRESSES</b></font>
-    </td>
-    <td width="50%" align="center" valign="top">
-      <img src="../img/work-in-progress.png" alt="Illustrazione in stile fumetto di un laboratorio maker con stampante 3D, microcontrollore ESP32 su breadboard, saldatore e laptop con codice, sormontata da un cartello di legno 'WORK IN PROGRESS' | Comic-style illustration of a maker workshop with a 3D printer, ESP32 breadboard setup, soldering iron, and code on a laptop, topped with a wooden 'WORK IN PROGRESS' sign" width="100%"><br>
-      <font color="cyan"><b>XYZ</b></font>
     </td>
   </tr>
 
