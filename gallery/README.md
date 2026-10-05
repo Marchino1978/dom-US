@@ -31,12 +31,12 @@
   <!-- TELEGRAM MSG 2 -->
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="../img/i2c.jpg" alt="Messaggio del bot Telegram dom-US con risultati scansione bus i2c | Telegram bot dom-US message showing i2c bus scan results" width="100%"><br>
-      <font color="cyan"><b>SCAN I2C ADRESSES</b></font>
+      <img src="../img/i2c.jpg" alt="Messaggio del bot Telegram dom-US che mostra i risultati della scansione bus i2c | Telegram bot dom-US message showing i2c bus scan results" width="100%"><br>
+      <font color="cyan"><b>SCAN I2C ADRESSES  [TELEGRAM]</b></font>
     </td>
     <td width="50%" align="center" valign="top">
-      <img src="../img/work-in-progress.png" alt="Illustrazione in stile fumetto di un laboratorio maker con stampante 3D, microcontrollore ESP32 su breadboard, saldatore e laptop con codice, sormontata da un cartello di legno 'WORK IN PROGRESS' | Comic-style illustration of a maker workshop with a 3D printer, ESP32 breadboard setup, soldering iron, and code on a laptop, topped with a wooden 'WORK IN PROGRESS' sign" width="100%"><br>
-      <font color="cyan"><b>XYZ</b></font>
+      <img src="../img/work-in-progress.png" alt="Messaggio del bot Telegram dom-US che mostra il toggle dello stato del LED| Telegram bot dom-US message showing LED status toggle" width="100%"><br>
+      <font color="cyan"><b>TOGGLE LED STATUS [TELEGRAM]</b></font>
     </td>
   </tr>
 
