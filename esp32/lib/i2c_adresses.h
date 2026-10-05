@@ -215,7 +215,7 @@ inline void runI2cScan() {
 
 inline void buildI2cSummaryMessage(char* out, size_t maxLen) {
   if (i2cTotalFound == 0) {
-    snprintf(out, maxLen, "🔍 *I2C BUS SCAN RESULT*\n\n`No devices found`");
+    snprintf(out, maxLen, "🔍 *I2C BUS SCAN RESULT*\n\n❗ `No devices found`");
     return;
   }
   snprintf(out, maxLen,
@@ -246,7 +246,7 @@ inline void buildI2cDeviceMessage(int index, char* out, size_t maxLen) {
       snprintf(statusStr, sizeof(statusStr), "Candidate (ID mismatch)");
     }
   } else {
-    snprintf(statusStr, sizeof(statusStr), "Unrecognized");
+    snprintf(statusStr, sizeof(statusStr), "Unrecognized (ID missing)");
   }
 
   snprintf(out, maxLen,
