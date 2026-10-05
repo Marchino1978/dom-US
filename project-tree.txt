@@ -106,6 +106,7 @@
 │   ├── i2c.jpg
 │   ├── index.md
 │   ├── ino_lib.png
+│   ├── led_status.jpg
 │   ├── monthly_report_chart.png
 │   ├── monthly_report_table.png
 │   ├── README.md
@@ -144,6 +145,6 @@
 ├── README.md
 └── robots.txt
 
-24 directories, 120 files
+24 directories, 121 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***

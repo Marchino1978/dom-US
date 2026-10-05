@@ -35,7 +35,7 @@
       <font color="cyan"><b>SCAN I2C ADRESSES  [TELEGRAM]</b></font>
     </td>
     <td width="50%" align="center" valign="top">
-      <img src="../img/work-in-progress.png" alt="Messaggio del bot Telegram dom-US che mostra il toggle dello stato del LED| Telegram bot dom-US message showing LED status toggle" width="100%"><br>
+      <img src="../img/led_status.jpg" alt="Messaggio del bot Telegram dom-US che mostra il toggle dello stato del LED| Telegram bot dom-US message showing LED status toggle" width="100%"><br>
       <font color="cyan"><b>TOGGLE LED STATUS [TELEGRAM]</b></font>
     </td>
   </tr>
