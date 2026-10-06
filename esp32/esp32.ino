@@ -215,6 +215,7 @@ void setup() {
 
   initSensors();
   initLed();
+  setLedStatusEnabled(!alarmEnabled);
 
   wifiState = WIFI_IDLE;
 }

@@ -197,6 +197,7 @@ inline void checkTelegramUpdates() {
         } else {
           alarmEnabled = true;
           preferences.putBool("alarm_state", true);
+          setLedStatusEnabled(false);
           
           sendTelegramMessage("🟢 *ALARM ON*");
           
@@ -212,6 +213,7 @@ inline void checkTelegramUpdates() {
         } else {
           alarmEnabled = false;
           preferences.putBool("alarm_state", false);
+          setLedStatusEnabled(true);
           
           sendTelegramMessage("🔴 *ALARM OFF*");
           
@@ -232,6 +234,23 @@ inline void checkTelegramUpdates() {
           alarmTriggered = false;
           sendTelegramMessage("🟢 *ALARM RESET* by user - system re-armed");
           sendLogToSupabase(ts, "⚪", "ALARM RESET by user - system re-armed");
+        }
+      }
+      else if (text == "/led" || text == "led") {
+        getCurrentIsoTimestamp(ts, sizeof(ts));
+
+        if (alarmEnabled) {
+          sendTelegramMessage("🎚️ *LED STATUS TOGGLED IGNORED*");
+          sendLogToSupabase(ts, "⚪", "🎚️ LED STATUS TOGGLED ignored");
+        } else {
+          setLedStatusEnabled(!ledStatusEnabled);
+          if (ledStatusEnabled) {
+            sendTelegramMessage("🎚️ *LED STATUS TOGGLED TO ON*");
+            sendLogToSupabase(ts, "⚪", "🎚️ LED STATUS TOGGLED TO ON by user");
+          } else {
+            sendTelegramMessage("🎚️ *LED STATUS TOGGLED TO OFF*");
+            sendLogToSupabase(ts, "⚪", "🎚️ LED STATUS TOGGLED TO OFF by user");
+          }
         }
       }
       else if (text == "/i2c_scan" || text == "i2c_scan") {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../config.h"
+
 #include <Arduino.h>
 
 #ifndef PIN_LED_RGB
@@ -29,8 +30,14 @@ static LedState ledPreviousState = LED_STATE_IDLE;
 static unsigned long ledWorkEndTime = 0;
 static unsigned long ledLastToggle = 0;
 static bool ledBlinkOn = false;
+static bool ledStatusEnabled = true;
 
 inline void ledWriteRaw(uint8_t r, uint8_t g, uint8_t b) {
+  if (!ledStatusEnabled) {
+    r = 0;
+    g = 0;
+    b = 0;
+  }
   r = (uint16_t)r * LED_BRIGHTNESS / 255;
   g = (uint16_t)g * LED_BRIGHTNESS / 255;
   b = (uint16_t)b * LED_BRIGHTNESS / 255;
@@ -39,6 +46,12 @@ inline void ledWriteRaw(uint8_t r, uint8_t g, uint8_t b) {
   #else
     neopixelWrite(PIN_LED_RGB, r, g, b);
   #endif
+}
+
+inline void setLedStatusEnabled(bool enabled) {
+  ledStatusEnabled = enabled;
+  ledBlinkOn = false;
+  ledWriteRaw(0, 0, 0);
 }
 
 inline void initLed() {
