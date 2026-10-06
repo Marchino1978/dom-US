@@ -215,11 +215,11 @@ inline void runI2cScan() {
 
 inline void buildI2cSummaryMessage(char* out, size_t maxLen) {
   if (i2cTotalFound == 0) {
-    snprintf(out, maxLen, "🔍 *I2C BUS SCAN RESULT*\n\n❗ `No devices found`");
+    snprintf(out, maxLen, "🔍 *I2C BUS SCAN RESULT*\n\n❗ No devices found");
     return;
   }
   snprintf(out, maxLen,
-           "🔍 *I2C BUS SCAN RESULT*\n\n🔢 `Total devices found: %d`\n\n❓ `Show detailed info?`",
+           "🔍 *I2C BUS SCAN RESULT*\n\n🔢 Total devices found: %d\n\n❓ Show detailed info?",
            i2cTotalFound);
 }
 
