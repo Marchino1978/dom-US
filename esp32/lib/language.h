@@ -107,4 +107,25 @@
   #define TXT_NTP_OK          "NTP Synchronise"
   #define TXT_TIME_LABEL      "%02d:%02d %02d/%02d/%04d"
 
+// ======================================================
+// FALLBACK: IT
+// ======================================================
+#else
+
+  #define TXT_WIFI_CONN       "Connessione WiFi"
+  #define TXT_TRY_HOME        "Provo CASA"
+  #define TXT_TRY_OFFICE      "Provo UFFICIO"
+  #define TXT_TRY_HOTSPOT     "Provo HOTSPOT"
+  
+  #define TXT_WIFI_OK_HOME    "WiFi OK CASA"
+  #define TXT_WIFI_OK_OFFICE  "WiFi OK UFFICIO"
+  #define TXT_WIFI_OK_HOTSPOT "WiFi OK HOTSPOT"
+  #define TXT_WIFI_FAIL       "WiFi ERRORE"
+  #define TXT_WIFI_LOST       "Conness. persa"
+
+  #define TXT_NTP_CONN        "Connessione NTP"
+  #define TXT_NTP_FAIL        "NTP ERRORE"
+  #define TXT_NTP_OK          "Conness. NTP OK"
+  #define TXT_TIME_LABEL      "%02d:%02d %02d/%02d/%04d"
+
 #endif
