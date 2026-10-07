@@ -15,13 +15,21 @@
 #endif
 
 inline void initMotion() {
-  #if defined(SENSOR_PIR_AM312) || defined(SENSOR_PIR_HCSR501) || defined(SENSOR_MMWAVE_LD2410) || defined(SENSOR_RADAR_RCWL0516) || defined(SENSOR_IR_TE174)
+  #if defined(SENSOR_PIR_AM312) || \
+      defined(SENSOR_PIR_HCSR501) || \
+      defined(SENSOR_MMWAVE_LD2410) || \
+      defined(SENSOR_RADAR_RCWL0516) || \
+      defined(SENSOR_IR_TE174)
     initMotionHardware();
   #endif
 }
 
 inline bool isMotionDetected() {
-  #if defined(SENSOR_PIR_AM312) || defined(SENSOR_PIR_HCSR501) || defined(SENSOR_MMWAVE_LD2410) || defined(SENSOR_RADAR_RCWL0516) || defined(SENSOR_IR_TE174)
+  #if defined(SENSOR_PIR_AM312) || \
+      defined(SENSOR_PIR_HCSR501) || \
+      defined(SENSOR_MMWAVE_LD2410) || \
+      defined(SENSOR_RADAR_RCWL0516) || \
+      defined(SENSOR_IR_TE174)
     return readMotionState();
   #else
     return false;

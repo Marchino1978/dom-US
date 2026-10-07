@@ -17,13 +17,23 @@
 #endif
 
 inline void initDistance() {
-  #if defined(SENSOR_ULTRASONIC_HCSR04) || defined(SENSOR_ULTRASONIC_HCSR04P) || defined(SENSOR_ULTRASONIC_RCWL1601) || defined(SENSOR_ULTRASONIC_US100) || defined(SENSOR_LASER_VL53L0X) || defined(SENSOR_LASER_VL53L1X)
+  #if defined(SENSOR_ULTRASONIC_HCSR04) || \
+      defined(SENSOR_ULTRASONIC_HCSR04P) || \
+      defined(SENSOR_ULTRASONIC_RCWL1601) || \
+      defined(SENSOR_ULTRASONIC_US100) || \
+      defined(SENSOR_LASER_VL53L0X) || \
+      defined(SENSOR_LASER_VL53L1X)
     initDistanceHardware();
   #endif
 }
 
 inline float readDistanceCM() {
-  #if defined(SENSOR_ULTRASONIC_HCSR04) || defined(SENSOR_ULTRASONIC_HCSR04P) || defined(SENSOR_ULTRASONIC_RCWL1601) || defined(SENSOR_ULTRASONIC_US100) || defined(SENSOR_LASER_VL53L0X) || defined(SENSOR_LASER_VL53L1X)
+  #if defined(SENSOR_ULTRASONIC_HCSR04) || \
+      defined(SENSOR_ULTRASONIC_HCSR04P) || \
+      defined(SENSOR_ULTRASONIC_RCWL1601) || \
+      defined(SENSOR_ULTRASONIC_US100) || \
+      defined(SENSOR_LASER_VL53L0X) || \
+      defined(SENSOR_LASER_VL53L1X)
     return readDistanceValue();
   #else
     return NAN;

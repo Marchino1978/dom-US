@@ -42,7 +42,6 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 //#define DISPLAY_TFT_ILI9341
 
 // --- Addons [display wake-up / alarm] (Uncomment ONLY ONE) ---
-//#define ADDON_PIR_AM312         // Mini Passive Infrared (Presence / Wake-up 3.3V)
 //#define ADDON_RADAR_RCWL0516    // Doppler Microwave (Room Presence / Alarm 4V-28V)
 #define ADDON_LASER_VL53L0X     // Laser ToF (2.8V - 5V / I2C)
 //#define ADDON_LASER_VL53L1X       // Laser ToF (Short proximity + 4m Alarm 3.3V / I2C)
@@ -76,7 +75,6 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 // --- Ambient sensor (Uncomment ONLY ONE) ---
 //#define SENSOR_LIGHT_BH1750       // Lux Digital (3.3V / 5V / I2C)
 //#define SENSOR_LIGHT_LDR          // Analog Photoresistor (3.3V / 5V)
-//#define SENSOR_GAS_MQ135          // Air Quality (5V)
 //#define SENSOR_COLOR_TCS34725     // RGB + Color Temp (3.3V / 5V / I2C)
 #define SENSOR_LIGHT_VEML7700     // Lux High precision / Human eye (3.3V / I2C)
 
@@ -86,12 +84,12 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 #define PIN_I2C_SDA      8        // SDA pin for I2C Displays & I2C Sensors
 #define PIN_I2C_SCL      9        // SCL pin for I2C Displays & I2C Sensors
 
-#define PIN_DHT          4        // Data pin for DHT11/DHT22/DS18B20
+#define PIN_DHT          0        // Data pin for DHT11/DHT22/DS18B20
 #define PIN_MOTION       5        // Signal pin for PIR/Radar
 #define PIN_OBSTACLE     3        // Signal pin for TE174 IR beam (active LOW)
 #define PIN_TRIG         6        // Trigger pin for Ultrasonic sensor (PIN_TX)
 #define PIN_ECHO         7        // Echo pin for Ultrasonic sensor (PIN_RX)
-#define PIN_ANALOG       1        // Analog input (LDR / MQ135)
+#define PIN_ANALOG       1        // Analog input (LDR)
 
 // #######################################################
 // 5. URL, TOKEN, SECTRET, PASSWORD, ID, ecc.

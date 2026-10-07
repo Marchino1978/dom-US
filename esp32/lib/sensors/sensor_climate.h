@@ -19,13 +19,25 @@
 #endif
 
 inline void initClimate() {
-  #if defined(SENSOR_AHT20) || defined(SENSOR_BME280) || defined(SENSOR_BMP280) || defined(SENSOR_DHT11) || defined(SENSOR_DHT22) || defined(SENSOR_DS18B20) || defined(SENSOR_SHT31)
+  #if defined(SENSOR_AHT20) || \
+      defined(SENSOR_BME280) || \
+      defined(SENSOR_BMP280) || \
+      defined(SENSOR_DHT11) || \
+      defined(SENSOR_DHT22) || \
+      defined(SENSOR_DS18B20) || \
+      defined(SENSOR_SHT31)
     initClimateHardware();
   #endif
 }
 
 inline float readTemperature() {
-  #if defined(SENSOR_AHT20) || defined(SENSOR_BME280) || defined(SENSOR_BMP280) || defined(SENSOR_DHT11) || defined(SENSOR_DHT22) || defined(SENSOR_DS18B20) || defined(SENSOR_SHT31)
+  #if defined(SENSOR_AHT20) || \
+      defined(SENSOR_BME280) || \
+      defined(SENSOR_BMP280) || \
+      defined(SENSOR_DHT11) || \
+      defined(SENSOR_DHT22) || \
+      defined(SENSOR_DS18B20) || \
+      defined(SENSOR_SHT31)
     return readTemperatureValue();
   #else
     return NAN;
@@ -33,7 +45,13 @@ inline float readTemperature() {
 }
 
 inline float readHumidity() {
-  #if defined(SENSOR_AHT20) || defined(SENSOR_BME280) || defined(SENSOR_BMP280) || defined(SENSOR_DHT11) || defined(SENSOR_DHT22) || defined(SENSOR_DS18B20) || defined(SENSOR_SHT31)
+  #if defined(SENSOR_AHT20) || \
+      defined(SENSOR_BME280) || \
+      defined(SENSOR_BMP280) || \
+      defined(SENSOR_DHT11) || \
+      defined(SENSOR_DHT22) || \
+      defined(SENSOR_DS18B20) || \
+      defined(SENSOR_SHT31)
     return readHumidityValue();
   #else
     return NAN;
@@ -41,7 +59,8 @@ inline float readHumidity() {
 }
 
 inline float readPressure() {
-  #if defined(SENSOR_BME280) || defined(SENSOR_BMP280)
+  #if defined(SENSOR_BME280) || \
+      defined(SENSOR_BMP280)
     return readPressureValue();
   #else
     return NAN;

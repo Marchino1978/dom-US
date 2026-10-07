@@ -21,17 +21,43 @@ struct OfflineReading {
 struct OfflineLog {
   char timestamp[25];
   char severity[10];
-  char message[100];
+  char message[150];
 };
 
 const int MAX_OFFLINE_READINGS = 72;
 const int MAX_OFFLINE_LOGS = 500;
+const int BATCH_READINGS = 24;
+const int BATCH_LOGS = 50;
 
 OfflineReading ramBuffer[MAX_OFFLINE_READINGS];
 int bufferCount = 0;
 
 OfflineLog logBuffer[MAX_OFFLINE_LOGS];
 int logBufferCount = 0;
+
+inline void copyField(char* dst, size_t dstSize, const char* src) {
+  strncpy(dst, src, dstSize - 1);
+  dst[dstSize - 1] = '\0';
+}
+
+inline bool bufferReading(const char* ts, float temp, float hum, float press) {
+  if (bufferCount >= MAX_OFFLINE_READINGS) return false;
+  copyField(ramBuffer[bufferCount].timestamp, sizeof(ramBuffer[bufferCount].timestamp), ts);
+  ramBuffer[bufferCount].temp  = temp;
+  ramBuffer[bufferCount].hum   = hum;
+  ramBuffer[bufferCount].press = press;
+  bufferCount++;
+  return true;
+}
+
+inline bool bufferLog(const char* ts, const char* severity, const char* message) {
+  if (logBufferCount >= MAX_OFFLINE_LOGS) return false;
+  copyField(logBuffer[logBufferCount].timestamp, sizeof(logBuffer[logBufferCount].timestamp), ts);
+  copyField(logBuffer[logBufferCount].severity, sizeof(logBuffer[logBufferCount].severity), severity);
+  copyField(logBuffer[logBufferCount].message, sizeof(logBuffer[logBufferCount].message), message);
+  logBufferCount++;
+  return true;
+}
 
 bool sendToSupabase(const char* ts, float temp, float hum, float press) {
   if (WiFi.status() != WL_CONNECTED) return false;
@@ -51,9 +77,9 @@ bool sendToSupabase(const char* ts, float temp, float hum, float press) {
 
   StaticJsonDocument<200> doc;
   doc["created_at"] = ts;
-  doc["temp"]        = temp;
-  doc["hum"]         = hum;
-  doc["press"]       = press;
+  doc["temp"]       = temp;
+  doc["hum"]        = hum;
+  doc["press"]      = press;
 
   String body;
   serializeJson(doc, body);
@@ -99,62 +125,104 @@ bool sendLogToSupabaseDirect(const char* timestamp, const char* severity, const 
   return (httpCode == 200 || httpCode == 201);
 }
 
-void flushRamBuffer() {
-  if (bufferCount == 0 || WiFi.status() != WL_CONNECTED) return;
+bool sendReadingsBatch(const OfflineReading* items, int count) {
+  if (WiFi.status() != WL_CONNECTED) return false;
+  ledWork();
 
-  int sentSuccessfully = 0;
-  for (int i = 0; i < bufferCount; i++) {
-    bool ok = sendToSupabase(ramBuffer[i].timestamp, ramBuffer[i].temp, ramBuffer[i].hum, ramBuffer[i].press);
-    if (ok) {
-      sentSuccessfully++;
-    } else {
-      break;
-    }
+  DynamicJsonDocument doc(JSON_ARRAY_SIZE(BATCH_READINGS) + BATCH_READINGS * JSON_OBJECT_SIZE(4));
+  JsonArray arr = doc.to<JsonArray>();
+  for (int i = 0; i < count; i++) {
+    JsonObject o = arr.createNestedObject();
+    o["created_at"] = items[i].timestamp;
+    o["temp"]       = items[i].temp;
+    o["hum"]        = items[i].hum;
+    o["press"]      = items[i].press;
   }
+  if (doc.overflowed()) return false;
 
-  if (sentSuccessfully > 0) {
-    for (int i = sentSuccessfully; i < bufferCount; i++) {
-      ramBuffer[i - sentSuccessfully] = ramBuffer[i];
-    }
-    bufferCount -= sentSuccessfully;
+  String body;
+  serializeJson(doc, body);
+
+  WiFiClientSecure client;
+  client.setInsecure();
+
+  HTTPClient http;
+  http.begin(client, String(SUPABASE_URL) + "/rest/v1/sensor_data");
+  http.addHeader("Content-Type", "application/json");
+  http.addHeader("apikey", SUPABASE_KEY);
+  http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
+  http.addHeader("Prefer", "resolution=merge-duplicates");
+
+  int httpCode = http.POST(body);
+  http.end();
+
+  Serial.print("SUPABASE sensor_data BATCH POST code: ");
+  Serial.println(httpCode);
+
+  return (httpCode == 200 || httpCode == 201);
+}
+
+bool sendLogsBatch(const OfflineLog* items, int count) {
+  if (WiFi.status() != WL_CONNECTED) return false;
+  ledWork();
+
+  DynamicJsonDocument doc(JSON_ARRAY_SIZE(BATCH_LOGS) + BATCH_LOGS * JSON_OBJECT_SIZE(3));
+  JsonArray arr = doc.to<JsonArray>();
+  for (int i = 0; i < count; i++) {
+    JsonObject o = arr.createNestedObject();
+    o["created_at"]    = items[i].timestamp;
+    o["severity"]      = items[i].severity;
+    o["event_message"] = items[i].message;
+  }
+  if (doc.overflowed()) return false;
+
+  String body;
+  serializeJson(doc, body);
+
+  WiFiClientSecure client;
+  client.setInsecure();
+
+  HTTPClient http;
+  http.begin(client, String(SUPABASE_URL) + "/rest/v1/logs");
+  http.addHeader("Content-Type", "application/json");
+  http.addHeader("apikey", SUPABASE_KEY);
+  http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
+
+  int httpCode = http.POST(body);
+  http.end();
+
+  Serial.print("SUPABASE logs BATCH POST code: ");
+  Serial.println(httpCode);
+
+  return (httpCode == 200 || httpCode == 201);
+}
+
+void flushRamBuffer() {
+  while (bufferCount > 0) {
+    if (WiFi.status() != WL_CONNECTED) return;
+    int n = (bufferCount < BATCH_READINGS) ? bufferCount : BATCH_READINGS;
+    if (!sendReadingsBatch(ramBuffer, n)) return;
+    memmove(&ramBuffer[0], &ramBuffer[n], (bufferCount - n) * sizeof(OfflineReading));
+    bufferCount -= n;
   }
 }
 
 void flushLogBuffer() {
-  if (logBufferCount == 0 || WiFi.status() != WL_CONNECTED) return;
-
-  int sentSuccessfully = 0;
-  for (int i = 0; i < logBufferCount; i++) {
-    bool ok = sendLogToSupabaseDirect(logBuffer[i].timestamp, logBuffer[i].severity, logBuffer[i].message);
-    if (ok) {
-      sentSuccessfully++;
-    } else {
-      break;
-    }
-  }
-
-  if (sentSuccessfully > 0) {
-    for (int i = sentSuccessfully; i < logBufferCount; i++) {
-      logBuffer[i - sentSuccessfully] = logBuffer[i];
-    }
-    logBufferCount -= sentSuccessfully;
+  while (logBufferCount > 0) {
+    if (WiFi.status() != WL_CONNECTED) return;
+    int n = (logBufferCount < BATCH_LOGS) ? logBufferCount : BATCH_LOGS;
+    if (!sendLogsBatch(logBuffer, n)) return;
+    memmove(&logBuffer[0], &logBuffer[n], (logBufferCount - n) * sizeof(OfflineLog));
+    logBufferCount -= n;
   }
 }
 
 bool sendLogToSupabase(const char* timestamp, const char* severity, const char* message) {
   if (WiFi.status() == WL_CONNECTED) {
     flushLogBuffer();
-    return sendLogToSupabaseDirect(timestamp, severity, message);
-  } else {
-    if (logBufferCount < MAX_OFFLINE_LOGS) {
-      strncpy(logBuffer[logBufferCount].timestamp, timestamp, sizeof(logBuffer[logBufferCount].timestamp));
-      strncpy(logBuffer[logBufferCount].severity, severity, sizeof(logBuffer[logBufferCount].severity));
-      strncpy(logBuffer[logBufferCount].message, message, sizeof(logBuffer[logBufferCount].message));
-      logBufferCount++;
-      return true;
-    }
-    return false;
+    if (sendLogToSupabaseDirect(timestamp, severity, message)) return true;
   }
+  return bufferLog(timestamp, severity, message);
 }
 
 void saveTelemetryData(struct tm* timeinfo, float temp, float hum, float press) {
@@ -168,15 +236,11 @@ void saveTelemetryData(struct tm* timeinfo, float temp, float hum, float press) 
   if (WiFi.status() == WL_CONNECTED) {
     flushRamBuffer();
     flushLogBuffer();
-    sendToSupabase(ts, temp, hum, press);
-  } else {
-    if (bufferCount < MAX_OFFLINE_READINGS) {
-      strncpy(ramBuffer[bufferCount].timestamp, ts, sizeof(ramBuffer[bufferCount].timestamp));
-      ramBuffer[bufferCount].temp  = temp;
-      ramBuffer[bufferCount].hum   = hum;
-      ramBuffer[bufferCount].press = press;
-      bufferCount++;
+    if (!sendToSupabase(ts, temp, hum, press)) {
+      bufferReading(ts, temp, hum, press);
     }
+  } else {
+    bufferReading(ts, temp, hum, press);
   }
 }
 

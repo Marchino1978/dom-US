@@ -30,6 +30,7 @@ unsigned long wifiAttemptStart = 0;
 unsigned long lastWifiRetry    = 0;
 const unsigned long wifiTimeoutMs    = 15000;
 const unsigned long wifiRetryDelayMs = 30000;
+static bool bootSequenceDone = false;
 
 void syncNtp() {
   setLedState(LED_STATE_NTP);
@@ -69,6 +70,19 @@ void syncNtp() {
   ledDelay(2000);
 }
 
+void onWifiConnected() {
+  syncNtp();
+  if (!bootSequenceDone) {
+    bootSequenceDone = true;
+    handleBootSequence();
+  } else {
+    flushRamBuffer();
+    flushLogBuffer();
+    sendHeartbeat();
+    setLedState(LED_STATE_IDLE);
+  }
+}
+
 void wifiStart(const char* ssid, const char* pass, WifiState nextState, const char* msg) {
   WiFi.disconnect(true, true);
   WiFi.mode(WIFI_STA);
@@ -99,8 +113,7 @@ void wifiUpdateState() {
         showMessage(TXT_WIFI_CONN, TXT_WIFI_OK_HOME);
         Serial.println("WIFI CONNECTED: HOME");
         ledDelay(2000);
-        syncNtp();
-        handleBootSequence();
+        onWifiConnected();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
         Serial.println("WIFI HOME TIMEOUT, trying OFFICE");
         wifiStart(ssid_office, pass_office, WIFI_CONNECTING_OFFICE, TXT_TRY_OFFICE);
@@ -113,8 +126,7 @@ void wifiUpdateState() {
         showMessage(TXT_WIFI_OK_OFFICE, "");
         Serial.println("WIFI CONNECTED: OFFICE");
         ledDelay(2000);
-        syncNtp();
-        handleBootSequence();
+        onWifiConnected();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
         Serial.println("WIFI OFFICE TIMEOUT, trying HOTSPOT");
         wifiStart(ssid_hotspot, pass_hotspot, WIFI_CONNECTING_HOTSPOT, TXT_TRY_HOTSPOT);
@@ -127,8 +139,7 @@ void wifiUpdateState() {
         showMessage(TXT_WIFI_OK_HOTSPOT, "");
         Serial.println("WIFI CONNECTED: HOTSPOT");
         ledDelay(2000);
-        syncNtp();
-        handleBootSequence();
+        onWifiConnected();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
         wifiState = WIFI_FAIL;
         lastWifiRetry = millis();
@@ -157,10 +168,11 @@ void wifiUpdateState() {
 }
 
 void checkHourlyTask(struct tm* timeinfo) {
-  static int lastExecutedHour = -1;
+  static int lastExecutedKey = -1;
+  int currentKey = timeinfo->tm_yday * 24 + timeinfo->tm_hour;
 
-  if (timeinfo->tm_min == 5 && timeinfo->tm_hour != lastExecutedHour) {
-    lastExecutedHour = timeinfo->tm_hour;
+  if (timeinfo->tm_min >= 5 && currentKey != lastExecutedKey) {
+    lastExecutedKey = currentKey;
 
     #ifdef MODULE_TELEMETRY_ACTIVE
       float temp  = readTemperature();
@@ -224,13 +236,8 @@ void loop() {
   wifiUpdateState();
   updateLed();
 
-  if (wifiState != WIFI_CONNECTED) {
-    delay(20);
-    return;
-  }
-
   struct tm timeinfo;
-  if (getLocalTime(&timeinfo)) {
+  if (getLocalTime(&timeinfo, 0)) {
     checkHourlyTask(&timeinfo);
   }
 
@@ -239,6 +246,8 @@ void loop() {
   #if defined(MODULE_DISPLAY_ACTIVE) || defined(HAS_WAKEUP_ADDON)
     if (!alarmEnabled) {
       handleDisplayAutoWake();
+    } else if (isDisplayActive()) {
+      setDisplayPower(false);
     }
   #endif
 
