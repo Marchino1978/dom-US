@@ -290,14 +290,14 @@ PLUG/JACK WIRING
 ╔══════════════════════════════════════════╦══════════╦══════════════════╗
 ║ FUNCTION                                 ║ RJ45 PIN ║ T568B COLOR      ║
 ╠══════════════════════════════════════════╬══════════╬══════════════════╣
-║ Positive Power Supply (VCC 3.3V)         ║ Pin 1    ║ White-Orange     ║ ⬜🟧
+║ Dedicated PIR Ground (GND) - AM312       ║ Pin 1    ║ White-Orange     ║ ⬜🟧
 ║ I2C Data Bus (SDA) - BME280 / VEML7700   ║ Pin 2    ║ Orange           ║ 🟧🟧
 ║ Ground Reference (GND)                   ║ Pin 3    ║ White-Green      ║ ⬜🟩
 ║ Serial Receive Line (RX) - US-100        ║ Pin 4    ║ Blue             ║ 🟦🟦
 ║ Serial Transmit Line (TX) - US-100       ║ Pin 5    ║ White-Blue       ║ ⬜🟦
 ║ I2C Clock Bus (SCL) - BME280 / VEML7700  ║ Pin 6    ║ Green            ║ 🟩🟩
 ║ Digital PIR Signal (OUT) - AM312         ║ Pin 7    ║ White-Brown      ║ ⬜🟫
-║ Dedicated PIR Ground (GND) - AM312       ║ Pin 8    ║ Brown            ║ 🟫🟫
+║ Positive Power Supply (VCC 3.3V)         ║ Pin 8    ║ Brown            ║ 🟫🟫
 ╚══════════════════════════════════════════╩══════════╩══════════════════╝
 
 
@@ -311,7 +311,7 @@ CABLE PAIRS SCHEME
  🟦🟦 Serial Receive Line (RX) - US-100
 
  PAIR 2
- ⬜🟧 Positive Power Supply (VCC 3.3V)
+ ⬜🟧 Dedicated PIR Ground (GND) - AM312
  🟧🟧 I2C Data Bus (SDA) - BME280 / VEML7700
 
  PAIR 3
@@ -320,7 +320,7 @@ CABLE PAIRS SCHEME
 
  PAIR 4
  ⬜🟫 Digital PIR Signal (OUT) - AM312
- 🟫🟫 Dedicated PIR Ground (GND) - AM312
+ 🟫🟫 Positive Power Supply (VCC 3.3V)
 
 </code></pre>
 
