@@ -51,14 +51,14 @@ inline float readAmbientLuxValue() {
 }
 
 //• Pre-calcolo del CPL (constexpr float)
-//	• Cosa: Spostato il calcolo di cpl fuori dalla funzione e trasformato in costante globale a tempo di compilazione.
+//	• Cosa: Spostare il calcolo di cpl fuori dalla funzione e trasformare in costante globale a tempo di compilazione.
 //	• Perché: Evita di far calcolare alla CPU dell'ESP32-C3 una moltiplicazione e una divisione in virgola mobile a ogni lettura. Il valore è fisso e viene pre-calcolato dal PC durante la compilazione.
 //• Clipping a zero sui canali compensati (rComp, gComp, bComp)
-//	• Cosa: Aggiunto un controllo if (xComp < 0.0f) xComp = 0.0f; per ciascun canale cromatico dopo la sottrazione dell'IR.
+//	• Cosa: Aggiungere un controllo if (xComp < 0.0f) xComp = 0.0f; per ciascun canale cromatico dopo la sottrazione dell'IR.
 //	• Perché: Al buio o con spettri luminosi critici, il rumore hardware può far sì che il valore teorico dell'IR superi il valore grezzo del singolo canale. Senza protezione, il canale diventerebbe negativo sballando la formula finale dei Lux.
 //• Standardizzazione dei letterali in float (0.0f)
-//	• Cosa: Aggiunto il suffisso f a tutte le costanti decimali azzerate.
+//	• Cosa: Aggiungere il suffisso f a tutte le costanti decimali azzerate.
 //	• Perché: L'FPU hardware dell'ESP32-C3 accelera nativamente solo i calcoli a 32-bit (float). Scrivere 0.0 senza la f costringe il chip a emulare via software un calcolo a 64-bit (double), rallentando l'esecuzione di circa 20 volte.
-//• Fallback sicuro su Wire.begin()
-//	• Cosa: Inserito il controllo condizionale #if defined sui pin I2C.
-//	• Perché: Se le macro dei pin non sono presenti in config.h, evita l'errore di compilazione e fa scalare il codice sui pin di default dell'ESP32-C3 (GPIO 8/9).
+//• Centralizzazione dell'inizializzazione del bus I2C
+//	• Cosa: Rimuovere completamente Wire.begin() dal file del sensore per spostarlo esclusivamente nel setup() del file principale (esp32.ino).
+//	• Perché: Il bus I2C è una risorsa hardware condivisa da più sensori. Evita che i singoli file hardware resettino o inizializzino la linea in momenti diversi, scongiurando conflitti di comunicazione, dati corrotti (NAN) o blocchi dell'ESP32-C3.
