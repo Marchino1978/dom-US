@@ -6,6 +6,8 @@
 #include <Wire.h>
 #include <Adafruit_TCS34725.h>
 
+// To turn off the sensor's onboard white LED, connect the LED pin to the GND pin.
+
 static Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_50MS, TCS34725_GAIN_4X);
 static bool tcsReady = false;
 
