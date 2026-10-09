@@ -105,7 +105,6 @@
 │   ├── esp32-c3-zero-front.jpg
 │   ├── esp32-c3-zero-rear.jpg
 │   ├── i2c.jpg
-│   ├── i2c_.jpg
 │   ├── index.md
 │   ├── ino_lib.png
 │   ├── led_status.jpg
@@ -147,6 +146,6 @@
 ├── README.md
 └── robots.txt
 
-24 directories, 123 files
+24 directories, 122 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***

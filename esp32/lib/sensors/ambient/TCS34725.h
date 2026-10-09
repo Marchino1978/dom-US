@@ -62,3 +62,6 @@ inline float readAmbientLuxValue() {
 //• Centralizzazione dell'inizializzazione del bus I2C
 //	• Cosa: Rimuovere completamente Wire.begin() dal file del sensore per spostarlo esclusivamente nel setup() del file principale (esp32.ino).
 //	• Perché: Il bus I2C è una risorsa hardware condivisa da più sensori. Evita che i singoli file hardware resettino o inizializzino la linea in momenti diversi, scongiurando conflitti di comunicazione, dati corrotti (NAN) o blocchi dell'ESP32-C3.
+//• Ottimizzazione dei parametri hardware per la luce ambientale
+//	• Cosa: Modificare l'inizializzazione del sensore portandola a 154ms di tempo di integrazione e 16x di guadagno (TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_16X), aggiornando di conseguenza le macro TCS_ATIME_MS a 153.6f e TCS_AGAIN a 16.0f, e portando il delay della doppia lettura a 160.
+//	• Perché: Con il LED integrato spento, le impostazioni originali (50ms / 4x) rendono il sensore troppo "cieco" per la luce diffusa della stanza, restituendo valori innaturalmente bassi (2-3 lux di pomeriggio). Aumentando il tempo di esposizione e l'amplificazione del guadagno, il sensore diventa fino a 12 volte più sensibile, permettendo di misurare con precisione la reale luminosità della camera senza saturare.
