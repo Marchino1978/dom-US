@@ -16,6 +16,8 @@ struct OfflineReading {
   float temp;
   float hum;
   float press;
+  bool provisional;
+  uint32_t bootSeconds;
 };
 
 struct OfflineLog {
@@ -28,12 +30,20 @@ const int MAX_OFFLINE_READINGS = 72;
 const int MAX_OFFLINE_LOGS = 500;
 const int BATCH_READINGS = 24;
 const int BATCH_LOGS = 50;
+const unsigned long UPLOAD_RETRY_INTERVAL_MS = 30000;
+const time_t MIN_VALID_EPOCH = 1700000000;
 
 OfflineReading ramBuffer[MAX_OFFLINE_READINGS];
 int bufferCount = 0;
 
 OfflineLog logBuffer[MAX_OFFLINE_LOGS];
 int logBufferCount = 0;
+
+static unsigned long lastUploadAttemptMs = 0;
+
+inline bool timeIsValid() {
+  return time(nullptr) > MIN_VALID_EPOCH;
+}
 
 inline void copyField(char* dst, size_t dstSize, const char* src) {
   strncpy(dst, src, dstSize - 1);
@@ -46,8 +56,37 @@ inline bool bufferReading(const char* ts, float temp, float hum, float press) {
   ramBuffer[bufferCount].temp  = temp;
   ramBuffer[bufferCount].hum   = hum;
   ramBuffer[bufferCount].press = press;
+  ramBuffer[bufferCount].provisional = false;
+  ramBuffer[bufferCount].bootSeconds = 0;
   bufferCount++;
   return true;
+}
+
+// Reading taken without a valid clock: the real timestamp is rebuilt after NTP sync
+inline bool bufferProvisionalReading(uint32_t bootSeconds, float temp, float hum, float press) {
+  if (bufferCount >= MAX_OFFLINE_READINGS) return false;
+  ramBuffer[bufferCount].timestamp[0] = '\0';
+  ramBuffer[bufferCount].temp  = temp;
+  ramBuffer[bufferCount].hum   = hum;
+  ramBuffer[bufferCount].press = press;
+  ramBuffer[bufferCount].provisional = true;
+  ramBuffer[bufferCount].bootSeconds = bootSeconds;
+  bufferCount++;
+  return true;
+}
+
+inline bool hasProvisionalReadings() {
+  for (int i = 0; i < bufferCount; i++) {
+    if (ramBuffer[i].provisional) return true;
+  }
+  return false;
+}
+
+inline bool bufferHasHour(const char* hourTimestamp) {
+  for (int i = 0; i < bufferCount; i++) {
+    if (!ramBuffer[i].provisional && strcmp(ramBuffer[i].timestamp, hourTimestamp) == 0) return true;
+  }
+  return false;
 }
 
 inline bool bufferLog(const char* ts, const char* severity, const char* message) {
@@ -197,7 +236,104 @@ bool sendLogsBatch(const OfflineLog* items, int count) {
   return (httpCode == 200 || httpCode == 201);
 }
 
+// Requires a SELECT policy on sensor_data for the publishable key, otherwise the result is always empty.
+// Returns false only on request/parse failure; outEpoch is 0 when the table has no rows.
+bool fetchLastSensorEpoch(time_t& outEpoch) {
+  if (WiFi.status() != WL_CONNECTED) return false;
+  ledWork();
+
+  WiFiClientSecure client;
+  client.setInsecure();
+
+  HTTPClient http;
+  http.begin(client, String(SUPABASE_URL) + "/rest/v1/sensor_data?select=created_at&order=created_at.desc&limit=1");
+  http.addHeader("apikey", SUPABASE_KEY);
+  http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
+
+  int httpCode = http.GET();
+  Serial.print("SUPABASE last sensor_data GET code: ");
+  Serial.println(httpCode);
+
+  if (httpCode != 200) {
+    http.end();
+    return false;
+  }
+
+  String payload = http.getString();
+  http.end();
+
+  StaticJsonDocument<256> doc;
+  if (deserializeJson(doc, payload)) return false;
+
+  outEpoch = 0;
+  if (doc.is<JsonArray>() && doc.size() > 0) {
+    const char* raw = doc[0]["created_at"] | "";
+    int y, m, d, h, mi, s;
+    if (sscanf(raw, "%d-%d-%dT%d:%d:%d", &y, &m, &d, &h, &mi, &s) != 6) return false;
+
+    struct tm t = {0};
+    t.tm_year  = y - 1900;
+    t.tm_mon   = m - 1;
+    t.tm_mday  = d;
+    t.tm_hour  = h;
+    t.tm_min   = mi;
+    t.tm_sec   = s;
+    t.tm_isdst = -1;
+    outEpoch = mktime(&t);
+  }
+  return true;
+}
+
+// Rebuilds timestamps of provisional readings; drops those already covered by the database
+// or belonging to an hour that the regular hourly task will still read.
+bool resolveProvisionalReadings() {
+  if (!hasProvisionalReadings()) return true;
+  if (!timeIsValid()) return false;
+
+  time_t lastDbEpoch = 0;
+  if (!fetchLastSensorEpoch(lastDbEpoch)) return false;
+
+  time_t nowEpoch = time(nullptr);
+  uint32_t nowSeconds = millis() / 1000;
+
+  struct tm nowInfo;
+  localtime_r(&nowEpoch, &nowInfo);
+
+  time_t currentHourStart = nowEpoch - (nowEpoch % 3600);
+  time_t limitHour = (nowInfo.tm_min >= 5) ? currentHourStart : currentHourStart - 3600;
+  time_t previousHour = lastDbEpoch - (lastDbEpoch % 3600);
+
+  int kept = 0;
+  for (int i = 0; i < bufferCount; i++) {
+    OfflineReading r = ramBuffer[i];
+
+    if (r.provisional) {
+      time_t epoch = nowEpoch - (time_t)(nowSeconds - r.bootSeconds);
+      time_t hour = epoch - (epoch % 3600);
+      if (hour <= previousHour) continue;
+      if (hour > limitHour) continue;
+
+      struct tm hourInfo;
+      localtime_r(&hour, &hourInfo);
+      snprintf(r.timestamp, sizeof(r.timestamp), "%04d-%02d-%02dT%02d:00:00Z",
+               hourInfo.tm_year + 1900,
+               hourInfo.tm_mon + 1,
+               hourInfo.tm_mday,
+               hourInfo.tm_hour);
+      r.provisional = false;
+      previousHour = hour;
+    }
+
+    ramBuffer[kept++] = r;
+  }
+  bufferCount = kept;
+  return true;
+}
+
 void flushRamBuffer() {
+  lastUploadAttemptMs = millis();
+  if (hasProvisionalReadings() && !resolveProvisionalReadings()) return;
+
   while (bufferCount > 0) {
     if (WiFi.status() != WL_CONNECTED) return;
     int n = (bufferCount < BATCH_READINGS) ? bufferCount : BATCH_READINGS;
@@ -208,6 +344,8 @@ void flushRamBuffer() {
 }
 
 void flushLogBuffer() {
+  lastUploadAttemptMs = millis();
+
   while (logBufferCount > 0) {
     if (WiFi.status() != WL_CONNECTED) return;
     int n = (logBufferCount < BATCH_LOGS) ? logBufferCount : BATCH_LOGS;
@@ -215,6 +353,16 @@ void flushLogBuffer() {
     memmove(&logBuffer[0], &logBuffer[n], (logBufferCount - n) * sizeof(OfflineLog));
     logBufferCount -= n;
   }
+}
+
+// Called from loop(): retries pending uploads that failed right after reconnection
+void retryPendingUploads() {
+  if (WiFi.status() != WL_CONNECTED) return;
+  if (bufferCount == 0 && logBufferCount == 0) return;
+  if (millis() - lastUploadAttemptMs < UPLOAD_RETRY_INTERVAL_MS) return;
+
+  flushRamBuffer();
+  flushLogBuffer();
 }
 
 bool sendLogToSupabase(const char* timestamp, const char* severity, const char* message) {
@@ -246,6 +394,7 @@ void saveTelemetryData(struct tm* timeinfo, float temp, float hum, float press) 
 
 void sendHeartbeat() {
   if (WiFi.status() != WL_CONNECTED) return;
+  if (!timeIsValid()) return;
 
   static unsigned long lastPing = 0;
   if (millis() - lastPing < 60000 && lastPing != 0) return;
@@ -256,7 +405,7 @@ void sendHeartbeat() {
 
   struct tm timeinfo;
   char ts[25];
-  if (getLocalTime(&timeinfo)) {
+  if (getLocalTime(&timeinfo, 0)) {
     snprintf(ts, sizeof(ts), "%04d-%02d-%02dT%02d:%02d:%02dZ",
              timeinfo.tm_year + 1900,
              timeinfo.tm_mon + 1,
@@ -265,7 +414,7 @@ void sendHeartbeat() {
              timeinfo.tm_min,
              timeinfo.tm_sec);
   } else {
-    strncpy(ts, "2026-09-01T00:00:00Z", sizeof(ts));
+    return;
   }
 
   WiFiClientSecure client;
@@ -339,7 +488,7 @@ void handleBootSequence() {
           time_t oldEpoch = mktime(&oldTime);
           
           struct tm nowInfo;
-          if (getLocalTime(&nowInfo)) {
+          if (getLocalTime(&nowInfo, 0)) {
             time_t nowEpoch = mktime(&nowInfo);
             long diffSec = nowEpoch - oldEpoch;
 

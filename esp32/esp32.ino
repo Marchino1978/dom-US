@@ -1,6 +1,8 @@
 #include <WiFi.h>
 #include <Preferences.h>
 #include <time.h>
+#include <stdlib.h>
+#include <esp_system.h>
 
 #include "config.h"
 #include "lib/checks.h"
@@ -28,50 +30,38 @@ enum WifiState {
 WifiState wifiState = WIFI_IDLE;
 unsigned long wifiAttemptStart = 0;
 unsigned long lastWifiRetry    = 0;
-const unsigned long wifiTimeoutMs    = 15000;
-const unsigned long wifiRetryDelayMs = 30000;
+const unsigned long wifiTimeoutMs        = 15000;
+const unsigned long wifiRetryDelayMs     = 30000;
+const unsigned long ntpTimeoutMs         = 15000;
+const unsigned long timeGraceMs          = 300000;
+const unsigned long provisionalIntervalMs = 3600000UL;
+const unsigned long slotRetryMs          = 10000;
+const int           slotMaxAttempts      = 3;
+const char* const   timezoneRome         = "CET-1CEST,M3.5.0,M10.5.0/3";
+
 static bool bootSequenceDone = false;
+static bool bootWasBlackout  = false;
 
-void syncNtp() {
-  setLedState(LED_STATE_NTP);
-  showMessage(TXT_WIFI_CONN, TXT_NTP_CONN);
-  Serial.println("NTP SYNC START");
-  ledDelay(1000);
-  
-  configTzTime("CET-1CEST,M3.5.0,M10.5.0/3", "pool.ntp.org", "time.nist.gov");
+static bool ntpWaiting = false;
+static bool ntpFailShown = false;
+static unsigned long ntpStartMs = 0;
 
-  struct tm timeinfo;
-  int tentativi = 0;
-  while (!getLocalTime(&timeinfo) && tentativi < 20) {
-    ledDelay(200);
-    tentativi++;
-  }
+static bool hourlySlotReady = false;
+static int lastExecutedKey = -1;
 
-  if (!getLocalTime(&timeinfo)) {
-    showMessage(TXT_WIFI_CONN, TXT_NTP_FAIL);
-    Serial.println("NTP SYNC FAIL");
-    ledDelay(3000);
-    return;
-  }
-
-  showMessage(TXT_WIFI_CONN, TXT_NTP_OK);
-  Serial.println("NTP SYNC OK");
-  ledDelay(1500);
-
-  char ora[32];
-  snprintf(ora, sizeof(ora), TXT_TIME_LABEL, 
-           timeinfo.tm_hour, 
-           timeinfo.tm_min, 
-           timeinfo.tm_mday, 
-           timeinfo.tm_mon + 1, 
-           timeinfo.tm_year + 1900);
-           
-  showMessage(ora, "");
-  ledDelay(2000);
+void readTelemetry(float& temp, float& hum, float& press) {
+  #ifdef MODULE_TELEMETRY_ACTIVE
+    temp  = readTemperature();
+    hum   = readHumidity();
+    press = readPressure();
+  #else
+    temp  = NAN;
+    hum   = NAN;
+    press = NAN;
+  #endif
 }
 
-void onWifiConnected() {
-  syncNtp();
+void onTimeSynced() {
   if (!bootSequenceDone) {
     bootSequenceDone = true;
     handleBootSequence();
@@ -81,6 +71,54 @@ void onWifiConnected() {
     sendHeartbeat();
     setLedState(LED_STATE_IDLE);
   }
+}
+
+void startNtp() {
+  setLedState(LED_STATE_NTP);
+  showMessage(TXT_WIFI_CONN, TXT_NTP_CONN);
+  Serial.println("NTP SYNC START");
+
+  configTzTime(timezoneRome, "pool.ntp.org", "time.nist.gov");
+
+  ntpWaiting = true;
+  ntpFailShown = false;
+  ntpStartMs = millis();
+}
+
+void ntpUpdate() {
+  if (!ntpWaiting) return;
+  if (WiFi.status() != WL_CONNECTED) return;
+
+  if (timeIsValid()) {
+    ntpWaiting = false;
+    Serial.println("NTP SYNC OK");
+
+    struct tm timeinfo;
+    time_t now = time(nullptr);
+    localtime_r(&now, &timeinfo);
+
+    char ora[32];
+    snprintf(ora, sizeof(ora), TXT_TIME_LABEL,
+             timeinfo.tm_hour,
+             timeinfo.tm_min,
+             timeinfo.tm_mday,
+             timeinfo.tm_mon + 1,
+             timeinfo.tm_year + 1900);
+    showMessage(ora, TXT_NTP_OK);
+
+    onTimeSynced();
+    return;
+  }
+
+  if (!ntpFailShown && millis() - ntpStartMs > ntpTimeoutMs) {
+    ntpFailShown = true;
+    showMessage(TXT_WIFI_CONN, TXT_NTP_FAIL);
+    Serial.println("NTP SYNC FAIL, still waiting");
+  }
+}
+
+void onWifiConnected() {
+  startNtp();
 }
 
 void wifiStart(const char* ssid, const char* pass, WifiState nextState, const char* msg) {
@@ -96,7 +134,6 @@ void wifiStart(const char* ssid, const char* pass, WifiState nextState, const ch
   showMessage(TXT_WIFI_CONN, msg);
   Serial.print("WIFI TRY: ");
   Serial.println(ssid);
-  ledDelay(1000);
 }
 
 void wifiUpdateState() {
@@ -112,7 +149,6 @@ void wifiUpdateState() {
         wifiState = WIFI_CONNECTED;
         showMessage(TXT_WIFI_CONN, TXT_WIFI_OK_HOME);
         Serial.println("WIFI CONNECTED: HOME");
-        ledDelay(2000);
         onWifiConnected();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
         Serial.println("WIFI HOME TIMEOUT, trying OFFICE");
@@ -125,7 +161,6 @@ void wifiUpdateState() {
         wifiState = WIFI_CONNECTED;
         showMessage(TXT_WIFI_OK_OFFICE, "");
         Serial.println("WIFI CONNECTED: OFFICE");
-        ledDelay(2000);
         onWifiConnected();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
         Serial.println("WIFI OFFICE TIMEOUT, trying HOTSPOT");
@@ -138,7 +173,6 @@ void wifiUpdateState() {
         wifiState = WIFI_CONNECTED;
         showMessage(TXT_WIFI_OK_HOTSPOT, "");
         Serial.println("WIFI CONNECTED: HOTSPOT");
-        ledDelay(2000);
         onWifiConnected();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
         wifiState = WIFI_FAIL;
@@ -159,7 +193,11 @@ void wifiUpdateState() {
       break;
 
     case WIFI_FAIL:
-      if (millis() - lastWifiRetry > wifiRetryDelayMs) {
+      if (st == WL_CONNECTED) {
+        wifiState = WIFI_CONNECTED;
+        Serial.println("WIFI RECONNECTED (auto)");
+        onWifiConnected();
+      } else if (millis() - lastWifiRetry > wifiRetryDelayMs) {
         Serial.println("WIFI RETRY: HOME");
         wifiStart(ssid_home, pass_home, WIFI_CONNECTING_HOME, TXT_TRY_HOME);
       }
@@ -167,24 +205,88 @@ void wifiUpdateState() {
   }
 }
 
+// Decides whether the current hour must be skipped, after pending readings are resolved
+void prepareHourlySlot() {
+  if (hourlySlotReady) return;
+  if (!timeIsValid()) return;
+  if (hasProvisionalReadings()) return;
+
+  static unsigned long lastAttemptMs = 0;
+  static int attempts = 0;
+
+  time_t lastDbEpoch = 0;
+
+  if (WiFi.status() == WL_CONNECTED) {
+    if (lastAttemptMs != 0 && millis() - lastAttemptMs < slotRetryMs) return;
+    lastAttemptMs = millis();
+
+    if (!fetchLastSensorEpoch(lastDbEpoch)) {
+      attempts++;
+      if (attempts < slotMaxAttempts) return;
+      lastDbEpoch = 0;
+    }
+  }
+
+  time_t nowEpoch = time(nullptr);
+  struct tm nowInfo;
+  localtime_r(&nowEpoch, &nowInfo);
+
+  time_t currentHourStart = nowEpoch - (nowEpoch % 3600);
+
+  char currentTs[25];
+  snprintf(currentTs, sizeof(currentTs), "%04d-%02d-%02dT%02d:00:00Z",
+           nowInfo.tm_year + 1900,
+           nowInfo.tm_mon + 1,
+           nowInfo.tm_mday,
+           nowInfo.tm_hour);
+
+  bool skipCurrentHour = (lastDbEpoch >= currentHourStart) ||
+                         bufferHasHour(currentTs) ||
+                         (bootWasBlackout && nowInfo.tm_min >= 5);
+
+  if (skipCurrentHour) {
+    lastExecutedKey = nowInfo.tm_yday * 24 + nowInfo.tm_hour;
+  }
+  hourlySlotReady = true;
+}
+
 void checkHourlyTask(struct tm* timeinfo) {
-  static int lastExecutedKey = -1;
+  if (!hourlySlotReady) return;
+
   int currentKey = timeinfo->tm_yday * 24 + timeinfo->tm_hour;
 
   if (timeinfo->tm_min >= 5 && currentKey != lastExecutedKey) {
     lastExecutedKey = currentKey;
 
-    #ifdef MODULE_TELEMETRY_ACTIVE
-      float temp  = readTemperature();
-      float hum   = readHumidity();
-      float press = readPressure();
-    #else
-      float temp  = NAN;
-      float hum   = NAN;
-      float press = NAN;
-    #endif
+    float temp, hum, press;
+    readTelemetry(temp, hum, press);
 
     saveTelemetryData(timeinfo, temp, hum, press);
+  }
+}
+
+// Used only while the clock is not valid and the reboot was not a power loss
+void provisionalTelemetryTask() {
+  if (bootWasBlackout) return;
+  if (millis() < timeGraceMs) return;
+
+  static bool started = false;
+  static unsigned long nextMs = 0;
+
+  if (!started) {
+    started = true;
+    nextMs = millis();
+  }
+  if ((long)(millis() - nextMs) < 0) return;
+  nextMs += provisionalIntervalMs;
+
+  float temp, hum, press;
+  readTelemetry(temp, hum, press);
+
+  if (bufferProvisionalReading(millis() / 1000, temp, hum, press)) {
+    Serial.println("PROVISIONAL READING BUFFERED");
+  } else {
+    Serial.println("PROVISIONAL READING BUFFER FULL");
   }
 }
 
@@ -214,6 +316,14 @@ void setup() {
   delay(1000);
   Serial.println("BOOT START");
 
+  esp_reset_reason_t resetReason = esp_reset_reason();
+  bootWasBlackout = (resetReason == ESP_RST_POWERON || resetReason == ESP_RST_BROWNOUT);
+  Serial.print("RESET REASON: ");
+  Serial.println((int)resetReason);
+
+  setenv("TZ", timezoneRome, 1);
+  tzset();
+
   preferences.begin("domus-alarm", false);
   alarmEnabled = preferences.getBool("alarm_state", false);
 
@@ -234,12 +344,21 @@ void setup() {
 
 void loop() {
   wifiUpdateState();
+  ntpUpdate();
   updateLed();
 
-  struct tm timeinfo;
-  if (getLocalTime(&timeinfo, 0)) {
+  if (timeIsValid()) {
+    struct tm timeinfo;
+    time_t now = time(nullptr);
+    localtime_r(&now, &timeinfo);
+
+    prepareHourlySlot();
     checkHourlyTask(&timeinfo);
+  } else {
+    provisionalTelemetryTask();
   }
+
+  retryPendingUploads();
 
   checkClimateDisplayTask();
 
