@@ -32,7 +32,7 @@
   <tr>
     <td width="50%" align="center" valign="top">
       <img src="../img/i2c.jpg" alt="Messaggio del bot Telegram dom-US che mostra i risultati della scansione bus i2c | Telegram bot dom-US message showing i2c bus scan results" width="100%"><br>
-      <font color="cyan"><b>SCAN I2C ADRESSES  [TELEGRAM]</b></font>
+      <font color="cyan"><b>SCAN I2C ADDRESSES  [TELEGRAM]</b></font>
     </td>
     <td width="50%" align="center" valign="top">
       <img src="../img/led_status.jpg" alt="Messaggio del bot Telegram dom-US che mostra il toggle dello stato del LED| Telegram bot dom-US message showing LED status toggle" width="100%"><br>
