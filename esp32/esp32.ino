@@ -6,6 +6,7 @@
 
 #include "config.h"
 #include "lib/checks.h"
+#include "lib/debug.h"
 #include "lib/language.h"
 #include "lib/display.h"
 #include "lib/sensors.h"
@@ -86,7 +87,7 @@ void bootSequenceTask() {
 void startNtp() {
   setLedState(LED_STATE_NTP);
   showMessage(TXT_WIFI_CONN, TXT_NTP_CONN);
-  Serial.println("NTP SYNC START");
+  DEBUG_LOG("NTP SYNC START");
 
   configTzTime(timezoneRome, "pool.ntp.org", "time.nist.gov");
 
@@ -101,7 +102,7 @@ void ntpUpdate() {
 
   if (timeIsValid()) {
     ntpWaiting = false;
-    Serial.println("NTP SYNC OK");
+    DEBUG_LOG("NTP SYNC OK");
 
     struct tm timeinfo;
     time_t now = time(nullptr);
@@ -123,7 +124,7 @@ void ntpUpdate() {
   if (!ntpFailShown && millis() - ntpStartMs > ntpTimeoutMs) {
     ntpFailShown = true;
     showMessage(TXT_WIFI_CONN, TXT_NTP_FAIL);
-    Serial.println("NTP SYNC FAIL, still waiting");
+    DEBUG_LOG("NTP SYNC FAIL, still waiting");
   }
 }
 
@@ -142,8 +143,7 @@ void wifiStart(const char* ssid, const char* pass, WifiState nextState, const ch
   setLedState(LED_STATE_WIFI);
 
   showMessage(TXT_WIFI_CONN, msg);
-  Serial.print("WIFI TRY: ");
-  Serial.println(ssid);
+  DEBUG_LOG("WIFI TRY: %s", ssid);
 }
 
 void wifiUpdateState() {
@@ -158,10 +158,10 @@ void wifiUpdateState() {
       if (st == WL_CONNECTED) {
         wifiState = WIFI_CONNECTED;
         showMessage(TXT_WIFI_CONN, TXT_WIFI_OK_HOME);
-        Serial.println("WIFI CONNECTED: HOME");
+        DEBUG_LOG("WIFI CONNECTED: HOME");
         onWifiConnected();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
-        Serial.println("WIFI HOME TIMEOUT, trying OFFICE");
+        DEBUG_LOG("WIFI HOME TIMEOUT, trying OFFICE");
         wifiStart(ssid_office, pass_office, WIFI_CONNECTING_OFFICE, TXT_TRY_OFFICE);
       }
       break;
@@ -170,10 +170,10 @@ void wifiUpdateState() {
       if (st == WL_CONNECTED) {
         wifiState = WIFI_CONNECTED;
         showMessage(TXT_WIFI_OK_OFFICE, "");
-        Serial.println("WIFI CONNECTED: OFFICE");
+        DEBUG_LOG("WIFI CONNECTED: OFFICE");
         onWifiConnected();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
-        Serial.println("WIFI OFFICE TIMEOUT, trying HOTSPOT");
+        DEBUG_LOG("WIFI OFFICE TIMEOUT, trying HOTSPOT");
         wifiStart(ssid_hotspot, pass_hotspot, WIFI_CONNECTING_HOTSPOT, TXT_TRY_HOTSPOT);
       }
       break;
@@ -182,13 +182,13 @@ void wifiUpdateState() {
       if (st == WL_CONNECTED) {
         wifiState = WIFI_CONNECTED;
         showMessage(TXT_WIFI_OK_HOTSPOT, "");
-        Serial.println("WIFI CONNECTED: HOTSPOT");
+        DEBUG_LOG("WIFI CONNECTED: HOTSPOT");
         onWifiConnected();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
         wifiState = WIFI_FAIL;
         lastWifiRetry = millis();
         showMessage(TXT_WIFI_CONN, TXT_WIFI_FAIL);
-        Serial.println("WIFI HOTSPOT TIMEOUT, all attempts FAILED");
+        DEBUG_LOG("WIFI HOTSPOT TIMEOUT, all attempts FAILED");
       }
       break;
 
@@ -198,17 +198,17 @@ void wifiUpdateState() {
         lastWifiRetry = millis();
         showMessage(TXT_WIFI_CONN, TXT_WIFI_LOST);
         setLedState(LED_STATE_WIFI);
-        Serial.println("WIFI CONNECTION LOST");
+        DEBUG_LOG("WIFI CONNECTION LOST");
       }
       break;
 
     case WIFI_FAIL:
       if (st == WL_CONNECTED) {
         wifiState = WIFI_CONNECTED;
-        Serial.println("WIFI RECONNECTED (auto)");
+        DEBUG_LOG("WIFI RECONNECTED (auto)");
         onWifiConnected();
       } else if (millis() - lastWifiRetry > wifiRetryDelayMs) {
-        Serial.println("WIFI RETRY: HOME");
+        DEBUG_LOG("WIFI RETRY: HOME");
         wifiStart(ssid_home, pass_home, WIFI_CONNECTING_HOME, TXT_TRY_HOME);
       }
       break;
@@ -294,9 +294,9 @@ void provisionalTelemetryTask() {
   readTelemetry(temp, hum, press);
 
   if (bufferProvisionalReading(millis() / 1000, temp, hum, press)) {
-    Serial.println("PROVISIONAL READING BUFFERED");
+    DEBUG_LOG("PROVISIONAL READING BUFFERED");
   } else {
-    Serial.println("PROVISIONAL READING BUFFER FULL");
+    DEBUG_LOG("PROVISIONAL READING BUFFER FULL");
   }
 }
 
@@ -322,14 +322,15 @@ void checkClimateDisplayTask() {
 }
 
 void setup() {
-  Serial.begin(115200);
-  delay(1000);
-  Serial.println("BOOT START");
+  #ifdef DEBUG_SERIAL
+    Serial.begin(115200);
+    delay(1000);
+  #endif
+  DEBUG_LOG("BOOT START");
 
   esp_reset_reason_t resetReason = esp_reset_reason();
   bootWasBlackout = (resetReason == ESP_RST_POWERON || resetReason == ESP_RST_BROWNOUT);
-  Serial.print("RESET REASON: ");
-  Serial.println((int)resetReason);
+  DEBUG_LOG("RESET REASON: %d", (int)resetReason);
 
   setenv("TZ", timezoneRome, 1);
   tzset();

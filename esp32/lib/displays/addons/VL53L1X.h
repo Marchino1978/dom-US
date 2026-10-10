@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../config.h"
+#include "../../debug.h"
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -25,7 +26,7 @@ inline void initAddonHardware() {
   Wire.begin(PIN_I2C_SDA, PIN_I2C_SCL);
   vl53Ready = vl53.begin(VL53L1X_I2C_ADDRESS, &Wire);
   if (!vl53Ready) {
-    Serial.println("VL53L1X NOT FOUND");
+    DEBUG_LOG("VL53L1X NOT FOUND");
     return;
   }
   vl53.startRanging();

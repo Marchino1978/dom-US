@@ -1,67 +1,95 @@
 #pragma once
 
 #include "../../../config.h"
+#include "../../debug.h"
 
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_TCS34725.h>
 
 // To turn off the sensor's onboard white LED, connect the LED pin to the GND pin.
+// With the LED off the sensor measures incident (ambient) light.
 
-static Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_50MS, TCS34725_GAIN_4X);
+// Fixed 154 ms integration, gain adjusted automatically to avoid saturation and to stay sensitive in the dark
+static Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_16X);
 static bool tcsReady = false;
 
-// ams DN40 lux formula, open air (GA = 1), values matching 50 ms / 4x gain above
-#define TCS_ATIME_MS   50.4f
-#define TCS_AGAIN      4.0f
-#define TCS_GLASS_ATT  1.0f
-#define TCS_DF         310.0f
-#define TCS_R_COEF     0.136f
-#define TCS_G_COEF     1.0f
-#define TCS_B_COEF     -0.444f
- 
+// ams DN40 lux formula. TCS_GLASS_ATT is 1.0 in open air, greater than 1.0 behind a cover (1 / transmittance)
+#define TCS_ATIME_MS          153.6f
+#define TCS_GLASS_ATT         1.0f
+#define TCS_DF                310.0f
+#define TCS_R_COEF            0.136f
+#define TCS_G_COEF            1.0f
+#define TCS_B_COEF            -0.444f
+
+#define TCS_GAIN_STEPS        4
+#define TCS_SATURATION_COUNT  60000
+#define TCS_LOW_COUNT         2000
+#define TCS_TARGET_MAX_COUNT  50000.0f
+
+static const tcs34725Gain_t tcsGainReg[TCS_GAIN_STEPS] = {
+  TCS34725_GAIN_1X, TCS34725_GAIN_4X, TCS34725_GAIN_16X, TCS34725_GAIN_60X
+};
+static constexpr float tcsGainX[TCS_GAIN_STEPS] = {1.0f, 4.0f, 16.0f, 60.0f};
+
+// Counts per lux for each gain step, precomputed at compile time
+static constexpr float tcsCpl[TCS_GAIN_STEPS] = {
+  (TCS_ATIME_MS * 1.0f)  / (TCS_GLASS_ATT * TCS_DF),
+  (TCS_ATIME_MS * 4.0f)  / (TCS_GLASS_ATT * TCS_DF),
+  (TCS_ATIME_MS * 16.0f) / (TCS_GLASS_ATT * TCS_DF),
+  (TCS_ATIME_MS * 60.0f) / (TCS_GLASS_ATT * TCS_DF)
+};
+
+static uint8_t tcsGainIndex = 2;
+
 inline void initAmbientHardware() {
   Wire.begin(PIN_I2C_SDA, PIN_I2C_SCL);
   tcsReady = tcs.begin();
   if (!tcsReady) {
-    Serial.println("TCS34725 NOT FOUND");
+    DEBUG_LOG("TCS34725 NOT FOUND");
   }
 }
- 
-// getRawData blocks for the integration time (50 ms)
+
+// getRawData blocks for the integration time (154 ms); a gain change needs two extra cycles to settle
 inline float readAmbientLuxValue() {
   if (!tcsReady) return NAN;
- 
+
   uint16_t r, g, b, c;
   tcs.getRawData(&r, &g, &b, &c);
+
+  for (uint8_t i = 0; i < TCS_GAIN_STEPS; i++) {
+    uint8_t next = tcsGainIndex;
+
+    if (c >= TCS_SATURATION_COUNT && tcsGainIndex > 0) {
+      next = tcsGainIndex - 1;
+    } else if (c < TCS_LOW_COUNT && tcsGainIndex < TCS_GAIN_STEPS - 1) {
+      float predicted = (float)c * tcsGainX[tcsGainIndex + 1] / tcsGainX[tcsGainIndex];
+      if (predicted < TCS_TARGET_MAX_COUNT) next = tcsGainIndex + 1;
+    }
+
+    if (next == tcsGainIndex) break;
+
+    tcsGainIndex = next;
+    tcs.setGain(tcsGainReg[tcsGainIndex]);
+    tcs.getRawData(&r, &g, &b, &c);
+    tcs.getRawData(&r, &g, &b, &c);
+  }
 
   if (c == 0) return 0.0f;
 
   float ir = ((float)r + g + b - c) / 2.0f;
-  if (ir < 0) ir = 0;
+  if (ir < 0.0f) ir = 0.0f;
 
   float rComp = r - ir;
   float gComp = g - ir;
   float bComp = b - ir;
+  if (rComp < 0.0f) rComp = 0.0f;
+  if (gComp < 0.0f) gComp = 0.0f;
+  if (bComp < 0.0f) bComp = 0.0f;
 
-  float cpl = (TCS_ATIME_MS * TCS_AGAIN) / (TCS_GLASS_ATT * TCS_DF);
-  float lux = (TCS_R_COEF * rComp + TCS_G_COEF * gComp + TCS_B_COEF * bComp) / cpl;
+  float lux = (TCS_R_COEF * rComp + TCS_G_COEF * gComp + TCS_B_COEF * bComp) / tcsCpl[tcsGainIndex];
+  if (lux < 0.0f) lux = 0.0f;
 
-  return (lux < 0) ? 0.0f : lux;
+  DEBUG_LOG("TCS34725 gain %.0fx r=%u g=%u b=%u c=%u lux=%.1f", tcsGainX[tcsGainIndex], r, g, b, c, lux);
+  return lux;
 }
-
-//• Pre-calcolo del CPL (constexpr float)
-//	• Cosa: Spostare il calcolo di cpl fuori dalla funzione e trasformare in costante globale a tempo di compilazione.
-//	• Perché: Evita di far calcolare alla CPU dell'ESP32-C3 una moltiplicazione e una divisione in virgola mobile a ogni lettura. Il valore è fisso e viene pre-calcolato dal PC durante la compilazione.
-//• Clipping a zero sui canali compensati (rComp, gComp, bComp)
-//	• Cosa: Aggiungere un controllo if (xComp < 0.0f) xComp = 0.0f; per ciascun canale cromatico dopo la sottrazione dell'IR.
-//	• Perché: Al buio o con spettri luminosi critici, il rumore hardware può far sì che il valore teorico dell'IR superi il valore grezzo del singolo canale. Senza protezione, il canale diventerebbe negativo sballando la formula finale dei Lux.
-//• Standardizzazione dei letterali in float (0.0f)
-//	• Cosa: Aggiungere il suffisso f a tutte le costanti decimali azzerate.
-//	• Perché: L'FPU hardware dell'ESP32-C3 accelera nativamente solo i calcoli a 32-bit (float). Scrivere 0.0 senza la f costringe il chip a emulare via software un calcolo a 64-bit (double), rallentando l'esecuzione di circa 20 volte.
-//• Centralizzazione dell'inizializzazione del bus I2C
-//	• Cosa: Rimuovere completamente Wire.begin() dal file del sensore per spostarlo esclusivamente nel setup() del file principale (esp32.ino).
-//	• Perché: Il bus I2C è una risorsa hardware condivisa da più sensori. Evita che i singoli file hardware resettino o inizializzino la linea in momenti diversi, scongiurando conflitti di comunicazione, dati corrotti (NAN) o blocchi dell'ESP32-C3.
-//• Ottimizzazione dei parametri hardware per la luce ambientale
-//	• Cosa: Modificare l'inizializzazione del sensore portandola a 154ms di tempo di integrazione e 16x di guadagno (TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_16X), aggiornando di conseguenza le macro TCS_ATIME_MS a 153.6f e TCS_AGAIN a 16.0f, e portando il delay della doppia lettura a 160.
-//	• Perché: Con il LED integrato spento, le impostazioni originali (50ms / 4x) rendono il sensore troppo "cieco" per la luce diffusa della stanza, restituendo valori innaturalmente bassi (2-3 lux di pomeriggio). Aumentando il tempo di esposizione e l'amplificazione del guadagno, il sensore diventa fino a 12 volte più sensibile, permettendo di misurare con precisione la reale luminosità della camera senza saturare.

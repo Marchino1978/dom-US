@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../config.h"
+#include "../../debug.h"
 
 #include <Arduino.h>
 #include <ld2410.h>
@@ -17,7 +18,7 @@ inline void initMotionHardware() {
   Serial1.begin(LD2410_BAUD, SERIAL_8N1, LD2410_PIN_RX, LD2410_PIN_TX);
   ld2410Ready = radar.begin(Serial1);
   if (!ld2410Ready) {
-    Serial.println("LD2410 NOT FOUND");
+    DEBUG_LOG("LD2410 NOT FOUND");
   }
 }
  

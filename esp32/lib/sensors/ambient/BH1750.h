@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../config.h"
+#include "../../debug.h"
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -19,7 +20,7 @@ inline void initAmbientHardware() {
     bh1750Ready = lightMeter.begin(BH1750::CONTINUOUS_HIGH_RES_MODE, BH1750_I2C_ADDRESS_SECONDARY, &Wire);
   }
   if (!bh1750Ready) {
-    Serial.println("BH1750 NOT FOUND");
+    DEBUG_LOG("BH1750 NOT FOUND");
   }
 }
  
@@ -28,4 +29,3 @@ inline float readAmbientLuxValue() {
   float lux = lightMeter.readLightLevel();
   return (lux < 0) ? NAN : lux;
 }
- 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../config.h"
+#include "../../debug.h"
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -13,7 +14,7 @@ inline void initAmbientHardware() {
   Wire.begin(PIN_I2C_SDA, PIN_I2C_SCL);
   vemlReady = veml.begin(&Wire);
   if (!vemlReady) {
-    Serial.println("VEML7700 NOT FOUND");
+    DEBUG_LOG("VEML7700 NOT FOUND");
   }
 }
  

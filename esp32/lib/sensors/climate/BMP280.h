@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../config.h"
+#include "../../debug.h"
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -15,7 +16,7 @@ inline void initClimateHardware() {
   Wire.begin(PIN_I2C_SDA, PIN_I2C_SCL);
   bmpReady = bmp.begin(BMP280_I2C_ADDRESS);
   if (!bmpReady) {
-    Serial.println("BMP280 NOT FOUND");
+    DEBUG_LOG("BMP280 NOT FOUND");
     return;
   }
   bmp.setSampling(Adafruit_BMP280::MODE_FORCED,

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../config.h"
+#include "../../debug.h"
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -19,7 +20,7 @@ inline void initClimateHardware() {
     bmeReady = bme.begin(BME280_I2C_ADDRESS_SECONDARY, &Wire);
   }
   if (!bmeReady) {
-    Serial.println("BME280 NOT FOUND");
+    DEBUG_LOG("BME280 NOT FOUND");
     return;
   }
   bme.setSampling(Adafruit_BME280::MODE_FORCED,

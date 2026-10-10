@@ -78,6 +78,7 @@
 │   │   │   └── sensor_motion_presence.h
 │   │   ├── alarm.h
 │   │   ├── checks.h
+│   │   ├── debug.h
 │   │   ├── display.h
 │   │   ├── i2c_adresses.h
 │   │   ├── language.h
@@ -146,6 +147,6 @@
 ├── README.md
 └── robots.txt
 
-24 directories, 122 files
+24 directories, 123 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***

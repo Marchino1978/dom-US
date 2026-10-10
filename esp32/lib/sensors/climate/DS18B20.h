@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../config.h"
+#include "../../debug.h"
 
 #include <Arduino.h>
 #include <OneWire.h>
@@ -17,7 +18,7 @@ inline void initClimateHardware() {
   ds18b20.begin();
   ds18b20Ready = ds18b20.getDeviceCount() > 0;
   if (!ds18b20Ready) {
-    Serial.println("DS18B20 NOT FOUND");
+    DEBUG_LOG("DS18B20 NOT FOUND");
     return;
   }
   ds18b20.setResolution(DS18B20_RESOLUTION_BITS);

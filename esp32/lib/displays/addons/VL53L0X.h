@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../config.h"
+#include "../../debug.h"
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -24,7 +25,7 @@ inline void initAddonHardware() {
   Wire.begin(PIN_I2C_SDA, PIN_I2C_SCL);
   loxReady = lox.begin(VL53L0X_I2C_ADDRESS, false, &Wire);
   if (!loxReady) {
-    Serial.println("VL53L0X NOT FOUND");
+    DEBUG_LOG("VL53L0X NOT FOUND");
     return;
   }
   lox.startRangeContinuous();

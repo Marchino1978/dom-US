@@ -8,6 +8,7 @@
 
 #include "../config.h"
 #include "led_status.h"
+#include "debug.h"
 
 void sendTelegramMessage(String message);
 
@@ -184,8 +185,7 @@ bool sendToSupabase(const char* ts, float temp, float hum, float press) {
   int httpCode = http.POST(body);
   http.end();
 
-  Serial.print("SUPABASE sensor_data POST code: ");
-  Serial.println(httpCode);
+  DEBUG_LOG("SUPABASE sensor_data POST code: %d", httpCode);
 
   return (httpCode == 200 || httpCode == 201);
 }
@@ -217,8 +217,7 @@ bool sendLogToSupabaseDirect(const char* timestamp, const char* severity, const 
   int httpCode = http.POST(body);
   http.end();
 
-  Serial.print("SUPABASE logs POST code: ");
-  Serial.println(httpCode);
+  DEBUG_LOG("SUPABASE logs POST code: %d", httpCode);
 
   return (httpCode == 200 || httpCode == 201);
 }
@@ -255,8 +254,7 @@ bool sendReadingsBatch(const OfflineReading* items, int count) {
   int httpCode = http.POST(body);
   http.end();
 
-  Serial.print("SUPABASE sensor_data BATCH POST code: ");
-  Serial.println(httpCode);
+  DEBUG_LOG("SUPABASE sensor_data BATCH POST code: %d", httpCode);
 
   return (httpCode == 200 || httpCode == 201);
 }
@@ -291,8 +289,7 @@ bool sendLogsBatch(const OfflineLog* items, int count) {
   int httpCode = http.POST(body);
   http.end();
 
-  Serial.print("SUPABASE logs BATCH POST code: ");
-  Serial.println(httpCode);
+  DEBUG_LOG("SUPABASE logs BATCH POST code: %d", httpCode);
 
   return (httpCode == 200 || httpCode == 201);
 }
@@ -313,8 +310,7 @@ bool fetchLastSensorEpoch(time_t& outEpoch) {
   http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
 
   int httpCode = http.GET();
-  Serial.print("SUPABASE last sensor_data GET code: ");
-  Serial.println(httpCode);
+  DEBUG_LOG("SUPABASE last sensor_data GET code: %d", httpCode);
 
   if (httpCode != 200) {
     http.end();
@@ -473,7 +469,7 @@ void sendHeartbeat() {
   if (millis() - lastPing < 60000 && lastPing != 0) return;
   lastPing = millis();
 
-  Serial.println("HEARTBEAT: sending ping");
+  DEBUG_LOG("HEARTBEAT: sending ping");
   ledWork();
 
   struct tm timeinfo;
@@ -511,8 +507,7 @@ void sendHeartbeat() {
   int httpCode = http.PATCH(body);
   http.end();
 
-  Serial.print("HEARTBEAT PATCH code: ");
-  Serial.println(httpCode);
+  DEBUG_LOG("HEARTBEAT PATCH code: %d", httpCode);
 }
 
 // Returns true only when last_ping was read successfully; the caller retries otherwise
@@ -520,7 +515,7 @@ bool handleBootSequence() {
   if (WiFi.status() != WL_CONNECTED) return false;
   if (!timeIsValid()) return false;
 
-  Serial.println("BOOT SEQUENCE: checking last_ping");
+  DEBUG_LOG("BOOT SEQUENCE: checking last_ping");
 
   WiFiClientSecure client;
   client.setInsecure();
@@ -534,8 +529,7 @@ bool handleBootSequence() {
   http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
 
   int httpCode = http.GET();
-  Serial.print("BOOT SEQUENCE GET code: ");
-  Serial.println(httpCode);
+  DEBUG_LOG("BOOT SEQUENCE GET code: %d", httpCode);
 
   if (httpCode != 200) {
     http.end();
@@ -548,8 +542,7 @@ bool handleBootSequence() {
 
   if (doc.is<JsonArray>() && doc.size() > 0) {
     String lastPingStr = doc[0]["last_ping"].as<String>();
-    Serial.print("last_ping raw: ");
-    Serial.println(lastPingStr);
+    DEBUG_LOG("last_ping raw: %s", lastPingStr.c_str());
     
     if (lastPingStr.length() > 10) {
       struct tm oldTime = {0};
@@ -575,19 +568,14 @@ bool handleBootSequence() {
                    nowInfo.tm_year + 1900, nowInfo.tm_mon + 1, nowInfo.tm_mday,
                    nowInfo.tm_hour, nowInfo.tm_min, nowInfo.tm_sec);
 
-          Serial.print("last_ping (parsed): ");
-          Serial.println(lastPingStr);
-          Serial.print("now (local): ");
-          Serial.println(nowStr);
-          Serial.print("oldEpoch: ");
-          Serial.println((long)oldEpoch);
-          Serial.print("nowEpoch: ");
-          Serial.println((long)nowEpoch);
-          Serial.print("diffSec: ");
-          Serial.println(diffSec);
+          DEBUG_LOG("last_ping (parsed): %s", lastPingStr.c_str());
+          DEBUG_LOG("now (local): %s", nowStr);
+          DEBUG_LOG("oldEpoch: %ld", (long)oldEpoch);
+          DEBUG_LOG("nowEpoch: %ld", (long)nowEpoch);
+          DEBUG_LOG("diffSec: %ld", diffSec);
 
           if (diffSec > 600) {
-            Serial.println("BLACKOUT DETECTED");
+            DEBUG_LOG("BLACKOUT DETECTED");
             int totMinutes = diffSec / 60;
             
             int days = totMinutes / 1440;

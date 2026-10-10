@@ -103,4 +103,10 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 #define SUPABASE_URL       "https://your-project.supabase.co"
 #define SUPABASE_KEY       "your_publishable_key"
 
+// #######################################################
+// 6. DEBUG
+// #######################################################
+// Uncomment to print diagnostic messages on the serial monitor (115200 baud)
+//#define DEBUG_SERIAL
+
 #endif

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../config.h"
+#include "../../debug.h"
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -19,7 +20,7 @@ inline void initClimateHardware() {
     sht31Ready = sht31.begin(SHT31_I2C_ADDRESS_SECONDARY);
   }
   if (!sht31Ready) {
-    Serial.println("SHT31 NOT FOUND");
+    DEBUG_LOG("SHT31 NOT FOUND");
   }
 }
  
