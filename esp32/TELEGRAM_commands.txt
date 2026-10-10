@@ -1,4 +1,4 @@
-i2c_scan - SCAN I2C ADRESSES
+i2c_scan - SCAN I2C ADDRESSES
 led - TOGGLE LED STATUS
 off - ALARM OFF
 on - ALARM ON
