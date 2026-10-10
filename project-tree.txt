@@ -80,7 +80,8 @@
 │   │   ├── checks.h
 │   │   ├── debug.h
 │   │   ├── display.h
-│   │   ├── i2c_adresses.h
+│   │   ├── i2c_addresses.h
+│   │   ├── i2c_list.txt
 │   │   ├── language.h
 │   │   ├── led_status.h
 │   │   ├── notifications.h
@@ -147,6 +148,6 @@
 ├── README.md
 └── robots.txt
 
-24 directories, 123 files
+24 directories, 124 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***

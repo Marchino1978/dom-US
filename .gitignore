@@ -55,7 +55,6 @@ txt/
 # ESP32
 esp32/config.h
 esp32/TODO.md
-esp32/supabase_edge_function.md
 
 # OLD
 old/

@@ -11,7 +11,7 @@
 #include "sensors.h"
 #include "storage_cloud.h"
 #include "led_status.h"
-#include "i2c_adresses.h"
+#include "i2c_addresses.h"
 
 extern bool alarmEnabled;
 extern bool alarmTriggered;
@@ -281,6 +281,8 @@ inline void checkTelegramUpdates() {
         String humStr   = isnan(hum)   ? "---" : String(hum, 0);
         String pressStr = isnan(press) ? "---" : String(press, 0);
         String luxStr   = isnan(lux)   ? "---" : String(lux, 0);
+        String luceStato = "";
+        if (!isnan(lux)) luceStato = isAmbientLightOn(lux) ? " 🟡 ON" : " ⚫ OFF";
 
         String icona_stato = alarmEnabled ? "🟢" : "🔴";
         String stato = alarmEnabled ? "ON" : "OFF";
@@ -290,13 +292,13 @@ inline void checkTelegramUpdates() {
         snprintf(rigaTemp,  sizeof(rigaTemp),  "`%-5s : %4s %-3s`", "Temp",  tempStr.c_str(),  "°C");
         snprintf(rigaHum,   sizeof(rigaHum),   "`%-5s : %4s %-3s`", "Hum",   humStr.c_str(),   "%");
         snprintf(rigaPress, sizeof(rigaPress), "`%-5s : %4s %-3s`", "Press", pressStr.c_str(), "hPa");
-        snprintf(rigaLux,   sizeof(rigaLux),   "`%-5s : %4s %-3s`", "Light", luxStr.c_str(),   "Lux");
+        snprintf(rigaLux,   sizeof(rigaLux),   "`%-5s : %4s %-3s`", "Light", luxStr.c_str(),   AMBIENT_UNIT);
 
         String statusMsg = "*ALARM STATUS:* " + icona_stato + " *" + stato + "*\n\n";
         statusMsg += "🌡️ " + String(rigaTemp) + "\n";
         statusMsg += "💧 " + String(rigaHum) + "\n";
         statusMsg += "🌀 " + String(rigaPress) + "\n";
-        statusMsg += "💡 " + String(rigaLux);
+        statusMsg += "💡 " + String(rigaLux) + luceStato;
 
         sendTelegramMessage(statusMsg);
     

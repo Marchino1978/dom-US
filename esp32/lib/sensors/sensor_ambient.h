@@ -12,6 +12,23 @@
   #include "ambient/VEML7700.h"
 #endif
 
+// LDR returns a percentage (0-100), every other ambient sensor returns lux
+#if defined(SENSOR_LIGHT_LDR)
+  #define AMBIENT_UNIT "%"
+  #ifndef AMBIENT_LIGHT_ON_THRESHOLD
+    #define AMBIENT_LIGHT_ON_THRESHOLD 25.0f
+  #endif
+#else
+  #define AMBIENT_UNIT "Lux"
+  #ifndef AMBIENT_LIGHT_ON_THRESHOLD
+    #define AMBIENT_LIGHT_ON_THRESHOLD 50.0f
+  #endif
+#endif
+
+inline bool isAmbientLightOn(float value) {
+  return !isnan(value) && value >= AMBIENT_LIGHT_ON_THRESHOLD;
+}
+
 inline void initAmbient() {
   #if defined(SENSOR_LIGHT_BH1750) || \
       defined(SENSOR_LIGHT_LDR) || \
