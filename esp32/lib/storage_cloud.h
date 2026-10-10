@@ -24,6 +24,8 @@ struct OfflineLog {
   char timestamp[25];
   char severity[10];
   char message[150];
+  bool provisional;
+  uint32_t bootSeconds;
 };
 
 const int MAX_OFFLINE_READINGS = 72;
@@ -32,6 +34,9 @@ const int BATCH_READINGS = 24;
 const int BATCH_LOGS = 50;
 const unsigned long UPLOAD_RETRY_INTERVAL_MS = 30000;
 const time_t MIN_VALID_EPOCH = 1700000000;
+const int32_t HTTP_CONNECT_TIMEOUT_MS = 4000;
+const uint16_t HTTP_READ_TIMEOUT_MS = 4000;
+const unsigned long TLS_HANDSHAKE_TIMEOUT_S = 4;
 
 OfflineReading ramBuffer[MAX_OFFLINE_READINGS];
 int bufferCount = 0;
@@ -40,9 +45,17 @@ OfflineLog logBuffer[MAX_OFFLINE_LOGS];
 int logBufferCount = 0;
 
 static unsigned long lastUploadAttemptMs = 0;
+static bool bootCheckPassed = false;
 
 inline bool timeIsValid() {
   return time(nullptr) > MIN_VALID_EPOCH;
+}
+
+// Telegram requests in notifications.h still use the default timeouts
+inline void setNetworkTimeouts(WiFiClientSecure& client, HTTPClient& http) {
+  client.setHandshakeTimeout(TLS_HANDSHAKE_TIMEOUT_S);
+  http.setConnectTimeout(HTTP_CONNECT_TIMEOUT_MS);
+  http.setTimeout(HTTP_READ_TIMEOUT_MS);
 }
 
 inline void copyField(char* dst, size_t dstSize, const char* src) {
@@ -94,8 +107,52 @@ inline bool bufferLog(const char* ts, const char* severity, const char* message)
   copyField(logBuffer[logBufferCount].timestamp, sizeof(logBuffer[logBufferCount].timestamp), ts);
   copyField(logBuffer[logBufferCount].severity, sizeof(logBuffer[logBufferCount].severity), severity);
   copyField(logBuffer[logBufferCount].message, sizeof(logBuffer[logBufferCount].message), message);
+  logBuffer[logBufferCount].provisional = false;
+  logBuffer[logBufferCount].bootSeconds = 0;
   logBufferCount++;
   return true;
+}
+
+// Log written without a valid clock: the real timestamp is rebuilt after NTP sync
+inline bool bufferProvisionalLog(uint32_t bootSeconds, const char* severity, const char* message) {
+  if (logBufferCount >= MAX_OFFLINE_LOGS) return false;
+  logBuffer[logBufferCount].timestamp[0] = '\0';
+  copyField(logBuffer[logBufferCount].severity, sizeof(logBuffer[logBufferCount].severity), severity);
+  copyField(logBuffer[logBufferCount].message, sizeof(logBuffer[logBufferCount].message), message);
+  logBuffer[logBufferCount].provisional = true;
+  logBuffer[logBufferCount].bootSeconds = bootSeconds;
+  logBufferCount++;
+  return true;
+}
+
+inline bool hasProvisionalLogs() {
+  for (int i = 0; i < logBufferCount; i++) {
+    if (logBuffer[i].provisional) return true;
+  }
+  return false;
+}
+
+inline void resolveProvisionalLogs() {
+  if (!timeIsValid()) return;
+
+  time_t nowEpoch = time(nullptr);
+  uint32_t nowSeconds = millis() / 1000;
+
+  for (int i = 0; i < logBufferCount; i++) {
+    if (!logBuffer[i].provisional) continue;
+
+    time_t epoch = nowEpoch - (time_t)(nowSeconds - logBuffer[i].bootSeconds);
+    struct tm info;
+    localtime_r(&epoch, &info);
+    snprintf(logBuffer[i].timestamp, sizeof(logBuffer[i].timestamp), "%04d-%02d-%02dT%02d:%02d:%02dZ",
+             info.tm_year + 1900,
+             info.tm_mon + 1,
+             info.tm_mday,
+             info.tm_hour,
+             info.tm_min,
+             info.tm_sec);
+    logBuffer[i].provisional = false;
+  }
 }
 
 bool sendToSupabase(const char* ts, float temp, float hum, float press) {
@@ -109,6 +166,7 @@ bool sendToSupabase(const char* ts, float temp, float hum, float press) {
   String url = String(SUPABASE_URL) + "/rest/v1/sensor_data";
   
   http.begin(client, url);
+  setNetworkTimeouts(client, http);
   http.addHeader("Content-Type", "application/json");
   http.addHeader("apikey", SUPABASE_KEY);
   http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
@@ -143,6 +201,7 @@ bool sendLogToSupabaseDirect(const char* timestamp, const char* severity, const 
   String url = String(SUPABASE_URL) + "/rest/v1/logs";
   
   http.begin(client, url);
+  setNetworkTimeouts(client, http);
   http.addHeader("Content-Type", "application/json");
   http.addHeader("apikey", SUPABASE_KEY);
   http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
@@ -187,6 +246,7 @@ bool sendReadingsBatch(const OfflineReading* items, int count) {
 
   HTTPClient http;
   http.begin(client, String(SUPABASE_URL) + "/rest/v1/sensor_data");
+  setNetworkTimeouts(client, http);
   http.addHeader("Content-Type", "application/json");
   http.addHeader("apikey", SUPABASE_KEY);
   http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
@@ -223,6 +283,7 @@ bool sendLogsBatch(const OfflineLog* items, int count) {
 
   HTTPClient http;
   http.begin(client, String(SUPABASE_URL) + "/rest/v1/logs");
+  setNetworkTimeouts(client, http);
   http.addHeader("Content-Type", "application/json");
   http.addHeader("apikey", SUPABASE_KEY);
   http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
@@ -247,6 +308,7 @@ bool fetchLastSensorEpoch(time_t& outEpoch) {
 
   HTTPClient http;
   http.begin(client, String(SUPABASE_URL) + "/rest/v1/sensor_data?select=created_at&order=created_at.desc&limit=1");
+  setNetworkTimeouts(client, http);
   http.addHeader("apikey", SUPABASE_KEY);
   http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
 
@@ -345,6 +407,10 @@ void flushRamBuffer() {
 
 void flushLogBuffer() {
   lastUploadAttemptMs = millis();
+  if (hasProvisionalLogs()) {
+    if (!timeIsValid()) return;
+    resolveProvisionalLogs();
+  }
 
   while (logBufferCount > 0) {
     if (WiFi.status() != WL_CONNECTED) return;
@@ -358,6 +424,7 @@ void flushLogBuffer() {
 // Called from loop(): retries pending uploads that failed right after reconnection
 void retryPendingUploads() {
   if (WiFi.status() != WL_CONNECTED) return;
+  if (!timeIsValid()) return;
   if (bufferCount == 0 && logBufferCount == 0) return;
   if (millis() - lastUploadAttemptMs < UPLOAD_RETRY_INTERVAL_MS) return;
 
@@ -366,6 +433,10 @@ void retryPendingUploads() {
 }
 
 bool sendLogToSupabase(const char* timestamp, const char* severity, const char* message) {
+  if (!timeIsValid()) {
+    return bufferProvisionalLog(millis() / 1000, severity, message);
+  }
+
   if (WiFi.status() == WL_CONNECTED) {
     flushLogBuffer();
     if (sendLogToSupabaseDirect(timestamp, severity, message)) return true;
@@ -392,9 +463,11 @@ void saveTelemetryData(struct tm* timeinfo, float temp, float hum, float press) 
   }
 }
 
+// No heartbeat until the boot check succeeded, otherwise last_ping would be overwritten
 void sendHeartbeat() {
   if (WiFi.status() != WL_CONNECTED) return;
   if (!timeIsValid()) return;
+  if (!bootCheckPassed) return;
 
   static unsigned long lastPing = 0;
   if (millis() - lastPing < 60000 && lastPing != 0) return;
@@ -424,6 +497,7 @@ void sendHeartbeat() {
   String url = String(SUPABASE_URL) + "/rest/v1/device_status?id=eq.1";
   
   http.begin(client, url);
+  setNetworkTimeouts(client, http);
   http.addHeader("Content-Type", "application/json");
   http.addHeader("apikey", SUPABASE_KEY);
   http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
@@ -441,13 +515,12 @@ void sendHeartbeat() {
   Serial.println(httpCode);
 }
 
-void handleBootSequence() {
-  if (WiFi.status() != WL_CONNECTED) return;
+// Returns true only when last_ping was read successfully; the caller retries otherwise
+bool handleBootSequence() {
+  if (WiFi.status() != WL_CONNECTED) return false;
+  if (!timeIsValid()) return false;
 
   Serial.println("BOOT SEQUENCE: checking last_ping");
-
-  flushRamBuffer();
-  flushLogBuffer();
 
   WiFiClientSecure client;
   client.setInsecure();
@@ -456,6 +529,7 @@ void handleBootSequence() {
   String url = String(SUPABASE_URL) + "/rest/v1/device_status?id=eq.1&select=last_ping";
   
   http.begin(client, url);
+  setNetworkTimeouts(client, http);
   http.addHeader("apikey", SUPABASE_KEY);
   http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
 
@@ -463,104 +537,111 @@ void handleBootSequence() {
   Serial.print("BOOT SEQUENCE GET code: ");
   Serial.println(httpCode);
 
-  if (httpCode == 200) {
-    String payload = http.getString();
-    DynamicJsonDocument doc(512);
-    deserializeJson(doc, payload);
+  if (httpCode != 200) {
+    http.end();
+    return false;
+  }
 
-    if (doc.is<JsonArray>() && doc.size() > 0) {
-      String lastPingStr = doc[0]["last_ping"].as<String>();
-      Serial.print("last_ping raw: ");
-      Serial.println(lastPingStr);
-      
-      if (lastPingStr.length() > 10) {
-        struct tm oldTime = {0};
-        int y, m, d, h, min, s;
-        if (sscanf(lastPingStr.c_str(), "%d-%d-%dT%d:%d:%d", &y, &m, &d, &h, &min, &s) == 6) {
-          oldTime.tm_year = y - 1900;
-          oldTime.tm_mon  = m - 1;
-          oldTime.tm_mday = d;
-          oldTime.tm_hour = h;
-          oldTime.tm_min  = min;
-          oldTime.tm_sec  = s;
-          oldTime.tm_isdst = -1;
+  String payload = http.getString();
+  DynamicJsonDocument doc(512);
+  deserializeJson(doc, payload);
 
-          time_t oldEpoch = mktime(&oldTime);
-          
-          struct tm nowInfo;
-          if (getLocalTime(&nowInfo, 0)) {
-            time_t nowEpoch = mktime(&nowInfo);
-            long diffSec = nowEpoch - oldEpoch;
+  if (doc.is<JsonArray>() && doc.size() > 0) {
+    String lastPingStr = doc[0]["last_ping"].as<String>();
+    Serial.print("last_ping raw: ");
+    Serial.println(lastPingStr);
+    
+    if (lastPingStr.length() > 10) {
+      struct tm oldTime = {0};
+      int y, m, d, h, min, s;
+      if (sscanf(lastPingStr.c_str(), "%d-%d-%dT%d:%d:%d", &y, &m, &d, &h, &min, &s) == 6) {
+        oldTime.tm_year = y - 1900;
+        oldTime.tm_mon  = m - 1;
+        oldTime.tm_mday = d;
+        oldTime.tm_hour = h;
+        oldTime.tm_min  = min;
+        oldTime.tm_sec  = s;
+        oldTime.tm_isdst = -1;
 
-            char nowStr[25];
-            snprintf(nowStr, sizeof(nowStr), "%04d-%02d-%02dT%02d:%02d:%02d",
+        time_t oldEpoch = mktime(&oldTime);
+        
+        struct tm nowInfo;
+        if (getLocalTime(&nowInfo, 0)) {
+          time_t nowEpoch = mktime(&nowInfo);
+          long diffSec = nowEpoch - oldEpoch;
+
+          char nowStr[25];
+          snprintf(nowStr, sizeof(nowStr), "%04d-%02d-%02dT%02d:%02d:%02d",
+                   nowInfo.tm_year + 1900, nowInfo.tm_mon + 1, nowInfo.tm_mday,
+                   nowInfo.tm_hour, nowInfo.tm_min, nowInfo.tm_sec);
+
+          Serial.print("last_ping (parsed): ");
+          Serial.println(lastPingStr);
+          Serial.print("now (local): ");
+          Serial.println(nowStr);
+          Serial.print("oldEpoch: ");
+          Serial.println((long)oldEpoch);
+          Serial.print("nowEpoch: ");
+          Serial.println((long)nowEpoch);
+          Serial.print("diffSec: ");
+          Serial.println(diffSec);
+
+          if (diffSec > 600) {
+            Serial.println("BLACKOUT DETECTED");
+            int totMinutes = diffSec / 60;
+            
+            int days = totMinutes / 1440;
+            int hours = (totMinutes % 1440) / 60;
+            int minutes = totMinutes % 60;
+
+            char fromStr[30], toStr[30], totStr[30], currentTs[30];
+            char rigaFrom[35], rigaTo[35], rigaTot[35];
+            char telegramMsg[250], supabaseMsg[150];
+
+            snprintf(fromStr, sizeof(fromStr), "%02d-%02d-%04d %02d:%02d", d, m, y, h, min);
+            snprintf(toStr, sizeof(toStr), "%02d-%02d-%04d %02d:%02d", 
+                     nowInfo.tm_mday, nowInfo.tm_mon + 1, nowInfo.tm_year + 1900, 
+                     nowInfo.tm_hour, nowInfo.tm_min);
+
+            if (totMinutes < 60) {
+              snprintf(totStr, sizeof(totStr), "%dm", totMinutes);
+            } else if (totMinutes < 1440) {
+              snprintf(totStr, sizeof(totStr), "%dh %dm", hours, minutes);
+            } else {
+              snprintf(totStr, sizeof(totStr), "%dd %dh %dm", days, hours, minutes);
+            }
+
+            snprintf(currentTs, sizeof(currentTs), "%04d-%02d-%02dT%02d:%02d:%02dZ",
                      nowInfo.tm_year + 1900, nowInfo.tm_mon + 1, nowInfo.tm_mday,
                      nowInfo.tm_hour, nowInfo.tm_min, nowInfo.tm_sec);
 
-            Serial.print("last_ping (parsed): ");
-            Serial.println(lastPingStr);
-            Serial.print("now (local): ");
-            Serial.println(nowStr);
-            Serial.print("oldEpoch: ");
-            Serial.println((long)oldEpoch);
-            Serial.print("nowEpoch: ");
-            Serial.println((long)nowEpoch);
-            Serial.print("diffSec: ");
-            Serial.println(diffSec);
+            snprintf(rigaFrom, sizeof(rigaFrom), "`%-5s: %s`", "From", fromStr);
+            snprintf(rigaTo,   sizeof(rigaTo),   "`%-5s: %s`", "To",   toStr);
+            snprintf(rigaTot,  sizeof(rigaTot),  "`%-5s: %s`", "TOT",  totStr);
 
-            if (diffSec > 600) {
-              Serial.println("BLACKOUT DETECTED");
-              int totMinutes = diffSec / 60;
-              
-              int days = totMinutes / 1440;
-              int hours = (totMinutes % 1440) / 60;
-              int minutes = totMinutes % 60;
+            snprintf(telegramMsg, sizeof(telegramMsg),
+              "⚡ *BLACKOUT DETECTED*\n%s\n%s\n%s",
+              rigaFrom, rigaTo, rigaTot
+            );
 
-              char fromStr[30], toStr[30], totStr[30], currentTs[30];
-              char rigaFrom[35], rigaTo[35], rigaTot[35];
-              char telegramMsg[250], supabaseMsg[150];
+            snprintf(supabaseMsg, sizeof(supabaseMsg),
+              "⚡ BLACKOUT DETECTED - %s",
+              totStr
+            );
 
-              snprintf(fromStr, sizeof(fromStr), "%02d-%02d-%04d %02d:%02d", d, m, y, h, min);
-              snprintf(toStr, sizeof(toStr), "%02d-%02d-%04d %02d:%02d", 
-                       nowInfo.tm_mday, nowInfo.tm_mon + 1, nowInfo.tm_year + 1900, 
-                       nowInfo.tm_hour, nowInfo.tm_min);
-
-              if (totMinutes < 60) {
-                snprintf(totStr, sizeof(totStr), "%dm", totMinutes);
-              } else if (totMinutes < 1440) {
-                snprintf(totStr, sizeof(totStr), "%dh %dm", hours, minutes);
-              } else {
-                snprintf(totStr, sizeof(totStr), "%dd %dh %dm", days, hours, minutes);
-              }
-
-              snprintf(currentTs, sizeof(currentTs), "%04d-%02d-%02dT%02d:%02d:%02dZ",
-                       nowInfo.tm_year + 1900, nowInfo.tm_mon + 1, nowInfo.tm_mday,
-                       nowInfo.tm_hour, nowInfo.tm_min, nowInfo.tm_sec);
-
-              snprintf(rigaFrom, sizeof(rigaFrom), "`%-5s: %s`", "From", fromStr);
-              snprintf(rigaTo,   sizeof(rigaTo),   "`%-5s: %s`", "To",   toStr);
-              snprintf(rigaTot,  sizeof(rigaTot),  "`%-5s: %s`", "TOT",  totStr);
-
-              snprintf(telegramMsg, sizeof(telegramMsg),
-                "⚡ *BLACKOUT DETECTED*\n%s\n%s\n%s",
-                rigaFrom, rigaTo, rigaTot
-              );
-
-              snprintf(supabaseMsg, sizeof(supabaseMsg),
-                "⚡ BLACKOUT DETECTED - %s",
-                totStr
-              );
-
-              sendLogToSupabase(currentTs, "🔴", supabaseMsg);
-              sendTelegramMessage(telegramMsg);
-            }
+            sendLogToSupabase(currentTs, "🔴", supabaseMsg);
+            sendTelegramMessage(telegramMsg);
           }
         }
       }
     }
   }
   http.end();
-  
+
+  bootCheckPassed = true;
+  flushRamBuffer();
+  flushLogBuffer();
   sendHeartbeat();
   setLedState(LED_STATE_IDLE);
+  return true;
 }

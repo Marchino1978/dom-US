@@ -29,8 +29,10 @@ const unsigned long preAlarmWindowMs = 5000;
 const unsigned long autoResetMs = 300000;
 
 void getFormattedTimestamp(char* buffer, size_t maxLen) {
-  struct tm timeinfo;
-  if (getLocalTime(&timeinfo)) {
+  if (timeIsValid()) {
+    struct tm timeinfo;
+    time_t now = time(nullptr);
+    localtime_r(&now, &timeinfo);
     snprintf(buffer, maxLen, "%04d-%02d-%02dT%02d:%02d:%02dZ",
              timeinfo.tm_year + 1900,
              timeinfo.tm_mon + 1,

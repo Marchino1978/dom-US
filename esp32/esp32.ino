@@ -36,10 +36,10 @@ const unsigned long ntpTimeoutMs         = 15000;
 const unsigned long timeGraceMs          = 300000;
 const unsigned long provisionalIntervalMs = 3600000UL;
 const unsigned long slotRetryMs          = 10000;
+const unsigned long bootRetryMs          = 30000;
 const int           slotMaxAttempts      = 3;
 const char* const   timezoneRome         = "CET-1CEST,M3.5.0,M10.5.0/3";
 
-static bool bootSequenceDone = false;
 static bool bootWasBlackout  = false;
 
 static bool ntpWaiting = false;
@@ -62,15 +62,25 @@ void readTelemetry(float& temp, float& hum, float& press) {
 }
 
 void onTimeSynced() {
-  if (!bootSequenceDone) {
-    bootSequenceDone = true;
-    handleBootSequence();
-  } else {
+  if (bootCheckPassed) {
     flushRamBuffer();
     flushLogBuffer();
     sendHeartbeat();
     setLedState(LED_STATE_IDLE);
   }
+}
+
+// Blackout check runs once per boot and is retried until last_ping is read successfully
+void bootSequenceTask() {
+  if (bootCheckPassed) return;
+  if (ntpWaiting) return;
+  if (!timeIsValid() || WiFi.status() != WL_CONNECTED) return;
+
+  static unsigned long lastAttemptMs = 0;
+  if (lastAttemptMs != 0 && millis() - lastAttemptMs < bootRetryMs) return;
+  lastAttemptMs = millis();
+
+  handleBootSequence();
 }
 
 void startNtp() {
@@ -345,6 +355,7 @@ void setup() {
 void loop() {
   wifiUpdateState();
   ntpUpdate();
+  bootSequenceTask();
   updateLed();
 
   if (timeIsValid()) {
