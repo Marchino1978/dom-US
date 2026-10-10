@@ -6,7 +6,7 @@ const SERVICE_ROLE_KEY = Deno.env.get("SB_SECRET_KEY")!;
 const TELEGRAM_TOKEN = Deno.env.get("TELEGRAM_TOKEN")!;
 const TELEGRAM_CHAT_ID = Deno.env.get("TELEGRAM_CHAT_ID")!;
 
-const OFFLINE_THRESHOLD_SEC = 300;
+const OFFLINE_THRESHOLD_SEC = 150;
 
 async function sendTelegramMessage(text: string) {
   const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
