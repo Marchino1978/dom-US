@@ -80,7 +80,6 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 
 // --- Ambient light threshold (optional) ---
 // Value from which the light is reported as ON. Defaults: 50 for lux sensors, 25 (percent) for the LDR
-//#define AMBIENT_LIGHT_ON_THRESHOLD 50.0f
 
 // #######################################################
 // 4. PIN MAPPING (Defaults for Waveshare ESP32-C3-Zero)
