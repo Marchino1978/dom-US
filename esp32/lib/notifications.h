@@ -255,7 +255,6 @@ inline void checkTelegramUpdates() {
       }
       else if (text == "/i2c_scan" || text == "i2c_scan") {
         getCurrentIsoTimestamp(ts, sizeof(ts));
-        sendLogToSupabase(ts, "⚪", "I2C SCAN requested by user");
 
         runI2cScan();
 
@@ -267,10 +266,11 @@ inline void checkTelegramUpdates() {
         } else {
           sendTelegramMessage(String(summary));
         }
+
+        sendLogToSupabase(ts, "⚪", "I2C SCAN requested by user");
       }
       else if (text == "/status" || text == "status") {
         getCurrentIsoTimestamp(ts, sizeof(ts));
-        sendLogToSupabase(ts, "⚪", "ALARM STATUS requested by user");
 
         float temp = readTemperature();
         float hum = readHumidity();
@@ -302,6 +302,7 @@ inline void checkTelegramUpdates() {
 
         sendTelegramMessage(statusMsg);
     
+        sendLogToSupabase(ts, "⚪", "ALARM STATUS requested by user");
         getCurrentIsoTimestamp(ts, sizeof(ts));
         sendLogToSupabase(ts, "⚪", "ALARM STATUS sent to user");
       }

@@ -13,6 +13,14 @@
 #define I2C_STATUS_UNRECOGNIZED 0
 #define I2C_STATUS_CANDIDATE    1
 #define I2C_STATUS_CONFIRMED    2
+#define I2C_STATUS_TIMEOUT      3
+
+#define I2C_READ_OK             0
+#define I2C_READ_FAIL           1
+#define I2C_READ_TIMEOUT        2
+
+#define I2C_TIMEOUT_MS          50
+#define I2C_REG_CACHE_SIZE      8
 
 struct I2cDeviceInfo {
   uint8_t     address;
@@ -166,23 +174,61 @@ static int  i2cResultCount = 0;
 static int  i2cTotalFound = 0;
 static bool i2cResultsValid = false;
 
-inline bool i2cReadRegister(uint8_t address, uint16_t reg, bool reg16, uint8_t& value) {
+struct I2cRegCacheEntry {
+  uint16_t reg;
+  bool     reg16;
+  bool     ok;
+  uint8_t  value;
+};
+
+// Bus clear: up to 9 SCL pulses release a slave holding SDA low, then a STOP condition
+inline void i2cBusRecover() {
+  Wire.end();
+
+  pinMode(PIN_I2C_SDA, INPUT_PULLUP);
+  pinMode(PIN_I2C_SCL, OUTPUT_OPEN_DRAIN);
+  digitalWrite(PIN_I2C_SCL, HIGH);
+  delayMicroseconds(10);
+
+  for (int i = 0; i < 9 && digitalRead(PIN_I2C_SDA) == LOW; i++) {
+    digitalWrite(PIN_I2C_SCL, LOW);
+    delayMicroseconds(10);
+    digitalWrite(PIN_I2C_SCL, HIGH);
+    delayMicroseconds(10);
+  }
+
+  pinMode(PIN_I2C_SDA, OUTPUT_OPEN_DRAIN);
+  digitalWrite(PIN_I2C_SDA, LOW);
+  delayMicroseconds(10);
+  digitalWrite(PIN_I2C_SDA, HIGH);
+  delayMicroseconds(10);
+
+  Wire.begin(PIN_I2C_SDA, PIN_I2C_SCL);
+  Wire.setTimeOut(I2C_TIMEOUT_MS);
+}
+
+inline uint8_t i2cReadRegister(uint8_t address, uint16_t reg, bool reg16, uint8_t& value) {
   Wire.beginTransmission(address);
   if (reg16) Wire.write((uint8_t)(reg >> 8));
   Wire.write((uint8_t)(reg & 0xFF));
-  if (Wire.endTransmission(false) != 0) return false;
-  if (Wire.requestFrom((uint16_t)address, (uint8_t)1) != 1) return false;
+  uint8_t err = Wire.endTransmission(false);
+  if (err == 5) return I2C_READ_TIMEOUT;
+  if (err != 0) return I2C_READ_FAIL;
+  if (Wire.requestFrom((uint16_t)address, (uint8_t)1) != 1) return I2C_READ_TIMEOUT;
   value = Wire.read();
-  return true;
+  return I2C_READ_OK;
 }
 
 inline bool i2cAddressResponds(uint8_t address) {
   Wire.beginTransmission(address);
-  return Wire.endTransmission() == 0;
+  uint8_t err = Wire.endTransmission();
+  if (err == 5) i2cBusRecover();
+  return err == 0;
 }
 
 inline void runI2cScan() {
   Wire.begin(PIN_I2C_SDA, PIN_I2C_SCL);
+  Wire.setTimeOut(I2C_TIMEOUT_MS);
 
   i2cResultCount = 0;
   i2cTotalFound = 0;
@@ -202,14 +248,45 @@ inline void runI2cScan() {
     const I2cDeviceInfo* anyEntry  = nullptr;
     uint8_t readValue = 0;
 
+    // Each distinct ID register is read once per address; candidates sharing a register reuse the cached value
+    I2cRegCacheEntry cache[I2C_REG_CACHE_SIZE];
+    int cacheCount = 0;
+    int attempts = 0;
+    int failures = 0;
+    bool timedOut = false;
+
     for (size_t i = 0; i < i2cDatabaseSize; i++) {
       const I2cDeviceInfo& d = i2cDatabase[i];
       if (d.address != addr) continue;
       if (!anyEntry) anyEntry = &d;
 
       if (d.whoAmIReg != I2C_NO_WHOAMI) {
-        uint8_t v;
-        if (i2cReadRegister(addr, d.whoAmIReg, d.whoAmIReg16, v)) {
+        int ci = -1;
+        for (int c = 0; c < cacheCount; c++) {
+          if (cache[c].reg == d.whoAmIReg && cache[c].reg16 == d.whoAmIReg16) {
+            ci = c;
+            break;
+          }
+        }
+
+        uint8_t v = 0;
+        bool ok = false;
+        if (ci >= 0) {
+          ok = cache[ci].ok;
+          v = cache[ci].value;
+        } else {
+          uint8_t res = i2cReadRegister(addr, d.whoAmIReg, d.whoAmIReg16, v);
+          ok = (res == I2C_READ_OK);
+          if (res == I2C_READ_TIMEOUT) timedOut = true;
+          attempts++;
+          if (!ok) failures++;
+          if (cacheCount < I2C_REG_CACHE_SIZE) {
+            cache[cacheCount] = { d.whoAmIReg, d.whoAmIReg16, ok, v };
+            cacheCount++;
+          }
+        }
+
+        if (ok) {
           readValue = v;
           if (v == d.whoAmIValue) {
             confirmed = &d;
@@ -221,6 +298,10 @@ inline void runI2cScan() {
       }
     }
 
+    if (timedOut) i2cBusRecover();
+
+    bool noResponse = !confirmed && !candidate && attempts > 0 && failures == attempts;
+
     if (!confirmed && !candidate) candidate = anyEntry;
 
     I2cScanResult& r = i2cResults[i2cResultCount++];
@@ -229,6 +310,9 @@ inline void runI2cScan() {
     if (confirmed) {
       r.status = I2C_STATUS_CONFIRMED;
       r.entry = confirmed;
+    } else if (noResponse) {
+      r.status = I2C_STATUS_TIMEOUT;
+      r.entry = nullptr;
     } else if (candidate) {
       r.status = I2C_STATUS_CANDIDATE;
       r.entry = candidate;
@@ -275,6 +359,10 @@ inline void buildI2cDeviceMessage(int index, char* out, size_t maxLen) {
     } else {
       snprintf(statusStr, sizeof(statusStr), "Candidate (ID mismatch)");
     }
+  } else if (r.status == I2C_STATUS_TIMEOUT) {
+    info = "Check wiring, power, or pull-up resistors";
+    statusIcon = "⚫";
+    snprintf(statusStr, sizeof(statusStr), "HW Timeout / No Response");
   } else {
     snprintf(statusStr, sizeof(statusStr), "Unrecognized (ID missing)");
   }

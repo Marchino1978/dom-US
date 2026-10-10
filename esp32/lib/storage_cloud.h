@@ -537,6 +537,13 @@ bool handleBootSequence() {
   }
 
   String payload = http.getString();
+  http.end();
+
+  bool blackoutDetected = false;
+  char fromStr[30], toStr[30], totStr[30], currentTs[30];
+  char rigaFrom[35], rigaTo[35], rigaTot[35];
+  char telegramMsg[250], supabaseMsg[150];
+
   DynamicJsonDocument doc(512);
   deserializeJson(doc, payload);
 
@@ -582,10 +589,6 @@ bool handleBootSequence() {
             int hours = (totMinutes % 1440) / 60;
             int minutes = totMinutes % 60;
 
-            char fromStr[30], toStr[30], totStr[30], currentTs[30];
-            char rigaFrom[35], rigaTo[35], rigaTot[35];
-            char telegramMsg[250], supabaseMsg[150];
-
             snprintf(fromStr, sizeof(fromStr), "%02d-%02d-%04d %02d:%02d", d, m, y, h, min);
             snprintf(toStr, sizeof(toStr), "%02d-%02d-%04d %02d:%02d", 
                      nowInfo.tm_mday, nowInfo.tm_mon + 1, nowInfo.tm_year + 1900, 
@@ -617,16 +620,19 @@ bool handleBootSequence() {
               totStr
             );
 
-            sendLogToSupabase(currentTs, "🔴", supabaseMsg);
-            sendTelegramMessage(telegramMsg);
+            blackoutDetected = true;
           }
         }
       }
     }
   }
-  http.end();
-
   bootCheckPassed = true;
+
+  if (blackoutDetected) {
+    sendTelegramMessage(telegramMsg);
+    sendLogToSupabase(currentTs, "🔴", supabaseMsg);
+  }
+
   flushRamBuffer();
   flushLogBuffer();
   sendHeartbeat();

@@ -100,8 +100,8 @@ void checkAlarmSystem() {
         if (activeSensorsCount <= 1) {
           alarmTriggered = true;
           triggeredStartTime = millis();
-          sendLogToSupabase(ts, "🔴", "🚨 ALARM - INTRUSION DETECTED");
           sendTelegramMessage("🚨 *ALARM* - INTRUSION DETECTED");
+          sendLogToSupabase(ts, "🔴", "🚨 ALARM - INTRUSION DETECTED");
           sendLogToSupabase(ts, "⚪", "📁 ALARM sent to user");
         } else {
           currentAlarmState = STATE_PRE_ALARM;
@@ -116,9 +116,8 @@ void checkAlarmSystem() {
         currentAlarmState = STATE_IDLE;
         alarmTriggered = true;
         triggeredStartTime = millis();
-        
-        sendLogToSupabase(ts, "🔴", "🚨 ALARM - INTRUSION DETECTED");
         sendTelegramMessage("🚨 *ALARM* - INTRUSION DETECTED");
+        sendLogToSupabase(ts, "🔴", "🚨 ALARM - INTRUSION DETECTED");
         sendLogToSupabase(ts, "⚪", "📁 ALARM sent to user");
       } 
       else if (millis() - preAlarmStartTime > preAlarmWindowMs) {
