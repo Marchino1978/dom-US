@@ -22,6 +22,7 @@
 │   ├── logic_diagrams.txt
 │   ├── README.md
 │   ├── schematics.txt
+│   ├── sensors_pinout.txt
 │   └── wiring.txt
 ├── esp32/
 │   ├── lib/
@@ -148,6 +149,6 @@
 ├── README.md
 └── robots.txt
 
-24 directories, 124 files
+24 directories, 125 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
