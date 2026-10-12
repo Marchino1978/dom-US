@@ -56,6 +56,7 @@ inline float readAmbientLuxValue() {
 
   uint16_t r, g, b, c;
   tcs.getRawData(&r, &g, &b, &c);
+  DEBUG_LOG("TCS34725 first raw gain index %u r=%u g=%u b=%u c=%u", tcsGainIndex, r, g, b, c);
 
   for (uint8_t i = 0; i < TCS_GAIN_STEPS; i++) {
     uint8_t next = tcsGainIndex;

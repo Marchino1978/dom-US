@@ -52,9 +52,9 @@ static int lastExecutedKey = -1;
 
 void readTelemetry(float& temp, float& hum, float& press) {
   #ifdef MODULE_TELEMETRY_ACTIVE
-    temp  = readTemperature();
-    hum   = readHumidity();
-    press = readPressure();
+    temp  = roundf(readTemperature() * 10.0f) / 10.0f;
+    hum   = roundf(readHumidity());
+    press = roundf(readPressure());
   #else
     temp  = NAN;
     hum   = NAN;
@@ -327,6 +327,7 @@ void setup() {
     delay(1000);
   #endif
   DEBUG_LOG("BOOT START");
+  DEBUG_LOG("BUILD: %s %s", __DATE__, __TIME__);
 
   esp_reset_reason_t resetReason = esp_reset_reason();
   bootWasBlackout = (resetReason == ESP_RST_POWERON || resetReason == ESP_RST_BROWNOUT);

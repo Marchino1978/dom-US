@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../config.h"
+#include "../../config.h"
 
 #if defined(DISPLAY_OLED_SSD1306)
   #include "oled/SSD1306.h"

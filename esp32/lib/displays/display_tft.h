@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../config.h"
+#include "../../config.h"
 
 #if defined(DISPLAY_TFT_ST7789)
   #include "tft/ST7789.h"

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../config.h"
+#include "../../config.h"
 
 #define LCD_BL 22
 #define DISPLAY_TIMEOUT_MS 30000
@@ -8,7 +8,7 @@
 static unsigned long displayTimerStart = 0;
 static bool screenActive = false;
 
-#elif defined(ADDON_RADAR_RCWL0516)
+#if defined(ADDON_RADAR_RCWL0516)
   #include "addons/RCWL-0516.h"
 #elif defined(ADDON_LASER_VL53L0X)
   #include "addons/VL53L0X.h"

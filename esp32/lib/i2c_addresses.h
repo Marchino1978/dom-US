@@ -84,7 +84,7 @@ static const I2cDeviceInfo i2cDatabase[] = {
   { 0x5A, "STHS34PF80",                "IR Presence and Motion Sensor",           0x0F,          false, 0xD3 },
   { 0x2A, "C4001 mmWave (ADDR low)",   "24GHz mmWave Radar",                      I2C_NO_WHOAMI, false, 0x00 },
   { 0x2B, "C4001 mmWave (ADDR high)",  "24GHz mmWave Radar",                      I2C_NO_WHOAMI, false, 0x00 },
-  { 0x60, "HLK-LD2410 (I2C)",          "24GHz FMCW mmWave Radar Presence Sensor", I2C_NO_WHOAMI, false, 0x00 }
+  { 0x60, "HLK-LD2410 (I2C)",          "24GHz FMCW mmWave Radar Presence Sensor", I2C_NO_WHOAMI, false, 0x00 },
   { 0x52, "XM125 (SparkFun)",          "Pulsed Coherent Radar Sensor",            0x00,          false, 0x2C },
   { 0x72, "XY-MW-I2C",                 "10.525GHz Microwave Doppler Radar",       I2C_NO_WHOAMI, false, 0x00 },
 //  { 0x73, "RCWL-9610",                 "5.8GHz Microwave Motion Sensor (I2C)",    0x00,          false, 0x96 },

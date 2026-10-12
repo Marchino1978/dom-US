@@ -53,8 +53,9 @@ inline void sendTelegramMessage(String message) {
   String requestBody;
   serializeJson(doc, requestBody);
 
-  http.POST(requestBody);
+  int httpCode = http.POST(requestBody);
   http.end();
+  DEBUG_LOG("TELEGRAM sendMessage code: %d heap: %u detail: %s", httpCode, ESP.getFreeHeap(), HTTPClient::errorToString(httpCode).c_str());
 }
 
 inline void sendTelegramYesNo(String message, const char* yesData, const char* noData) {
@@ -159,6 +160,7 @@ inline void checkTelegramUpdates() {
 
   if (httpCode == 200) {
     String payload = http.getString();
+    http.end();
 
     StaticJsonDocument<256> filter;
     filter["result"][0]["update_id"] = true;
@@ -186,6 +188,7 @@ inline void checkTelegramUpdates() {
       String text = update["message"]["text"].as<String>();
       text.toLowerCase();
       text.trim();
+      DEBUG_LOG("TELEGRAM RX: '%s'", text.c_str());
 
       char ts[25];
 
@@ -276,6 +279,7 @@ inline void checkTelegramUpdates() {
         float hum = readHumidity();
         float press = readPressure();
         float lux = readAmbientLux();
+        DEBUG_LOG("STATUS RAW: temp=%.2f hum=%.2f press=%.2f lux=%.2f", temp, hum, press, lux);
 
         String tempStr  = isnan(temp)  ? "---" : String(temp, 0);
         String humStr   = isnan(hum)   ? "---" : String(hum, 0);

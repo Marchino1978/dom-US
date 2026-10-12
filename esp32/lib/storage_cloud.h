@@ -30,7 +30,7 @@ struct OfflineLog {
 };
 
 const int MAX_OFFLINE_READINGS = 72;
-const int MAX_OFFLINE_LOGS = 500;
+const int MAX_OFFLINE_LOGS = 100;
 const int BATCH_READINGS = 24;
 const int BATCH_LOGS = 50;
 const unsigned long UPLOAD_RETRY_INTERVAL_MS = 30000;
@@ -171,7 +171,7 @@ bool sendToSupabase(const char* ts, float temp, float hum, float press) {
   http.addHeader("Content-Type", "application/json");
   http.addHeader("apikey", SUPABASE_KEY);
   http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
-  http.addHeader("Prefer", "resolution=merge-duplicates");
+  http.addHeader("Prefer", "resolution=ignore-duplicates");
 
   StaticJsonDocument<200> doc;
   doc["created_at"] = ts;
@@ -183,9 +183,10 @@ bool sendToSupabase(const char* ts, float temp, float hum, float press) {
   serializeJson(doc, body);
 
   int httpCode = http.POST(body);
+  String detail = (httpCode < 0) ? HTTPClient::errorToString(httpCode) : http.getString();
   http.end();
 
-  DEBUG_LOG("SUPABASE sensor_data POST code: %d", httpCode);
+  DEBUG_LOG("SUPABASE sensor_data BATCH POST code: %d heap: %u detail: %s", httpCode, ESP.getFreeHeap(), detail.c_str());
 
   return (httpCode == 200 || httpCode == 201);
 }
@@ -249,12 +250,13 @@ bool sendReadingsBatch(const OfflineReading* items, int count) {
   http.addHeader("Content-Type", "application/json");
   http.addHeader("apikey", SUPABASE_KEY);
   http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
-  http.addHeader("Prefer", "resolution=merge-duplicates");
+  http.addHeader("Prefer", "resolution=ignore-duplicates");
 
   int httpCode = http.POST(body);
+  String detail = (httpCode < 0) ? HTTPClient::errorToString(httpCode) : http.getString();
   http.end();
 
-  DEBUG_LOG("SUPABASE sensor_data BATCH POST code: %d", httpCode);
+  DEBUG_LOG("SUPABASE sensor_data BATCH POST code: %d heap: %u detail: %s", httpCode, ESP.getFreeHeap(), detail.c_str());
 
   return (httpCode == 200 || httpCode == 201);
 }
