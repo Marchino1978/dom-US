@@ -66,11 +66,15 @@ inline bool checkAddonAlarmTriggered() {
 }
 
 inline void handleDisplayAutoWake() {
-  if (checkAddonDisplayTriggered()) {
-    triggerDisplayWake();
-  }
+  #ifdef HAS_WAKEUP_ADDON
+    if (checkAddonDisplayTriggered()) {
+      triggerDisplayWake();
+    }
 
-  if (screenActive && (millis() - displayTimerStart > DISPLAY_TIMEOUT_MS)) {
-    setDisplayPower(false);
-  }
+    if (screenActive && (millis() - displayTimerStart > DISPLAY_TIMEOUT_MS)) {
+      setDisplayPower(false);
+    }
+  #else
+    if (!screenActive) triggerDisplayWake();
+  #endif
 }

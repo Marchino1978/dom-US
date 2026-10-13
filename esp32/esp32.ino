@@ -49,6 +49,7 @@ static unsigned long ntpStartMs = 0;
 
 static bool hourlySlotReady = false;
 static int lastExecutedKey = -1;
+static bool climateRefreshRequested = false;
 
 void readTelemetry(float& temp, float& hum, float& press) {
   #ifdef MODULE_TELEMETRY_ACTIVE
@@ -63,6 +64,7 @@ void readTelemetry(float& temp, float& hum, float& press) {
 }
 
 void onTimeSynced() {
+  climateRefreshRequested = true;
   if (bootCheckPassed) {
     flushRamBuffer();
     flushLogBuffer();
@@ -272,16 +274,28 @@ void provisionalTelemetryTask() {
 
 void checkClimateDisplayTask() {
   #if defined(MODULE_TELEMETRY_ACTIVE) && defined(MODULE_DISPLAY_ACTIVE)
-    static unsigned long lastRun = 0;
+    static int lastMinuteKey = -1;
     static bool wasActive = false;
-    const unsigned long climateDisplayIntervalMs = 60000;
 
     bool activeNow  = isDisplayActive();
     bool justWokeUp = activeNow && !wasActive;
     wasActive = activeNow;
 
-    if (!justWokeUp && (millis() - lastRun < climateDisplayIntervalMs)) return;
-    lastRun = millis();
+    if (!activeNow) return;
+
+    int minuteKey;
+    if (timeIsValid()) {
+      time_t nowEpoch = time(nullptr);
+      struct tm nowInfo;
+      localtime_r(&nowEpoch, &nowInfo);
+      minuteKey = nowInfo.tm_yday * 1440 + nowInfo.tm_hour * 60 + nowInfo.tm_min;
+    } else {
+      minuteKey = (int)(millis() / 60000UL);
+    }
+
+    if (!justWokeUp && !climateRefreshRequested && minuteKey == lastMinuteKey) return;
+    climateRefreshRequested = false;
+    lastMinuteKey = minuteKey;
 
     float temp  = readTemperature();
     float hum   = readHumidity();

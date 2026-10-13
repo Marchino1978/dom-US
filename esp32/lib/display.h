@@ -73,30 +73,35 @@ inline void refreshClimateDisplay(float temp, float hum, float press) {
   if (alarmEnabled) return;
   if (!isDisplayActive()) return;
 
-  static float lastTemp  = NAN;
-  static float lastHum   = NAN;
-  static float lastPress = NAN;
+  char timeLine[40];
+  time_t nowEpoch = time(nullptr);
+  if (nowEpoch > 1700000000) {
+    struct tm nowInfo;
+    localtime_r(&nowEpoch, &nowInfo);
+    snprintf(timeLine, sizeof(timeLine), "%02d:%02d %02d/%02d/%04d",
+             nowInfo.tm_hour,
+             nowInfo.tm_min,
+             nowInfo.tm_mday,
+             nowInfo.tm_mon + 1,
+             nowInfo.tm_year + 1900);
+  } else {
+    snprintf(timeLine, sizeof(timeLine), "--:-- --/--/----");
+  }
 
-#if defined(DISPLAY_LCD_16X2) || \
-    defined(DISPLAY_LCD_20X4) || \
-    defined(DISPLAY_LCD_16X2_RGB) || \
-    defined(DISPLAY_LCD_20X4_RGB)
-  bool needsRedraw = true;
-#else
-  bool needsRedraw = (temp != lastTemp) || (hum != lastHum) || (press != lastPress);
-#endif
+  char tempStr[12];
+  char humStr[12];
+  char pressStr[12];
 
-  if (!needsRedraw) return;
+  if (isnan(temp)) snprintf(tempStr, sizeof(tempStr), "--");
+  else snprintf(tempStr, sizeof(tempStr), "%d", (int)roundf(temp));
 
-  lastTemp  = temp;
-  lastHum   = hum;
-  lastPress = press;
+  if (isnan(hum)) snprintf(humStr, sizeof(humStr), "--");
+  else snprintf(humStr, sizeof(humStr), "%02d", (int)roundf(hum));
 
-  String tempStr  = isnan(temp)  ? "---" : String(temp, 1);
-  String humStr   = isnan(hum)   ? "---" : String(hum, 0);
-  String pressStr = isnan(press) ? "---" : String(press, 0);
+  if (isnan(press)) snprintf(pressStr, sizeof(pressStr), "----");
+  else snprintf(pressStr, sizeof(pressStr), "%d", (int)roundf(press));
 
-  showMessage(tempStr + "C  " + humStr + "%", pressStr + "hPa");
+  showMessage(String(timeLine), String(tempStr) + "C " + humStr + "% " + pressStr + "hPa");
 }
 
 #else
