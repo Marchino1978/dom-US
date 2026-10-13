@@ -215,46 +215,17 @@ void wifiUpdateState() {
   }
 }
 
-// Decides whether the current hour must be skipped, after pending readings are resolved
+// After minute 05 the hour in progress is skipped; before it, the reading is taken at minute 05
 void prepareHourlySlot() {
   if (hourlySlotReady) return;
   if (!timeIsValid()) return;
   if (hasProvisionalReadings()) return;
 
-  static unsigned long lastAttemptMs = 0;
-  static int attempts = 0;
-
-  time_t lastDbEpoch = 0;
-
-  if (WiFi.status() == WL_CONNECTED) {
-    if (lastAttemptMs != 0 && millis() - lastAttemptMs < slotRetryMs) return;
-    lastAttemptMs = millis();
-
-    if (!fetchLastSensorEpoch(lastDbEpoch)) {
-      attempts++;
-      if (attempts < slotMaxAttempts) return;
-      lastDbEpoch = 0;
-    }
-  }
-
   time_t nowEpoch = time(nullptr);
   struct tm nowInfo;
   localtime_r(&nowEpoch, &nowInfo);
 
-  time_t currentHourStart = nowEpoch - (nowEpoch % 3600);
-
-  char currentTs[25];
-  snprintf(currentTs, sizeof(currentTs), "%04d-%02d-%02dT%02d:00:00Z",
-           nowInfo.tm_year + 1900,
-           nowInfo.tm_mon + 1,
-           nowInfo.tm_mday,
-           nowInfo.tm_hour);
-
-  bool skipCurrentHour = (lastDbEpoch >= currentHourStart) ||
-                         bufferHasHour(currentTs) ||
-                         (bootWasBlackout && nowInfo.tm_min >= 5);
-
-  if (skipCurrentHour) {
+  if (nowInfo.tm_min >= 5) {
     lastExecutedKey = nowInfo.tm_yday * 24 + nowInfo.tm_hour;
   }
   hourlySlotReady = true;
@@ -275,9 +246,8 @@ void checkHourlyTask(struct tm* timeinfo) {
   }
 }
 
-// Used only while the clock is not valid and the reboot was not a power loss
+// Used only while the clock is not valid; the first reading is taken after timeGraceMs from boot
 void provisionalTelemetryTask() {
-  if (bootWasBlackout) return;
   if (millis() < timeGraceMs) return;
 
   static bool started = false;

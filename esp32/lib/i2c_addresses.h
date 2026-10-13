@@ -109,7 +109,7 @@ static const I2cDeviceInfo i2cDatabase[] = {
 //  { 0x5C, "BH1750 (ADDR high)",        "Digital light sensor (lux)",              I2C_NO_WHOAMI, false, 0x00 },
 //  { 0x39, "TSL2561",                   "Dual-diode digital light sensor",         0x000A,        false, 0x50 },
 //  { 0x29, "TSL2591",                   "High dynamic range digital light sensor", 0x00B2,        false, 0x50 },
-//  { 0x29, "TCS34725",                  "RGB color and color temperature sensor",  0x0092,        false, 0x44 },
+  { 0x29, "TCS34725",                  "RGB color and color temperature sensor",  0x0092,        false, 0x44 },
 //  { 0x10, "VEML7700",                  "High precision ambient light sensor",     0x0007,        false, 0x81 },
 //  { 0x39, "APDS-9960",                 "Gesture, proximity, light & RGB sensor",  0x0092,        false, 0xAB },
 //  { 0x48, "PCBA-DBM-FLEX",             "I2C Digital Decibel Sound Level Meter",   0x00,          false, 0x32 },

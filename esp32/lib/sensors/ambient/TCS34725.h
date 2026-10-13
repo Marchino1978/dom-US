@@ -11,11 +11,11 @@
 // With the LED off the sensor measures incident (ambient) light.
 
 // Fixed gain and integration time: the clear channel is scaled to a percentage of its full range
-#define TCS_SAMPLES        3
-#define TCS_SAMPLE_GAP_MS  400
-#define TCS_CLEAR_MAX      65535.0f
+#define TCS_SAMPLES        5
+#define TCS_SAMPLE_GAP_MS  10
+#define TCS_CLEAR_MAX      1024.0f
 
-static Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_154MS, TCS34725_GAIN_1X);
+static Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_2_4MS, TCS34725_GAIN_60X);
 static bool tcsReady = false;
 
 inline void initAmbientHardware() {

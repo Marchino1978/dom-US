@@ -12,11 +12,12 @@
   #include "ambient/VEML7700.h"
 #endif
 
-// LDR returns a percentage (0-100), every other ambient sensor returns lux
-#if defined(SENSOR_LIGHT_LDR)
+// LDR and TCS34725 return a percentage (0-100), every other ambient sensor returns lux
+#if defined(SENSOR_LIGHT_LDR) || \
+    defined(SENSOR_COLOR_TCS34725)
   #define AMBIENT_UNIT "%"
   #ifndef AMBIENT_LIGHT_ON_THRESHOLD
-    #define AMBIENT_LIGHT_ON_THRESHOLD 25.0f
+    #define AMBIENT_LIGHT_ON_THRESHOLD 5.0f
   #endif
 #else
   #define AMBIENT_UNIT "Lux"
