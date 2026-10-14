@@ -69,6 +69,15 @@ inline void showMessage(const String& line1, const String& line2 = "") {
 // - OLED/TFT redraw only when a value actually changed, to reduce
 //   unnecessary panel writes (true partial/pixel-level redraw is left to
 //   the individual driver files, see oled/*.h and tft/*.h).
+#if defined(DISPLAY_LCD_16X2) || \
+    defined(DISPLAY_LCD_20X4) || \
+    defined(DISPLAY_LCD_16X2_RGB) || \
+    defined(DISPLAY_LCD_20X4_RGB)
+  #define DISPLAY_DEGREE_SYMBOL "\xDF"
+#else
+  #define DISPLAY_DEGREE_SYMBOL ""
+#endif
+
 inline void refreshClimateDisplay(float temp, float hum, float press) {
   if (alarmEnabled) return;
   if (!isDisplayActive()) return;
@@ -101,7 +110,7 @@ inline void refreshClimateDisplay(float temp, float hum, float press) {
   if (isnan(press)) snprintf(pressStr, sizeof(pressStr), "----");
   else snprintf(pressStr, sizeof(pressStr), "%d", (int)roundf(press));
 
-  showMessage(String(timeLine), String(tempStr) + "C " + humStr + "% " + pressStr + "hPa");
+  showMessage(String(timeLine), String(tempStr) + DISPLAY_DEGREE_SYMBOL "C " + humStr + "% " + pressStr + "hPa");
 }
 
 #else
