@@ -65,7 +65,8 @@ void readTelemetry(float& temp, float& hum, float& press) {
 
 void onTimeSynced() {
   climateRefreshRequested = true;
-  if (bootCheckPassed) {
+  checkClimateDisplayTask();
+  if (bootCheckPassed) {{
     flushRamBuffer();
     flushLogBuffer();
     sendHeartbeat();
@@ -280,8 +281,8 @@ void checkClimateDisplayTask() {
     bool activeNow  = isDisplayActive();
     bool justWokeUp = activeNow && !wasActive;
     wasActive = activeNow;
-
     if (!activeNow) return;
+    if (!timeIsValid() && millis() < timeGraceMs) return;
 
     int minuteKey;
     if (timeIsValid()) {

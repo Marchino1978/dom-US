@@ -24,13 +24,13 @@ struct OfflineReading {
 struct OfflineLog {
   char timestamp[25];
   char severity[10];
-  char message[150];
+  char message[150]; // 75
   bool provisional;
   uint32_t bootSeconds;
 };
 
 const int MAX_OFFLINE_READINGS = 72;
-const int MAX_OFFLINE_LOGS = 100;
+const int MAX_OFFLINE_LOGS = 100; // 250
 const int BATCH_READINGS = 24;
 const int BATCH_LOGS = 50;
 const unsigned long UPLOAD_RETRY_INTERVAL_MS = 30000;

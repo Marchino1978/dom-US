@@ -12,10 +12,10 @@
 
 // Fixed gain and integration time: the clear channel is scaled to a percentage of its full range
 #define TCS_SAMPLES        5
-#define TCS_SAMPLE_GAP_MS  10
-#define TCS_CLEAR_MAX      1024.0f
+#define TCS_SAMPLE_GAP_MS  5
+#define TCS_CLEAR_MAX      10240.0f
 
-static Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_2_4MS, TCS34725_GAIN_60X);
+static Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_24MS, TCS34725_GAIN_60X);
 static bool tcsReady = false;
 
 inline void initAmbientHardware() {
@@ -26,7 +26,7 @@ inline void initAmbientHardware() {
   }
 }
 
-// Blocks for about TCS_SAMPLES * (154 ms + gap); returns the averaged clear channel as a percentage (0-100)
+// Blocks for about TCS_SAMPLES * (24 ms + gap); returns the averaged clear channel as a percentage (0-100)
 inline float readAmbientLuxValue() {
   if (!tcsReady) return NAN;
 

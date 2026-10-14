@@ -19,8 +19,8 @@ async function sendTelegramMessage(text: string) {
       parse_mode: "Markdown",
     }),
   });
-  const respBody = await resp.text();
-  console.log("Telegram response:", resp.status, respBody);
+//  const respBody = await resp.text();
+//  console.log("Telegram response:", resp.status, respBody);
 }
 
 async function sendLogToSupabase(headers: Record<string, string>, createdAt: string, severity: string, eventMessage: string) {
@@ -33,7 +33,7 @@ async function sendLogToSupabase(headers: Record<string, string>, createdAt: str
       event_message: eventMessage,
     }),
   });
-  console.log("Supabase logs POST status:", resp.status);
+//  console.log("Supabase logs POST status:", resp.status);
 }
 
 function romeNowAsFakeUtc(): Date {
