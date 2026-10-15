@@ -18,6 +18,7 @@
 │   ├── report_2026_09.csv
 │   └── report_2026_09.png
 ├── diagrams/
+│   ├── lcd.txt
 │   ├── led.txt
 │   ├── logic_diagrams.txt
 │   ├── README.md
@@ -149,6 +150,6 @@
 ├── README.md
 └── robots.txt
 
-24 directories, 125 files
+24 directories, 126 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***

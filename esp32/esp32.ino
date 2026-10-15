@@ -66,7 +66,7 @@ void readTelemetry(float& temp, float& hum, float& press) {
 void onTimeSynced() {
   climateRefreshRequested = true;
   checkClimateDisplayTask();
-  if (bootCheckPassed) {{
+  if (bootCheckPassed) {
     flushRamBuffer();
     flushLogBuffer();
     sendHeartbeat();

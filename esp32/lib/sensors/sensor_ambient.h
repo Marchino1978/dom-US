@@ -17,7 +17,7 @@
     defined(SENSOR_COLOR_TCS34725)
   #define AMBIENT_UNIT "%"
   #ifndef AMBIENT_LIGHT_ON_THRESHOLD
-    #define AMBIENT_LIGHT_ON_THRESHOLD 5.0f
+    #define AMBIENT_LIGHT_ON_THRESHOLD 3.0f
   #endif
 #else
   #define AMBIENT_UNIT "Lux"
