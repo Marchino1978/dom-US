@@ -42,9 +42,10 @@ inline float readHumidityValue() {
   return bme.readHumidity();
 }
  
-// Pa converted to hPa
+// Station pressure (Pa to hPa) reduced to sea level with the Bosch barometric formula
 inline float readPressureValue() {
   if (!bmeReady) return NAN;
   if (!bme.takeForcedMeasurement()) return NAN;
-  return bme.readPressure() / 100.0f;
+  float stationHpa = bme.readPressure() / 100.0f;
+  return stationHpa / powf(1.0f - ((float)SENSOR_ALTITUDE / 44330.0f), 5.255f);
 }
