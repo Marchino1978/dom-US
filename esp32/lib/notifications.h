@@ -6,6 +6,7 @@
 #include <ArduinoJson.h>
 #include <time.h>
 #include <Preferences.h>
+#include <esp_timer.h>
 
 #include "../config.h"
 #include "sensors.h"
@@ -164,10 +165,28 @@ inline String buildSystemInfoMessage() {
   uint32_t ramBlock = ESP.getMaxAllocHeap();
 
   String msg;
-  msg.reserve(520);
+  msg.reserve(700);
   msg = "*SYSTEM INFO*\n\n";
 
-  msg += "💾 *ROM*\n";
+  char chipRow[48];
+  uint32_t upSec = (uint32_t)(esp_timer_get_time() / 1000000ULL);
+
+  msg += "🔧 *CHIP*\n";
+  snprintf(chipRow, sizeof(chipRow), "`%-6s : %s`\n", "Model", ESP.getChipModel());
+  msg += chipRow;
+  snprintf(chipRow, sizeof(chipRow), "`%-6s : %u`\n", "Rev", (unsigned)ESP.getChipRevision());
+  msg += chipRow;
+  snprintf(chipRow, sizeof(chipRow), "`%-6s : %u`\n", "Cores", (unsigned)ESP.getChipCores());
+  msg += chipRow;
+  snprintf(chipRow, sizeof(chipRow), "`%-6s : %lu MHz`\n", "Freq", (unsigned long)ESP.getCpuFreqMHz());
+  msg += chipRow;
+  snprintf(chipRow, sizeof(chipRow), "`%-6s : %lud %luh %lum`\n", "Uptime",
+           (unsigned long)(upSec / 86400UL),
+           (unsigned long)((upSec % 86400UL) / 3600UL),
+           (unsigned long)((upSec % 3600UL) / 60UL));
+  msg += chipRow;
+
+  msg += "\n💾 *ROM*\n";
   appendMemoryRow(msg, "Tot",  romTot);
   appendMemoryRow(msg, "Used", romUsed);
   appendMemoryRow(msg, "Free", romFree);
@@ -181,7 +200,7 @@ inline String buildSystemInfoMessage() {
 
   char row[40];
   msg += "\n📦 *BUFFER*\n";
-  snprintf(row, sizeof(row), "`%-5s : %d/%d`\n", "Sens", bufferCount, MAX_OFFLINE_READINGS);
+  snprintf(row, sizeof(row), "`%-5s : %d/%d`\n", "Sensor", bufferCount, MAX_OFFLINE_READINGS);
   msg += row;
   snprintf(row, sizeof(row), "`%-5s : %d/%d`\n", "Log", logBufferCount, MAX_OFFLINE_LOGS);
   msg += row;
