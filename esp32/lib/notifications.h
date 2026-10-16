@@ -139,6 +139,67 @@ inline void handleI2cCallback(const String& data) {
   }
 }
 
+inline const char* wifiSignalQuality(int rssi) {
+  if (rssi > -55) return "excellent";
+  if (rssi > -67) return "good";
+  if (rssi > -75) return "fair";
+  return "poor";
+}
+
+inline void appendMemoryRow(String& msg, const char* label, uint32_t bytes) {
+  char row[40];
+  snprintf(row, sizeof(row), "`%-5s : %4lu KB`\n", label, (unsigned long)(bytes / 1024));
+  msg += row;
+}
+
+inline String buildSystemInfoMessage() {
+  // getFreeSketchSpace() returns the size of the next OTA slot, used here as the app partition size
+  uint32_t romUsed  = ESP.getSketchSize();
+  uint32_t romTot   = ESP.getFreeSketchSpace();
+  uint32_t romFree  = (romTot > romUsed) ? (romTot - romUsed) : 0;
+  uint32_t ramTot   = ESP.getHeapSize();
+  uint32_t ramFree  = ESP.getFreeHeap();
+  uint32_t ramUsed  = (ramTot > ramFree) ? (ramTot - ramFree) : 0;
+  uint32_t ramMin   = ESP.getMinFreeHeap();
+  uint32_t ramBlock = ESP.getMaxAllocHeap();
+
+  String msg;
+  msg.reserve(520);
+  msg = "*SYSTEM INFO*\n\n";
+
+  msg += "💾 *ROM*\n";
+  appendMemoryRow(msg, "Tot",  romTot);
+  appendMemoryRow(msg, "Used", romUsed);
+  appendMemoryRow(msg, "Free", romFree);
+
+  msg += "\n🧠 *RAM*\n";
+  appendMemoryRow(msg, "Tot",   ramTot);
+  appendMemoryRow(msg, "Used",  ramUsed);
+  appendMemoryRow(msg, "Free",  ramFree);
+  appendMemoryRow(msg, "Min",   ramMin);
+  appendMemoryRow(msg, "Block", ramBlock);
+
+  char row[40];
+  msg += "\n📦 *BUFFER*\n";
+  snprintf(row, sizeof(row), "`%-5s : %d/%d`\n", "Sens", bufferCount, MAX_OFFLINE_READINGS);
+  msg += row;
+  snprintf(row, sizeof(row), "`%-5s : %d/%d`\n", "Log", logBufferCount, MAX_OFFLINE_LOGS);
+  msg += row;
+
+  msg += "\n📶 *WIFI*\n";
+  if (WiFi.status() == WL_CONNECTED) {
+    int rssi = WiFi.RSSI();
+    msg += "`SSID   : " + WiFi.SSID() + "`\n";
+    msg += "`Signal : " + String(wifiSignalQuality(rssi)) + " (" + String(rssi) + " dBm)`\n";
+    msg += "`IP     : " + WiFi.localIP().toString() + "`\n";
+  } else {
+    msg += "`Status : offline`\n";
+  }
+  msg += "`MAC    : " + WiFi.macAddress() + "`";
+
+  return msg;
+}
+
 inline void checkTelegramUpdates() {
   if (WiFi.status() != WL_CONNECTED) return;
 
@@ -271,6 +332,13 @@ inline void checkTelegramUpdates() {
         }
 
         sendLogToSupabase(ts, "⚪", "I2C SCAN requested by user");
+      }
+      else if (text == "/info" || text == "info") {
+        getCurrentIsoTimestamp(ts, sizeof(ts));
+
+        sendTelegramMessage(buildSystemInfoMessage());
+
+        sendLogToSupabase(ts, "⚪", "SYSTEM INFO requested by user");
       }
       else if (text == "/status" || text == "status") {
         getCurrentIsoTimestamp(ts, sizeof(ts));
