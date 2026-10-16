@@ -66,8 +66,8 @@ For more information, check the official <strong>Waveshare product page</strong>
         ❌ ILI9341 - <small>Color TFT 2.4"🖼️ [3.3V]</small><br><br>
       <div style="text-align: center;"><font color="cyan"><b>⚙️ ADDONS [display wake-up / alarm] ⚙️</b></font></div>
         🗑️ RCWL-0516 - <small>Doppler Microwave📡 [4V - 28V]</small><br>
-        ❌ VL53L0X - <small>Laser ToF⚡ [2.8V - 5V / I2C]</small><br>
-        ❌ VL53L1X - <small>Laser ToF (Up to 4m)⚡ [3.3V / I2C]</small>
+        ⌛ VL53L0X - <small>Laser ToF⚡ [2.8V - 5V / I2C]</small><br>
+        ⌛ VL53L1X - <small>Laser ToF (Up to 4m)⚡ [3.3V / I2C]</small>
       </div>
     </td>
     <td width="50%" align="center" valign="top">
@@ -80,7 +80,7 @@ For more information, check the official <strong>Waveshare product page</strong>
         ⌛ BME280 - <small>Temp🌡️/Hum💧/Press🌀 [3.3V / I2C]</small><br>
         ⌛ BMP280 - <small>Temp🌡️/Press🌀 [3.3V / I2C]</small><br>
         ✅ DHT11 - <small>Temp🌡️/Hum💧 [3.3V / 5V]</small><br>
-        ❌ DHT22 - <small>Temp🌡️/Hum💧 [3.3V / 5V]</small><br>
+        ✅ DHT22 - <small>Temp🌡️/Hum💧 [3.3V / 5V]</small><br>
         ❌ DS18B20 - <small>Temp🌡️ [3.3V / 5V]</small><br>
         ❌ SHT31 - <small>Temp🌡️/Hum💧 [3.3V / 5V / I2C]</small><br><br>
         <div style="text-align: center;"><font color="cyan"><b>👥 MOTION & PRESENCE 👥</b></font></div>
@@ -94,8 +94,8 @@ For more information, check the official <strong>Waveshare product page</strong>
         ❌ HCSR04P - <small>Ultrasound🦇 [3.3V / 5V]</small><br>
         ❌ RCWL-1601 - <small>Ultrasound🦇 [3V - 5.5V]</small><br>
         ⌛ US100 - <small>Ultrasound + Temp (UART / PWM)📏 [3.3V / 5V]</small><br>
-        ❌ VL53L0X - <small>Laser ToF⚡ [2.8V - 5V / I2C]</small><br>
-        ❌ VL53L1X - <small>Laser ToF (Up to 4m)⚡ [3.3V / I2C]</small><br><br>
+        ⌛ VL53L0X - <small>Laser ToF⚡ [2.8V - 5V / I2C]</small><br>
+        ⌛ VL53L1X - <small>Laser ToF (Up to 4m)⚡ [3.3V / I2C]</small><br><br>
         <div style="text-align: center;"><font color="cyan"><b>🌍 AMBIENT 🌍</b></font></div>
         ❌ BH1750 - <small>Lux (Digital)☀️ [3.3V / 5V / I2C]</small><br>
         ❌ LDR - <small>Analog Photoresistor💡 [3.3V / 5V]</small><br>
