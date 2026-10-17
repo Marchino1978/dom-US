@@ -6,19 +6,15 @@
 #include <Wire.h>
 #include <DFRobot_RGBLCD1602.h>
 
-DFRobot_RGBLCD1602 lcd(20, 4);
+#define LCD_COLS 20
+#define LCD_ROWS 4
+
+DFRobot_RGBLCD1602 lcd(LCD_COLS, LCD_ROWS);
 
 inline void initLCDHardware() {
   lcd.init();
   lcd.setPWM(255, 255, 255);
   lcd.clear();
-}
-
-inline void printLCDValue(const String& line1, const String& line2 = "") {
-  lcd.setCursor(0, 0);
-  lcd.print(line1 + "                ");
-  lcd.setCursor(0, 1);
-  lcd.print(line2 + "                ");
 }
 
 inline void setLCDBacklightValue(bool state) {

@@ -89,7 +89,9 @@ void bootSequenceTask() {
 
 void startNtp() {
   setLedState(LED_STATE_NTP);
-  showMessage(TXT_WIFI_CONN, TXT_NTP_CONN);
+  displayBootRow(DISPLAY_BOOT_NTP_ROW, TXT_NTP_CONN);
+  displayBootRow(DISPLAY_BOOT_NTP_ROW + 1, "");
+  displayBootCommit();
   DEBUG_LOG("NTP SYNC START");
 
   configTzTime(timezoneRome, "pool.ntp.org", "time.nist.gov");
@@ -107,18 +109,9 @@ void ntpUpdate() {
     ntpWaiting = false;
     DEBUG_LOG("NTP SYNC OK");
 
-    struct tm timeinfo;
-    time_t now = time(nullptr);
-    localtime_r(&now, &timeinfo);
-
-    char ora[32];
-    snprintf(ora, sizeof(ora), TXT_TIME_LABEL,
-             timeinfo.tm_hour,
-             timeinfo.tm_min,
-             timeinfo.tm_mday,
-             timeinfo.tm_mon + 1,
-             timeinfo.tm_year + 1900);
-    showMessage(ora, TXT_NTP_OK);
+    displayBootRow(DISPLAY_BOOT_NTP_ROW + 1, TXT_NTP_OK);
+    displayBootCommit();
+    displayBootEnd();
 
     onTimeSynced();
     return;
@@ -126,7 +119,8 @@ void ntpUpdate() {
 
   if (!ntpFailShown && millis() - ntpStartMs > ntpTimeoutMs) {
     ntpFailShown = true;
-    showMessage(TXT_WIFI_CONN, TXT_NTP_FAIL);
+    displayBootRow(DISPLAY_BOOT_NTP_ROW + 1, TXT_NTP_FAIL);
+    displayBootCommit();
     DEBUG_LOG("NTP SYNC FAIL, still waiting");
   }
 }
@@ -145,7 +139,9 @@ void wifiStart(const char* ssid, const char* pass, WifiState nextState, const ch
   wifiState = nextState;
   setLedState(LED_STATE_WIFI);
 
-  showMessage(TXT_WIFI_CONN, msg);
+  displayBootRow(0, TXT_WIFI_CONN);
+  displayBootRow(1, msg);
+  displayBootCommit();
   DEBUG_LOG("WIFI TRY: %s", ssid);
 }
 
@@ -160,7 +156,8 @@ void wifiUpdateState() {
     case WIFI_CONNECTING_HOME:
       if (st == WL_CONNECTED) {
         wifiState = WIFI_CONNECTED;
-        showMessage(TXT_WIFI_CONN, TXT_WIFI_OK_HOME);
+        displayBootRow(1, TXT_WIFI_OK_HOME);
+        displayBootCommit();
         DEBUG_LOG("WIFI CONNECTED: HOME");
         onWifiConnected();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
@@ -172,7 +169,8 @@ void wifiUpdateState() {
     case WIFI_CONNECTING_OFFICE:
       if (st == WL_CONNECTED) {
         wifiState = WIFI_CONNECTED;
-        showMessage(TXT_WIFI_OK_OFFICE, "");
+        displayBootRow(1, TXT_WIFI_OK_OFFICE);
+        displayBootCommit();
         DEBUG_LOG("WIFI CONNECTED: OFFICE");
         onWifiConnected();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
@@ -184,13 +182,15 @@ void wifiUpdateState() {
     case WIFI_CONNECTING_HOTSPOT:
       if (st == WL_CONNECTED) {
         wifiState = WIFI_CONNECTED;
-        showMessage(TXT_WIFI_OK_HOTSPOT, "");
+        displayBootRow(1, TXT_WIFI_OK_HOTSPOT);
+        displayBootCommit();
         DEBUG_LOG("WIFI CONNECTED: HOTSPOT");
         onWifiConnected();
       } else if (millis() - wifiAttemptStart > wifiTimeoutMs) {
         wifiState = WIFI_FAIL;
         lastWifiRetry = millis();
-        showMessage(TXT_WIFI_CONN, TXT_WIFI_FAIL);
+        displayBootRow(1, TXT_WIFI_FAIL);
+        displayBootCommit();
         DEBUG_LOG("WIFI HOTSPOT TIMEOUT, all attempts FAILED");
       }
       break;
@@ -199,7 +199,8 @@ void wifiUpdateState() {
       if (st != WL_CONNECTED) {
         wifiState = WIFI_FAIL;
         lastWifiRetry = millis();
-        showMessage(TXT_WIFI_CONN, TXT_WIFI_LOST);
+        displayBootRow(1, TXT_WIFI_LOST);
+        displayBootCommit();
         setLedState(LED_STATE_WIFI);
         DEBUG_LOG("WIFI CONNECTION LOST");
       }
@@ -277,6 +278,8 @@ void checkClimateDisplayTask() {
   #if defined(MODULE_TELEMETRY_ACTIVE) && defined(MODULE_DISPLAY_ACTIVE)
     static int lastMinuteKey = -1;
     static bool wasActive = false;
+
+    if (displayBootActive()) return;
 
     bool activeNow  = isDisplayActive();
     bool justWokeUp = activeNow && !wasActive;
@@ -357,6 +360,9 @@ void loop() {
   }
 
   retryPendingUploads();
+
+  if (millis() >= timeGraceMs) displayBootEnd();
+  if (displayBootUpdate()) climateRefreshRequested = true;
 
   checkClimateDisplayTask();
 

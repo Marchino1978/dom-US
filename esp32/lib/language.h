@@ -21,7 +21,18 @@
   #define TXT_NTP_CONN        "Connessione NTP"
   #define TXT_NTP_FAIL        "NTP ERRORE"
   #define TXT_NTP_OK          "Conness. NTP OK"
-  #define TXT_TIME_LABEL      "%02d:%02d %02d/%02d/%04d"
+
+  #define TXT_MON_DAY         "Lun"
+  #define TXT_TUE_DAY         "Mar"
+  #define TXT_WED_DAY         "Mer"
+  #define TXT_THU_DAY         "Gio"
+  #define TXT_FRI_DAY         "Ven"
+  #define TXT_SAT_DAY         "Sab"
+  #define TXT_SUN_DAY         "Dom"
+
+  #define TXT_TEMP            "Temperatura"
+  #define TXT_HUM             "Umidita"
+  #define TXT_PRESS           "Pressione"
 
 // ======================================================
 // 2. EN
@@ -42,7 +53,18 @@
   #define TXT_NTP_CONN        "Connecting NTP"
   #define TXT_NTP_FAIL        "NTP FAIL"
   #define TXT_NTP_OK          "NTP Sync OK"
-  #define TXT_TIME_LABEL      "%02d:%02d %02d/%02d/%04d"
+
+  #define TXT_MON_DAY         "Mon"
+  #define TXT_TUE_DAY         "Tue"
+  #define TXT_WED_DAY         "Wed"
+  #define TXT_THU_DAY         "Thu"
+  #define TXT_FRI_DAY         "Fri"
+  #define TXT_SAT_DAY         "Sat"
+  #define TXT_SUN_DAY         "Sun"
+
+  #define TXT_TEMP            "Temperature"
+  #define TXT_HUM             "Humidity"
+  #define TXT_PRESS           "Pressure"
 
 // ======================================================
 // 3. ES
@@ -63,7 +85,18 @@
   #define TXT_NTP_CONN        "Conectando NTP"
   #define TXT_NTP_FAIL        "NTP ERROR"
   #define TXT_NTP_OK          "NTP Sincronizado"
-  #define TXT_TIME_LABEL      "%02d:%02d %02d/%02d/%04d"
+
+  #define TXT_MON_DAY         "Lun"
+  #define TXT_TUE_DAY         "Mar"
+  #define TXT_WED_DAY         "Mie"
+  #define TXT_THU_DAY         "Jue"
+  #define TXT_FRI_DAY         "Vie"
+  #define TXT_SAT_DAY         "Sab"
+  #define TXT_SUN_DAY         "Dom"
+
+  #define TXT_TEMP            "Temperatura"
+  #define TXT_HUM             "Humedad"
+  #define TXT_PRESS           "Presion"
 
 // ======================================================
 // 4. DE
@@ -84,7 +117,18 @@
   #define TXT_NTP_CONN        "NTP verbinden"
   #define TXT_NTP_FAIL        "NTP FEHLER"
   #define TXT_NTP_OK          "NTP Zeit Sync OK"
-  #define TXT_TIME_LABEL      "%02d:%02d %02d/%02d/%04d"
+
+  #define TXT_MON_DAY         "Mon"
+  #define TXT_TUE_DAY         "Die"
+  #define TXT_WED_DAY         "Mit"
+  #define TXT_THU_DAY         "Don"
+  #define TXT_FRI_DAY         "Fre"
+  #define TXT_SAT_DAY         "Sam"
+  #define TXT_SUN_DAY         "Son"
+
+  #define TXT_TEMP            "Temperatur"
+  #define TXT_HUM             "Luftfeuchte"
+  #define TXT_PRESS           "Luftdruck"
 
 // ======================================================
 // 5. FR
@@ -105,7 +149,18 @@
   #define TXT_NTP_CONN        "Connexion NTP"
   #define TXT_NTP_FAIL        "NTP ERREUR"
   #define TXT_NTP_OK          "NTP Synchronise"
-  #define TXT_TIME_LABEL      "%02d:%02d %02d/%02d/%04d"
+
+  #define TXT_MON_DAY         "Lun"
+  #define TXT_TUE_DAY         "Mar"
+  #define TXT_WED_DAY         "Mer"
+  #define TXT_THU_DAY         "Jeu"
+  #define TXT_FRI_DAY         "Ven"
+  #define TXT_SAT_DAY         "Sam"
+  #define TXT_SUN_DAY         "Dim"
+
+  #define TXT_TEMP            "Temperature"
+  #define TXT_HUM             "Humidite"
+  #define TXT_PRESS           "Pression"
 
 // ======================================================
 // FALLBACK: IT
@@ -126,6 +181,17 @@
   #define TXT_NTP_CONN        "Connessione NTP"
   #define TXT_NTP_FAIL        "NTP ERRORE"
   #define TXT_NTP_OK          "Conness. NTP OK"
-  #define TXT_TIME_LABEL      "%02d:%02d %02d/%02d/%04d"
+
+  #define TXT_MON_DAY         "Lun"
+  #define TXT_TUE_DAY         "Mar"
+  #define TXT_WED_DAY         "Mer"
+  #define TXT_THU_DAY         "Gio"
+  #define TXT_FRI_DAY         "Ven"
+  #define TXT_SAT_DAY         "Sab"
+  #define TXT_SUN_DAY         "Dom"
+
+  #define TXT_TEMP            "Temperatura"
+  #define TXT_HUM             "Umidita"
+  #define TXT_PRESS           "Pressione"
 
 #endif
