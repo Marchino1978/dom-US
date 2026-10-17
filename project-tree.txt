@@ -87,8 +87,10 @@
 │   │   ├── language.h
 │   │   ├── led_status.h
 │   │   ├── notifications.h
+│   │   ├── ntp_sync.h
 │   │   ├── sensors.h
-│   │   └── storage_cloud.h
+│   │   ├── storage_cloud.h
+│   │   └── wifi_manager.h
 │   ├── config.example.h
 │   ├── config.h
 │   ├── esp32.ino
@@ -150,6 +152,6 @@
 ├── README.md
 └── robots.txt
 
-24 directories, 126 files
+24 directories, 128 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
