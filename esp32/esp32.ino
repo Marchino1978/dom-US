@@ -51,6 +51,12 @@ static bool hourlySlotReady = false;
 static int lastExecutedKey = -1;
 static bool climateRefreshRequested = false;
 
+#if defined(DEBUG_SERIAL) && defined(DISPLAY_KIND_LCD)
+  #define BUFFER_SCREEN_ENABLED
+  const unsigned long bufferScreenIntervalMs = 3000;
+  static bool bufferScreenShown = false;
+#endif
+
 void readTelemetry(float& temp, float& hum, float& press) {
   #ifdef MODULE_TELEMETRY_ACTIVE
     temp  = roundf(readTemperature() * 10.0f) / 10.0f;
@@ -281,6 +287,10 @@ void checkClimateDisplayTask() {
 
     if (displayBootActive()) return;
 
+    #ifdef BUFFER_SCREEN_ENABLED
+      if (bufferScreenShown) return;
+    #endif
+
     bool activeNow  = isDisplayActive();
     bool justWokeUp = activeNow && !wasActive;
     wasActive = activeNow;
@@ -306,6 +316,44 @@ void checkClimateDisplayTask() {
     float press = readPressure();
 
     refreshClimateDisplay(temp, hum, press);
+  #endif
+}
+
+// Debug only: alternates the climate screen and the buffer screen while offline or while buffers are not empty
+void checkBufferDisplayTask() {
+  #ifdef BUFFER_SCREEN_ENABLED
+    static unsigned long lastToggleMs = 0;
+    static bool wasNeeded = false;
+
+    bool needed = !alarmEnabled &&
+                  !displayBootActive() &&
+                  isDisplayActive() &&
+                  (WiFi.status() != WL_CONNECTED || bufferCount > 0 || logBufferCount > 0);
+
+    if (!needed) {
+      wasNeeded = false;
+      if (bufferScreenShown) {
+        bufferScreenShown = false;
+        climateRefreshRequested = true;
+      }
+      return;
+    }
+
+    if (!wasNeeded) {
+      wasNeeded = true;
+      lastToggleMs = millis();
+      return;
+    }
+
+    if (millis() - lastToggleMs < bufferScreenIntervalMs) return;
+    lastToggleMs = millis();
+
+    bufferScreenShown = !bufferScreenShown;
+    if (bufferScreenShown) {
+      refreshBufferDisplay(bufferCount, MAX_OFFLINE_READINGS, logBufferCount, MAX_OFFLINE_LOGS);
+    } else {
+      climateRefreshRequested = true;
+    }
   #endif
 }
 
@@ -365,6 +413,7 @@ void loop() {
   if (displayBootUpdate()) climateRefreshRequested = true;
 
   checkClimateDisplayTask();
+  checkBufferDisplayTask();
 
   #if defined(MODULE_DISPLAY_ACTIVE) || defined(HAS_WAKEUP_ADDON)
     if (!alarmEnabled) {

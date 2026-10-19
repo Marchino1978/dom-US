@@ -29,6 +29,7 @@
 │   ├── lib/
 │   │   ├── displays/
 │   │   │   ├── addons/
+│   │   │   │   ├── AM312.h
 │   │   │   │   ├── RCWL-0516.h
 │   │   │   │   ├── VL53L0X.h
 │   │   │   │   └── VL53L1X.h
@@ -51,6 +52,7 @@
 │   │   │   ├── ambient/
 │   │   │   │   ├── BH1750.h
 │   │   │   │   ├── LDR.h
+│   │   │   │   ├── MQ135.h
 │   │   │   │   ├── TCS34725.h
 │   │   │   │   └── VEML7700.h
 │   │   │   ├── climate/
@@ -152,6 +154,6 @@
 ├── README.md
 └── robots.txt
 
-24 directories, 128 files
+24 directories, 130 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***

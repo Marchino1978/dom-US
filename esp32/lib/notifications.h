@@ -198,13 +198,6 @@ inline String buildSystemInfoMessage() {
   appendMemoryRow(msg, "Min",   ramMin);
   appendMemoryRow(msg, "Block", ramBlock);
 
-  char row[40];
-  msg += "\n📦 *BUFFER*\n";
-  snprintf(row, sizeof(row), "`%-5s : %d/%d`\n", "Sensor", bufferCount, MAX_OFFLINE_READINGS);
-  msg += row;
-  snprintf(row, sizeof(row), "`%-5s : %d/%d`\n", "Log", logBufferCount, MAX_OFFLINE_LOGS);
-  msg += row;
-
   msg += "\n📶 *WIFI*\n";
   if (WiFi.status() == WL_CONNECTED) {
     int rssi = WiFi.RSSI();

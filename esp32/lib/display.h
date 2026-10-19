@@ -157,6 +157,31 @@ inline void refreshClimateDisplay(float temp, float hum, float press) {
 #endif
 }
 
+#if defined(DEBUG_SERIAL) && defined(DISPLAY_KIND_LCD)
+
+// Debug only: counters are passed in to avoid depending on storage_cloud.h
+inline void refreshBufferDisplay(int sensorCount, int sensorMax, int logCount, int logMax) {
+  if (alarmEnabled) return;
+  if (!isDisplayActive()) return;
+
+  char line[LCD_COLS + 1];
+
+#if LCD_ROWS >= 4
+  printLCDRow(0, String("   BUFFER STATUS"));
+  printLCDRow(1, String(""));
+  snprintf(line, sizeof(line), " SENSOR : %3d/%d", sensorCount, sensorMax);
+  printLCDRow(2, String(line));
+  snprintf(line, sizeof(line), " LOG    : %3d/%d", logCount, logMax);
+  printLCDRow(3, String(line));
+#else
+  printLCDRow(0, String(" BUFFER STATUS"));
+  snprintf(line, sizeof(line), "S%2d/%d  L%3d/%d", sensorCount, sensorMax, logCount, logMax);
+  printLCDRow(1, String(line));
+#endif
+}
+
+#endif
+
 #ifdef DISPLAY_BOOT_MESSAGES
 
 // Boot messages are queued and shown one frame at a time, each held for a minimum time,

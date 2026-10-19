@@ -58,3 +58,27 @@
  PAIR 4
  ⬜🟫 Digital PIR Signal (OUT) - AM312
  🟫🟫 Positive Power Supply (VCC 3.3V)
+
+
+
+## ESP32-C3-Zero ##
+
+        G G G G G
+        P P P P P G G G G
+        2 2 1 1 1 P P p P
+        1 0 9 8 0 9 8 7 6
+        | | | | | | | | |
+       ╔═════════════════╗
+       ║o o o o o o o o o║
+     ╔══════╗ [R]   []   ║
+     ║      ║   ╔═══╗  ╔═╗
+     ║      ║╔═╗║   ║  ║C║
+     ║      ║╚═╝║   ║  ║3║
+     ║      ║   ╚═══╝  ╚═╝
+     ╚══════╝ [B] []     ║
+       ║o o o o o o o o o║
+       ╚═════════════════╝
+        | | | | | | | | |
+        5 G 3 G G G G G G
+        V N V P P P P P P
+          D 3 O 1 2 3 4 5
