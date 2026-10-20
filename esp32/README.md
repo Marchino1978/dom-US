@@ -55,7 +55,7 @@ For more information, check the official <strong>Waveshare product page</strong>
       <div align="center" style="text-align: left; display: inline-block;">
         <div style="text-align: center;"><font color="cyan"><b>📟 LCD 📟</b></font></div>
         ✅ LCD_16X2 - <small>Alphanumeric📟 [3.3V / I2C]</small><br>
-        ⌛ LCD_20X4 - <small>Alphanumeric📟 [3.3V / I2C]</small><br>
+        ✅ LCD_20X4 - <small>Alphanumeric📟 [3.3V / I2C]</small><br>
         ⌛ LCD_16X2_RGB - <small>Alphanumeric RGB 📟🌈 [3.3V / I2C]</small><br>
         ❌ LCD_20X4_RGB - <small>Alphanumeric RGB 📟🌈 [3.3V / I2C]</small><br><br>
         <div style="text-align: center;"><font color="cyan"><b>📺 OLED 📺</b></font></div>
@@ -78,7 +78,7 @@ For more information, check the official <strong>Waveshare product page</strong>
         <div style="text-align: center;"><font color="cyan"><b>🌡️ CLIMATE 🌡️</b></font></div>
         ❌ AHT20 - <small>Temp🌡️/Hum💧 [3.3V / I2C]</small><br>
         ⌛ BME280 - <small>Temp🌡️/Hum💧/Press🌀 [3.3V / I2C]</small><br>
-        ⌛ BMP280 - <small>Temp🌡️/Press🌀 [3.3V / I2C]</small><br>
+        ✅ BMP280 - <small>Temp🌡️/Press🌀 [3.3V / I2C]</small><br>
         ✅ DHT11 - <small>Temp🌡️/Hum💧 [3.3V / 5V]</small><br>
         ✅ DHT22 - <small>Temp🌡️/Hum💧 [3.3V / 5V]</small><br>
         ❌ DS18B20 - <small>Temp🌡️ [3.3V / 5V]</small><br>
