@@ -50,6 +50,12 @@ inline void setLCDBacklight(bool state) {
       defined(DISPLAY_LCD_20X4) || \
       defined(DISPLAY_LCD_16X2_RGB) || \
       defined(DISPLAY_LCD_20X4_RGB)
-    setLCDBacklightValue(state);
+    if (state) {
+      lcd.display();
+      setLCDBacklightValue(true);
+    } else {
+      setLCDBacklightValue(false);
+      lcd.noDisplay();
+    }
   #endif
 }

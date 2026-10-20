@@ -10,7 +10,8 @@
 // display_addons.h provides generic backlight/wake handling (needed by any
 // display, with or without an addon) AND checkAddonAlarmTriggered() (needed
 // by lib/alarm.h even with an addon alone, no display selected).
-#if defined(MODULE_DISPLAY_ACTIVE) || defined(HAS_WAKEUP_ADDON)
+#if defined(MODULE_DISPLAY_ACTIVE) || \
+    defined(HAS_WAKEUP_ADDON)
   #include "displays/display_addons.h"
 #endif
 
@@ -34,6 +35,16 @@ extern bool alarmEnabled;
       defined(DISPLAY_TFT_ILI9341)
 #include "displays/display_tft.h"
 #endif
+
+inline void applyDisplayPower(bool state) {
+#if defined(DISPLAY_KIND_LCD)
+    setLCDBacklight(state);
+#elif defined(DISPLAY_TFT_ST7789) || \
+      defined(DISPLAY_TFT_ILI9341)
+    pinMode(LCD_BL, OUTPUT);
+    digitalWrite(LCD_BL, state ? HIGH : LOW);
+#endif
+}
 
 inline void initDisplay() {
 #if defined(DISPLAY_KIND_LCD)

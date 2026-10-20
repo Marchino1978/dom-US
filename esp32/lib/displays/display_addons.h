@@ -2,6 +2,7 @@
 
 #include "../../config.h"
 
+// Not a valid GPIO on ESP32-C3: check and reassign before use, only needed by displays driven by a backlight pin
 #define LCD_BL 22
 #define DISPLAY_TIMEOUT_MS 30000
 
@@ -16,10 +17,12 @@ static bool screenActive = false;
   #include "addons/VL53L1X.h"
 #endif
 
+// Defined in display.h, after the display driver is included
+inline void applyDisplayPower(bool state);
+
 inline void setDisplayPower(bool state) {
   screenActive = state;
-  pinMode(LCD_BL, OUTPUT);
-  digitalWrite(LCD_BL, state ? HIGH : LOW);
+  applyDisplayPower(state);
 }
 
 inline bool isDisplayActive() {
@@ -34,7 +37,6 @@ inline void triggerDisplayWake() {
 }
 
 inline void initDisplayAddons() {
-  pinMode(LCD_BL, OUTPUT);
   setDisplayPower(true);
   displayTimerStart = millis();
 
