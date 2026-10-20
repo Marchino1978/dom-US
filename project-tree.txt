@@ -52,7 +52,6 @@
 │   │   │   ├── ambient/
 │   │   │   │   ├── BH1750.h
 │   │   │   │   ├── LDR.h
-│   │   │   │   ├── MQ135.h
 │   │   │   │   ├── TCS34725.h
 │   │   │   │   └── VEML7700.h
 │   │   │   ├── climate/
@@ -154,6 +153,6 @@
 ├── README.md
 └── robots.txt
 
-24 directories, 130 files
+24 directories, 129 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
