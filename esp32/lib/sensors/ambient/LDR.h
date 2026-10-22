@@ -22,5 +22,4 @@ inline float readAmbientLuxValue() {
   }
   float raw = (float)sum / LDR_SAMPLES;
   return raw * 100.0f / LDR_ADC_MAX;
-}
- 
+} 

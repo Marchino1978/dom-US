@@ -98,7 +98,7 @@ For more information, check the official <strong>Waveshare product page</strong>
         ⌛ VL53L1X - <small>Laser ToF (Up to 4m)⚡ [3.3V / I2C]</small><br><br>
         <div style="text-align: center;"><font color="cyan"><b>🌍 AMBIENT 🌍</b></font></div>
         ❌ BH1750 - <small>Lux (Digital)☀️ [3.3V / 5V / I2C]</small><br>
-        ❌ LDR - <small>Analog Photoresistor💡 [3.3V / 5V]</small><br>
+        ⌛ LDR - <small>Analog Photoresistor💡 [3.3V / 5V]</small><br>
         ✅ TCS34725 - <small>RGB + Color Temp🎨 [3.3V / 5V / I2C]</small><br>
         ⌛ VEML7700 - <small>Lux (HP / Human eye)☀️ [3.3V / I2C]</small>
       </div>
