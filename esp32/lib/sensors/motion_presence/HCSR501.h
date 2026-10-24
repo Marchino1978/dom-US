@@ -13,4 +13,3 @@ inline void initMotionHardware() {
 inline bool readMotionState() {
   return digitalRead(PIN_MOTION) == HIGH;
 }
- 

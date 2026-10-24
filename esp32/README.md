@@ -85,7 +85,7 @@ For more information, check the official <strong>Waveshare product page</strong>
         ❌ SHT31 - <small>Temp🌡️/Hum💧 [3.3V / 5V / I2C]</small><br><br>
         <div style="text-align: center;"><font color="cyan"><b>👥 MOTION & PRESENCE 👥</b></font></div>
         ⌛ AM312 - <small>Mini Passive Infrared🏃 [3.3V]</small><br>
-        ⌛ HCSR501 - <small>Passive Infrared🏃 [5V (3.3V signal)]</small><br>
+        ❌ HCSR501 - <small>Passive Infrared🏃 [5V (3.3V signal)]</small><br>
         🗑️ LD2410 - <small>Micro-movements🧘 [5V]</small><br>
         🗑️ RCWL-0516 - <small>Doppler Microwave📡 [4V - 28V]</small><br>
         ✅ TE174 - <small>IR Beam🛑 [3.3V / 5V]</small><br><br>
@@ -98,7 +98,7 @@ For more information, check the official <strong>Waveshare product page</strong>
         ⌛ VL53L1X - <small>Laser ToF (Up to 4m)⚡ [3.3V / I2C]</small><br><br>
         <div style="text-align: center;"><font color="cyan"><b>🌍 AMBIENT 🌍</b></font></div>
         ❌ BH1750 - <small>Lux (Digital)☀️ [3.3V / 5V / I2C]</small><br>
-        ⌛ LDR - <small>Analog Photoresistor💡 [3.3V / 5V]</small><br>
+        ✅ LDR - <small>Analog Photoresistor💡 [3.3V / 5V]</small><br>
         ✅ TCS34725 - <small>RGB + Color Temp🎨 [3.3V / 5V / I2C]</small><br>
         ⌛ VEML7700 - <small>Lux (HP / Human eye)☀️ [3.3V / I2C]</small>
       </div>

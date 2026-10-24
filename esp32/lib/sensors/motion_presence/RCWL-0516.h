@@ -4,7 +4,6 @@
 
 #include <Arduino.h>
 
- 
 inline void initMotionHardware() {
   pinMode(PIN_MOTION, INPUT);
 }

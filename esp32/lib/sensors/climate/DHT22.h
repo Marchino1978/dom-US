@@ -5,7 +5,6 @@
 #include <Arduino.h>
 #include <DHT.h>
 
-
 static DHT dht(PIN_DHT, DHT22);
  
 inline void initClimateHardware() {

@@ -29,7 +29,6 @@
 │   ├── lib/
 │   │   ├── displays/
 │   │   │   ├── addons/
-│   │   │   │   ├── AM312.h
 │   │   │   │   ├── RCWL-0516.h
 │   │   │   │   ├── VL53L0X.h
 │   │   │   │   └── VL53L1X.h
@@ -156,6 +155,6 @@
 ├── README.md
 └── robots.txt
 
-25 directories, 131 files
+25 directories, 130 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***

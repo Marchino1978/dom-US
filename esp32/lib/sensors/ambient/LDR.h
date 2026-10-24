@@ -12,6 +12,7 @@
 inline void initAmbientHardware() {
   pinMode(PIN_ANALOG, INPUT);
   analogSetPinAttenuation(PIN_ANALOG, ADC_11db);
+//  analogSetPinAttenuation(PIN_ANALOG, ADC_ATTEN_DB_12); // Core 3.x only, same 11 dB range: 
 }
  
 // Returns brightness percentage through the readAmbientLuxValue() interface
@@ -22,4 +23,4 @@ inline float readAmbientLuxValue() {
   }
   float raw = (float)sum / LDR_SAMPLES;
   return raw * 100.0f / LDR_ADC_MAX;
-} 
+}

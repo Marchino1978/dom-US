@@ -1,6 +1,7 @@
 #pragma once
  
 #include "../../../config.h"
+
 #include <Arduino.h>
 #include <SPI.h>
 #include <Adafruit_GFX.h>
