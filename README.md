@@ -22,7 +22,7 @@ A lightweight, serverless smart home IoT ecosystem built with ESP32-C3 mini and 
 </p>
 
 <p align="center">
-  <strong>Developed on Raspberry Pi 400 | <del>H̶o̶s̶t̶e̶d̶ ̶o̶n̶</del> Serverless | Uptime: running since ---</strong>
+  <strong>Developed on Raspberry Pi 400 | <s>Hosted on</s> Serverless | Uptime: running since ---</strong>
 </p>
 
 <p align="center">
