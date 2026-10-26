@@ -63,9 +63,9 @@ void checkAlarmSystem() {
   int activeSensorsCount = ACTIVE_ALARM_SENSORS;
   bool anyTriggered = (trigMotion || trigDistance || trigAddon);
 
-  // ----------------------------------------------------
-  // CASE 1: ALARM DISABLED (OFF)
-  // ----------------------------------------------------
+// ----------------------------------------------------
+// CASE 1: ALARM DISABLED (OFF)
+// ----------------------------------------------------
   if (!alarmEnabled) {
     currentAlarmState = STATE_IDLE;
     alarmTriggered = false;
@@ -80,9 +80,9 @@ void checkAlarmSystem() {
     return;
   }
 
-  // ----------------------------------------------------
-  // CASE 2: ALARM ENABLED (ON)
-  // ----------------------------------------------------
+// ----------------------------------------------------
+// CASE 2: ALARM ENABLED (ON)
+// ----------------------------------------------------
   if (alarmTriggered) {
     if (millis() - triggeredStartTime > autoResetMs) {
       alarmTriggered = false;
@@ -128,4 +128,4 @@ void checkAlarmSystem() {
   }
 }
 
-#endif // MODULE_ALARM_ACTIVE
+#endif

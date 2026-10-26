@@ -300,13 +300,13 @@ inline bool displayBootUpdate() {
   return false;
 }
 
-#endif // DISPLAY_BOOT_MESSAGES
+#endif
 
 #else
 
 inline void showMessage(const String& line1, const String& line2 = "") {}
 
-#endif // MODULE_DISPLAY_ACTIVE
+#endif
 
 #if !defined(MODULE_DISPLAY_ACTIVE) || !defined(DISPLAY_BOOT_MESSAGES)
 

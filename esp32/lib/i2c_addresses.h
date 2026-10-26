@@ -41,8 +41,8 @@ struct I2cScanResult {
 // Entries sharing an address are checked in table order; WHO_AM_I entries are probed first.
 static const I2cDeviceInfo i2cDatabase[] = {
 
-  // DISPLAYS
-  // --- DISPLAYS AND VISUAL INDICATORS ---
+// DISPLAYS
+// --- DISPLAYS AND VISUAL INDICATORS ---
   { 0x3C, "SSD1306 / SH1106 OLED",     "0.96\" / 1.3\" graphic display",          I2C_NO_WHOAMI, false, 0x00 },
   { 0x3D, "SSD1306 OLED (ADDR high)",  "0.96\" graphic display",                  I2C_NO_WHOAMI, false, 0x00 },
   { 0x27, "PCF8574 LCD backpack",      "I2C adapter for 16x2 / 20x4 LCD",         I2C_NO_WHOAMI, false, 0x00 },
@@ -51,8 +51,8 @@ static const I2cDeviceInfo i2cDatabase[] = {
   { 0x2D, "DFRobot RGB backlight",     "RGB backlight driver (new revision)",     I2C_NO_WHOAMI, false, 0x00 },
   { 0x60, "DFRobot RGB backlight",     "RGB backlight driver (old revision)",     I2C_NO_WHOAMI, false, 0x00 },
 
-  // CLIMATE
-  // --- TEMPERATURE, HUMIDITY AND PRESSURE SENSORS ---
+// CLIMATE
+// --- TEMPERATURE, HUMIDITY AND PRESSURE SENSORS ---
   { 0x38, "AHT20",                     "Temperature and humidity sensor",         I2C_NO_WHOAMI, false, 0x00 },
   { 0x44, "SHT31",                     "Temperature and humidity sensor",         I2C_NO_WHOAMI, false, 0x00 },
   { 0x45, "SHT31 (ADDR high)",         "Temperature and humidity sensor",         I2C_NO_WHOAMI, false, 0x00 },
@@ -61,19 +61,19 @@ static const I2cDeviceInfo i2cDatabase[] = {
   { 0x77, "BME280",                    "Temperature, humidity, pressure sensor",  0x00D0,        false, 0x60 },
   { 0x77, "BMP280",                    "Temperature and pressure sensor",         0x00D0,        false, 0x58 },
 
-  // MOTION & PRESENCE
-  // --- MOTION, RADAR AND PRESENCE SENSORS ---
+// MOTION & PRESENCE
+// --- MOTION, RADAR AND PRESENCE SENSORS ---
 
-  // DISTANCE
-  // --- PROXIMITY AND DISTANCE SENSORS ---
+// DISTANCE
+// --- PROXIMITY AND DISTANCE SENSORS ---
   { 0x29, "VL53L0X",                   "Laser ToF distance sensor (2 m)",         0x00C0,        false, 0xEE },
   { 0x29, "VL53L1X",                   "Laser ToF distance sensor (4 m)",         0x010F,        true,  0xEA },
   { 0x57, "RCWL-1601 / SR04_I2C",      "Ultrasonic distance sensor",              I2C_NO_WHOAMI, false, 0x00 },
 
-  // AMBIENT
-  // --- LIGHT AND COLOR SENSORS ---
-  // --- SOUND AND ACOUSTIC SENSORS ---
-  // --- GAS AND AIR QUALITY SENSORS ---
+// AMBIENT
+// --- LIGHT AND COLOR SENSORS ---
+// --- SOUND AND ACOUSTIC SENSORS ---
+// --- GAS AND AIR QUALITY SENSORS ---
   { 0x23, "BH1750",                    "Digital light sensor (lux)",              I2C_NO_WHOAMI, false, 0x00 },
   { 0x5C, "BH1750 (ADDR high)",        "Digital light sensor (lux)",              I2C_NO_WHOAMI, false, 0x00 },
   { 0x29, "TCS34725",                  "RGB color and color temperature sensor",  0x0092,        false, 0x44 },
@@ -161,7 +161,7 @@ inline void runI2cScan() {
     const I2cDeviceInfo* anyEntry  = nullptr;
     uint8_t readValue = 0;
 
-    // Each distinct ID register is read once per address; candidates sharing a register reuse the cached value
+// Each distinct ID register is read once per address; candidates sharing a register reuse the cached value
     I2cRegCacheEntry cache[I2C_REG_CACHE_SIZE];
     int cacheCount = 0;
     int attempts = 0;
@@ -290,6 +290,3 @@ inline void buildI2cDeviceMessage(int index, char* out, size_t maxLen) {
            statusIcon, "Status", statusStr,
            "Info", info);
 }
-
-// change 📝 with 📦 or 📟 ⚙️ 🛠️
-// change ℹ️ with 🗒️ or 🆔

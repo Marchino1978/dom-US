@@ -105,19 +105,20 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 // #######################################################
 
 // Telegram Config
-#define TELEGRAM_TOKEN            "YOUR_BOT_TOKEN"
-#define TELEGRAM_CHAT_ID          "YOUR_CHAT_ID"
+#define TELEGRAM_TOKEN             "YOUR_BOT_TOKEN"
+#define TELEGRAM_CHAT_ID           "YOUR_CHAT_ID"
 
 // Supabase Config
-#define SUPABASE_URL              "https://your-project.supabase.co"
-#define SUPABASE_KEY              "your_publishable_key"
+#define SUPABASE_URL               "https://your-project.supabase.co"
+#define SUPABASE_KEY               "your_publishable_key"
 
 // User Config
-#define SENSOR_ALTITUDE           150  // [m]
+#define SENSOR_ALTITUDE            150  // [m]
 
 // Voice Monkey Config
-#define VOICEMONKEY_ALARM_URL     "https://api-v3.voicemonkey.io/trigger?token="
-#define VOICEMONKEY_RESET_URL     "https://api-v3.voicemonkey.io/trigger?token="
+#define VOICEMONKEY_ALARM_URL      "https://api-v3.voicemonkey.io/trigger?token="
+#define VOICEMONKEY_RESET_URL      "https://api-v3.voicemonkey.io/trigger?token="
+#define VOICEMONKEY_PRE_ALERT_URL  "https://api-v3.voicemonkey.io/trigger?token="
 
 // #######################################################
 // 6. DEBUG

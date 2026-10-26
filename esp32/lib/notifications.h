@@ -154,7 +154,7 @@ inline void appendMemoryRow(String& msg, const char* label, uint32_t bytes) {
 }
 
 inline String buildSystemInfoMessage() {
-  // getFreeSketchSpace() returns the size of the next OTA slot, used here as the app partition size
+// getFreeSketchSpace() returns the size of the next OTA slot, used here as the app partition size
   uint32_t romUsed  = ESP.getSketchSize();
   uint32_t romTot   = ESP.getFreeSketchSpace();
   uint32_t romFree  = (romTot > romUsed) ? (romTot - romUsed) : 0;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../config.h"
+#include "../../debug.h"
 
 #include <Arduino.h>
 
@@ -12,7 +13,6 @@
 inline void initAmbientHardware() {
   pinMode(PIN_ANALOG, INPUT);
   analogSetPinAttenuation(PIN_ANALOG, ADC_11db);
-//  analogSetPinAttenuation(PIN_ANALOG, ADC_ATTEN_DB_12); // Core 3.x only, same 11 dB range: 
 }
  
 // Returns brightness percentage through the readAmbientLuxValue() interface
@@ -22,5 +22,7 @@ inline float readAmbientLuxValue() {
     sum += analogRead(PIN_ANALOG);
   }
   float raw = (float)sum / LDR_SAMPLES;
-  return raw * 100.0f / LDR_ADC_MAX;
+  float percent = raw * 100.0f / LDR_ADC_MAX;
+  DEBUG_LOG("LDR raw=%.1f percent=%.2f", raw, percent);
+  return percent;
 }

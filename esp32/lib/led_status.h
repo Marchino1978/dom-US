@@ -56,7 +56,7 @@ inline void ledWriteRaw(uint8_t r, uint8_t g, uint8_t b) {
   g = (uint16_t)g * LED_BRIGHTNESS / 255;
   b = (uint16_t)b * LED_BRIGHTNESS / 255;
 
-  // Edge-triggered: logs only when a clearly visible pure red is written
+// Edge-triggered: logs only when a clearly visible pure red is written
   bool pureRed = (r > LED_BRIGHTNESS / 2) && g == 0 && b == 0;
   if (pureRed && !ledRedLogged) {
     DEBUG_LOG("LED pure red written (state %s)", ledStateName(ledState));
