@@ -48,41 +48,41 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 //#define DISPLAY_BOOT_STEP_MS 1500
 
 // --- Addons [display wake-up / alarm] (Uncomment ONLY ONE) ---
-//#define ADDON_RADAR_RCWL0516    // Doppler Microwave (Room Presence / Alarm 4V-28V)
-#define ADDON_LASER_VL53L0X     // Laser ToF (2.8V - 5V / I2C)
-//#define ADDON_LASER_VL53L1X       // Laser ToF (Short proximity + 4m Alarm 3.3V / I2C)
+//#define ADDON_RADAR_RCWL0516       // Doppler Microwave (Room Presence / Alarm 4V-28V)
+#define ADDON_LASER_VL53L0X        // Laser ToF (2.8V - 5V / I2C)
+//#define ADDON_LASER_VL53L1X        // Laser ToF (Short proximity + 4m Alarm 3.3V / I2C)
 
 // --- SENSORS ---
 
 // --- Climate sensor (Uncomment ONLY ONE) ---
-//#define SENSOR_AHT20              // Temp / Hum (3.3V / I2C)
-#define SENSOR_BME280             // Temp / Hum / Press (3.3V / I2C)
-//#define SENSOR_BMP280             // Temp / Press (3.3V / I2C)
-//#define SENSOR_DHT11              // Temp / Hum (3.3V / 5V)
-//#define SENSOR_DHT22              // Temp / Hum (3.3V / 5V)
-//#define SENSOR_DS18B20            // Temp (3.3V / 5V)
-//#define SENSOR_SHT31              // Temp / Hum (3.3V / 5V / I2C)
+//#define SENSOR_AHT20               // Temp / Hum (3.3V / I2C)
+#define SENSOR_BME280              // Temp / Hum / Press (3.3V / I2C)
+//#define SENSOR_BMP280              // Temp / Press (3.3V / I2C)
+//#define SENSOR_DHT11               // Temp / Hum (3.3V / 5V)
+//#define SENSOR_DHT22               // Temp / Hum (3.3V / 5V)
+//#define SENSOR_DS18B20             // Temp (3.3V / 5V)
+//#define SENSOR_SHT31               // Temp / Hum (3.3V / 5V / I2C)
 
 // --- Motion & Presence sensor (Uncomment ONLY ONE) ---
-#define SENSOR_PIR_AM312          // Mini Passive Infrared (3.3V)
-//#define SENSOR_PIR_HCSR501        // Passive Infrared (5V / 3.3V signal)
-//#define SENSOR_MMWAVE_LD2410      // Micro-movements (5V)
-//#define SENSOR_RADAR_RCWL0516     // Doppler Microwave (4V - 28V)
-//#define SENSOR_IR_TE174           // IR Beam (3.3V / 5V)
+#define SENSOR_PIR_AM312           // Mini Passive Infrared (3.3V)
+//#define SENSOR_PIR_HCSR501         // Passive Infrared (5V / 3.3V signal)
+//#define SENSOR_MMWAVE_LD2410       // Micro-movements (5V)
+//#define SENSOR_RADAR_RCWL0516      // Doppler Microwave (4V - 28V)
+//#define SENSOR_IR_TE174            // IR Beam (3.3V / 5V)
 
 // --- Distance sensor (Uncomment ONLY ONE) ---
-//#define SENSOR_ULTRASONIC_HCSR04  // Ultrasound (5V)
-//#define SENSOR_ULTRASONIC_HCSR04P // Ultrasound (3.3V / 5V)
-//#define SENSOR_ULTRASONIC_RCWL1601// Ultrasound (3V - 5.5V)
-#define SENSOR_ULTRASONIC_US100   // Ultrasound + Temp (UART / PWM 3.3V / 5V)
-//#define SENSOR_LASER_VL53L0X      // Laser ToF (2.8V - 5V / I2C)
-//#define SENSOR_LASER_VL53L1X      // Laser ToF (Up to 4m 3.3V / I2C)
+//#define SENSOR_ULTRASONIC_HCSR04   // Ultrasound (5V)
+//#define SENSOR_ULTRASONIC_HCSR04P  // Ultrasound (3.3V / 5V)
+//#define SENSOR_ULTRASONIC_RCWL1601 // Ultrasound (3V - 5.5V)
+#define SENSOR_ULTRASONIC_US100    // Ultrasound + Temp (UART / PWM 3.3V / 5V)
+//#define SENSOR_LASER_VL53L0X       // Laser ToF (2.8V - 5V / I2C)
+//#define SENSOR_LASER_VL53L1X       // Laser ToF (Up to 4m 3.3V / I2C)
 
 // --- Ambient sensor (Uncomment ONLY ONE) ---
-//#define SENSOR_LIGHT_BH1750       // Lux Digital (3.3V / 5V / I2C)
-//#define SENSOR_LIGHT_LDR          // Analog Photoresistor (3.3V / 5V)
-//#define SENSOR_COLOR_TCS34725     // RGB + Color Temp (3.3V / 5V / I2C)
-#define SENSOR_LIGHT_VEML7700     // Lux High precision / Human eye (3.3V / I2C)
+//#define SENSOR_LIGHT_BH1750        // Lux Digital (3.3V / 5V / I2C)
+//#define SENSOR_LIGHT_LDR           // Analog Photoresistor (3.3V / 5V)
+//#define SENSOR_COLOR_TCS34725      // RGB + Color Temp (3.3V / 5V / I2C)
+#define SENSOR_LIGHT_VEML7700      // Lux High precision / Human eye (3.3V / I2C)
 
 // --- Ambient light threshold ---
 // Value from which the light is reported as ON. Defaults: 50 for lux sensors, 25 (percent) for the LDR
@@ -90,30 +90,34 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 // #######################################################
 // 4. PIN MAPPING (Defaults for Waveshare ESP32-C3-Zero)
 // #######################################################
-#define PIN_I2C_SDA      8        // SDA pin for I2C Displays & I2C Sensors
-#define PIN_I2C_SCL      9        // SCL pin for I2C Displays & I2C Sensors
+#define PIN_I2C_SDA      8         // SDA pin for I2C Displays & I2C Sensors
+#define PIN_I2C_SCL      9         // SCL pin for I2C Displays & I2C Sensors
 
-#define PIN_DHT          0        // Data pin for DHT11/DHT22/DS18B20
-#define PIN_MOTION       5        // Signal pin for PIR/Radar
-#define PIN_OBSTACLE     3        // Signal pin for TE174 IR beam (active LOW)
-#define PIN_TRIG         6        // Trigger pin for Ultrasonic sensor (PIN_TX)
-#define PIN_ECHO         7        // Echo pin for Ultrasonic sensor (PIN_RX)
-#define PIN_ANALOG       1        // Analog input (LDR)
+#define PIN_DHT          0         // Data pin for DHT11/DHT22/DS18B20
+#define PIN_MOTION       5         // Signal pin for PIR/Radar
+#define PIN_OBSTACLE     3         // Signal pin for TE174 IR beam (active LOW)
+#define PIN_TRIG         6         // Trigger pin for Ultrasonic sensor (PIN_TX)
+#define PIN_ECHO         7         // Echo pin for Ultrasonic sensor (PIN_RX)
+#define PIN_ANALOG       1         // Analog input (LDR)
 
 // #######################################################
-// 5. URL, TOKEN, SECTRET, PASSWORD, ID, ecc.
+// 5. URL, TOKEN, SECTRET, PASSWORD, ID, KEY, ecc.
 // #######################################################
 
 // Telegram Config
-#define TELEGRAM_TOKEN "YOUR_BOT_TOKEN"
-#define TELEGRAM_CHAT_ID   "YOUR_CHAT_ID"
+#define TELEGRAM_TOKEN            "YOUR_BOT_TOKEN"
+#define TELEGRAM_CHAT_ID          "YOUR_CHAT_ID"
 
 // Supabase Config
-#define SUPABASE_URL       "https://your-project.supabase.co"
-#define SUPABASE_KEY       "your_publishable_key"
+#define SUPABASE_URL              "https://your-project.supabase.co"
+#define SUPABASE_KEY              "your_publishable_key"
 
 // User Config
-#define SENSOR_ALTITUDE    150  // [m]
+#define SENSOR_ALTITUDE           150  // [m]
+
+// Voice Monkey Config
+#define VOICEMONKEY_ALARM_URL     "https://api-v3.voicemonkey.io/trigger?token="
+#define VOICEMONKEY_RESET_URL     "https://api-v3.voicemonkey.io/trigger?token="
 
 // #######################################################
 // 6. DEBUG
