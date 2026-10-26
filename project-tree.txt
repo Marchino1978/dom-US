@@ -5,9 +5,9 @@
 │   ├── backup_LOG_2026_09.sql
 │   └── README.md
 ├── backup_SQL/
-│   ├── backup_supabase_2026_10_06.sql
 │   ├── backup_supabase_2026_10_13.sql
 │   ├── backup_supabase_2026_10_19.sql
+│   ├── backup_supabase_2026_10_26.sql
 │   └── README.md
 ├── data/
 │   ├── README.md
@@ -51,7 +51,6 @@
 │   │   │   ├── ambient/
 │   │   │   │   ├── BH1750.h
 │   │   │   │   ├── LDR.h
-│   │   │   │   ├── MQ135.h
 │   │   │   │   ├── TCS34725.h
 │   │   │   │   └── VEML7700.h
 │   │   │   ├── climate/
@@ -156,6 +155,6 @@
 ├── README.md
 └── robots.txt
 
-25 directories, 131 files
+25 directories, 130 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***
