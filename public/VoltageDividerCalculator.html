@@ -6,40 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voltage Divider Calculator</title>
     <style>
-        body { font-family: sans-serif; background: #f4f7f6; padding: 20px; display: flex; justify-content: center; }
-        .container { display: flex; flex-direction: column; max-width: 1200px; width: 100%; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h2 { width: 100%; color: #cc0000; border-bottom: 2px solid #f4f7f6; padding-bottom: 10px; margin-top: 0; }
+        body { font-family: sans-serif; background: #0f172a; padding: 20px; display: flex; justify-content: center; color: #f8fafc; }
+        .container { display: flex; flex-direction: column; max-width: 1200px; width: 100%; background: #1e293b; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        h2 { width: 100%; color: #ff4d4d; border-bottom: 2px solid #334155; padding-bottom: 10px; margin-top: 0; }
         
         .main-layout { display: flex; flex-wrap: wrap; gap: 20px; width: 100%; }
         .left-panel { flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 15px; }
         .left-panel .results { margin-top: auto; }  /* keep results at bottom of left panel */
-        .right-panel { flex: 2.2; min-width: 650px; display: flex; flex-wrap: wrap; gap: 20px; background: #fafafa; border-radius: 8px; border: 1px solid #eee; padding: 15px; box-sizing: border-box; align-items: stretch; }
+        .right-panel { flex: 2.2; min-width: 650px; display: flex; flex-wrap: wrap; gap: 20px; background: #151f32; border-radius: 8px; border: 1px solid #334155; padding: 15px; box-sizing: border-box; align-items: stretch; }
         
         .circuit-column { flex: 1; min-width: 300px; display: flex; justify-content: center; align-items: flex-start; }
         .simulation-column { flex: 1.2; min-width: 320px; display: flex; flex-direction: column; gap: 15px; }
         .legend-box { margin-top: auto; }  /* pushes legend to bottom of simulation-column */
         
-        .options-box { background: #ffffff; padding: 15px; border-radius: 8px; border: 1px dashed #007acc; display: flex; flex-direction: column; gap: 12px; box-sizing: border-box; }
+        .options-box { background: #1e293b; padding: 15px; border-radius: 8px; border: 1px dashed #38bdf8; display: flex; flex-direction: column; gap: 12px; box-sizing: border-box; }
         .input-group { display: flex; flex-direction: column; gap: 5px; }
         .input-row { display: flex; gap: 12px; width: 100%; }
         .input-row .input-group { flex: 1; min-width: 0; }
-        label { font-weight: bold; font-size: 0.9rem; }
-        select, input { padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; width: 100%; box-sizing: border-box; }
-        .results { background: #eef7ff; padding: 15px; border-radius: 8px; border-left: 5px solid #007acc; }
+        label { font-weight: bold; font-size: 0.9rem; color: #cbd5e1; }
+        select, input { padding: 10px; background: #0f172a; border: 1px solid #475569; border-radius: 6px; font-size: 1rem; width: 100%; box-sizing: border-box; color: #f8fafc; }
+        select:focus, input:focus { border-color: #38bdf8; outline: none; }
+        .results { background: #0c4a6e; padding: 15px; border-radius: 8px; border-left: 5px solid #38bdf8; color: #e0f2fe; }
         .results p { margin: 8px 0; }
-        .resistor-body { stroke: #555; stroke-width: 1.5; }
+        .resistor-body { stroke: #cbd5e1; stroke-width: 1.5; }
         
-        .threshold-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; }
+        .threshold-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 8px; }
         .threshold-row:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
-        .threshold-row label { font-weight: normal; font-size: 0.85rem; color: #333; }
+        .threshold-row label { font-weight: normal; font-size: 0.85rem; color: #94a3b8; }
         .threshold-input-container { display: flex; gap: 10px; align-items: center; }
         .threshold-input-container input { flex: 1; padding: 8px; font-size: 0.95rem; }
-        .threshold-val { min-width: 140px; font-weight: bold; color: #28a745; font-size: 0.9rem; text-align: right; }
-        .error-ok { color: #27ae60; }          /* safe: slightly under or very close */
-        .error-warning { color: #e67e22; }     /* caution: a bit over or too low */
-        .error-danger { color: #c0392b; }      /* danger: significantly over target */
-        .info-note { font-size: 0.8rem; color: #666; margin-top: 4px; }
+        .threshold-val { min-width: 140px; font-weight: bold; color: #4ade80; font-size: 0.9rem; text-align: right; }
+        .error-ok { color: #4ade80; }          /* safe: slightly under or very close */
+        .error-warning { color: #fb923c; }     /* caution: a bit over or too low */
+        .error-danger { color: #f87171; }      /* danger: significantly over target */
+        .info-note { font-size: 0.8rem; color: #94a3b8; margin-top: 4px; }
     </style>
+
 </head>
 
 <body>
@@ -230,7 +232,7 @@
                     </div>
 
                     <!-- Resistor Band Legend (always visible, pushed to bottom) -->
-                    <div class="results legend-box" style="background: #f3eef7; border-left: 5px solid #7b1fa2;">
+                    <div class="results legend-box" style="background: #caafd6; border-left: 5px solid #7b1fa2;">
                         <p style="margin: 0 0 4px 0; font-weight: bold; color: #7b1fa2;">Resistor Band Legend</p>
                         <div style="font-size: 0.78rem; color: #555; margin-bottom: 5px;">Bands (left → right): 1st digit · 2nd digit · Multiplier · Tolerance</div>
                         <div style="font-size: 0.82rem; line-height: 1.6; color: #333;">
