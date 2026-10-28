@@ -69,8 +69,5 @@ backup_SQL/
 data/*.csv.bak
 data/*.json.bak
 
-img/LOG.png
-img/sql_LOG.png
-src/test/
 scripts/test.py
 scripts/i2c.py
