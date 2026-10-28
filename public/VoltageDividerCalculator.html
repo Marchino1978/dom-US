@@ -325,7 +325,7 @@
                     vccInput.value = 5.0; 
                     vccInput.disabled = true;
                     customBox.style.display = "none";
-                    vrefContainer.innerHTML = '<select id="vref" onchange="calculate()"><option value="1.1" selected>1.1 V (Internal Vref)</option><option value="5.0">5.0 V (Default)</option></select>';
+                    vrefContainer.innerHTML = '<select id="vref" onchange="calculate()"><option value="1.1" selected>1.1 V (Int. Vref)</option><option value="5.0">5.0 V (Default)</option></select>';
                     document.getElementById("svg-mcu-text").textContent = "ARDUINO";
                 } else if (mcu === "esp32") {
                     vccInput.value = 3.3; 
