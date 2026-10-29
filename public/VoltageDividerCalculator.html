@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voltage Divider Calculator</title>
+    <title>⚡ Voltage Divider Calculator 🔌</title>
     <style>
         body { font-family: sans-serif; background: #0f172a; padding: 20px; display: flex; justify-content: center; color: #f8fafc; }
         .container { display: flex; flex-direction: column; max-width: 1200px; width: 100%; background: #1e293b; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         h2 { width: 100%; color: #ff4d4d; border-bottom: 2px solid #334155; padding-bottom: 10px; margin-top: 0; }
         
         .main-layout { display: flex; flex-wrap: wrap; gap: 20px; width: 100%; }
-        .left-panel { flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 15px; }
+        .left-panel { flex: 1.15; min-width: 340px; display: flex; flex-direction: column; gap: 12px; }
         .left-panel .results { margin-top: auto; }  /* keep results at bottom of left panel */
         .right-panel { flex: 2.2; min-width: 650px; display: flex; flex-wrap: wrap; gap: 20px; background: #151f32; border-radius: 8px; border: 1px solid #334155; padding: 15px; box-sizing: border-box; align-items: stretch; }
         
@@ -19,15 +19,15 @@
         .simulation-column { flex: 1.2; min-width: 320px; display: flex; flex-direction: column; gap: 15px; }
         .legend-box { margin-top: auto; }  /* pushes legend to bottom of simulation-column */
         
-        .options-box { background: #1e293b; padding: 15px; border-radius: 8px; border: 1px dashed #38bdf8; display: flex; flex-direction: column; gap: 12px; box-sizing: border-box; }
-        .input-group { display: flex; flex-direction: column; gap: 5px; }
-        .input-row { display: flex; gap: 12px; width: 100%; }
+        .options-box { background: #1e293b; padding: 12px; border-radius: 8px; border: 1px dashed #38bdf8; display: flex; flex-direction: column; gap: 10px; box-sizing: border-box; }
+        .input-group { display: flex; flex-direction: column; gap: 4px; }
+        .input-row { display: flex; gap: 10px; width: 100%; }
         .input-row .input-group { flex: 1; min-width: 0; }
-        label { font-weight: bold; font-size: 0.9rem; color: #cbd5e1; }
-        select, input { padding: 10px; background: #0f172a; border: 1px solid #475569; border-radius: 6px; font-size: 1rem; width: 100%; box-sizing: border-box; color: #f8fafc; }
+        label { font-weight: bold; font-size: 0.85rem; color: #cbd5e1; white-space: nowrap; }
+        select, input { padding: 8px 10px; background: #0f172a; border: 1px solid #475569; border-radius: 6px; font-size: 0.95rem; width: 100%; box-sizing: border-box; color: #f8fafc; }
         select:focus, input:focus { border-color: #38bdf8; outline: none; }
-        .results { background: #0c4a6e; padding: 15px; border-radius: 8px; border-left: 5px solid #38bdf8; color: #e0f2fe; }
-        .results p { margin: 8px 0; }
+        .results { background: #0c4a6e; padding: 12px; border-radius: 8px; border-left: 5px solid #38bdf8; color: #e0f2fe; }
+        .results p { margin: 6px 0; }
         .resistor-body { stroke: #cbd5e1; stroke-width: 1.5; }
         
         .threshold-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 8px; }
@@ -47,47 +47,53 @@
 <body>
 
     <div class="container">
-        <h2>Voltage Divider Calculator</h2>
+        <h2>⚡ Voltage Divider Calculator 🔌</h2>
 
         <div class="main-layout">
             <!-- LEFT PANEL: BASIC HARDWARE INPUTS, APPEARANCE & RESULTS -->
             <div class="left-panel">
-                <div class="input-group">
-                    <label for="mcu">Microcontroller Type (MCU)</label>
-                    <select id="mcu" onchange="handleMcuChange()">
-                        <option value="arduino">ARDUINO</option>
-                        <option value="esp32">ESP32</option>
-                        <option value="none">Custom (User Defined)</option>
-                    </select>
+                <!-- DATA INPUT -->
+                <div class="options-box" style="border-color: #38bdf8;">
+                    <span style="font-weight: bold; color: #38bdf8; font-size: 0.95rem;">📥 Data Input 📥</span>
+                    <div class="input-group">
+                        <label for="mcu">Microcontroller Type (MCU)</label>
+                        <select id="mcu" onchange="handleMcuChange()">
+                            <option value="arduino">ARDUINO</option>
+                            <option value="esp32">ESP32</option>
+                            <option value="none">Custom (User Defined)</option>
+                        </select>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="vcc">Supply (VCC) [V]</label>
+                            <input type="number" id="vcc" step="0.1" value="5" oninput="calculate()">
+                        </div>
+                        <div class="input-group">
+                            <label>Target Vout [V]</label>
+                            <div id="vref-container"></div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="input-row">
+                <!-- RESISTOR SELECTION -->
+                <div class="options-box" style="border-color: #38bdf8;">
+                    <span style="font-weight: bold; color: #38bdf8; font-size: 0.95rem;">🧮 Resistor Selection 🧮</span>
                     <div class="input-group">
-                        <label for="vcc">Supply Voltage (VCC) [V]</label>
-                        <input type="number" id="vcc" step="0.1" value="5" oninput="calculate()">
+                        <label for="series">Resistor Series</label>
+                        <select id="series" onchange="populateR1AndCalculate()">
+                            <option value="E12" selected>E12 (common)</option>
+                            <option value="E24">E24 (more precise)</option>
+                        </select>
                     </div>
                     <div class="input-group">
-                        <label>Target Vout [V]</label>
-                        <div id="vref-container"></div>
+                        <label for="r1-val">Resistor R1</label>
+                        <select id="r1-val" onchange="calculate()"></select>
                     </div>
-                </div>
-
-                <div class="input-group">
-                    <label for="series">Resistor Series</label>
-                    <select id="series" onchange="populateR1AndCalculate()">
-                        <option value="E12" selected>E12 (common)</option>
-                        <option value="E24">E24 (more precise)</option>
-                    </select>
-                </div>
-
-                <div class="input-group">
-                    <label for="r1-val">Resistor R1</label>
-                    <select id="r1-val" onchange="calculate()"></select>
                 </div>
 
                 <!-- OPTIONS -->
                 <div class="options-box">
-                    <span style="font-weight: bold; color: #007acc; font-size: 0.95rem;">Options</span>
+                    <span style="font-weight: bold; color: #38bdf8; font-size: 0.95rem;">⚙️ Options ⚙️</span>
                     <div class="input-group">
                         <label for="resistor-type" style="font-weight: normal; font-size: 0.85rem;">Resistor Type</label>
                         <select id="resistor-type" onchange="calculate()">
@@ -106,7 +112,9 @@
                     </div>
                 </div>
 
+                <!-- DATA OUTPUT -->
                 <div class="results">
+                    <p style="margin: 0 0 8px 0; font-weight: bold; color: #38bdf8; font-size: 0.95rem;">📊 Data Output 📊</p>
                     <p>Theoretical R2: <strong id="theoretical-r2">-</strong></p>
                     <p>Real R2 (Closest): <strong id="commercial-r2">-</strong></p>
                     <p>Real Node Voltage (Vout): <strong id="actual-vout">-</strong></p>
@@ -184,7 +192,7 @@
                 <div class="simulation-column">
                     <!-- ADC THRESHOLD MONITOR -->
                     <div class="options-box" style="border-color: #28a745; width: 100%; height: auto;">
-                        <span style="font-weight: bold; color: #28a745; font-size: 0.95rem;">Node Voltage Thresholds (ADC Bits)</span>
+                        <span style="font-weight: bold; color: #28a745; font-size: 0.95rem;">〰️ Node Voltage Thresholds (ADC Bits) 〰️</span>
 
                         <p style="margin: 5px 0 10px 0; font-size: 0.9rem; border-bottom: 1px solid #ddd; padding-bottom: 8px;">
                             Current Real Vout: <strong><span id="current-real-vout">-</span></strong>
@@ -219,7 +227,7 @@
                     </div>
 
                     <div id="custom-adc-box" class="options-box" style="border-color: #ff9800; width: 100%; display: none;">
-                        <span style="font-weight: bold; color: #ff9800; font-size: 0.95rem;">Custom ADC Hardware Config</span>
+                        <span style="font-weight: bold; color: #ff9800; font-size: 0.95rem;">📟 Custom ADC Hardware Config 📟</span>
                         <div class="input-group">
                             <label for="custom-bits" style="font-weight: normal; font-size: 0.85rem;">ADC Resolution (Bits)</label>
                             <select id="custom-bits" onchange="calculate()">
@@ -233,7 +241,7 @@
 
                     <!-- Resistor Band Legend (always visible, pushed to bottom) -->
                     <div class="results legend-box" style="background: #caafd6; border-left: 5px solid #7b1fa2;">
-                        <p style="margin: 0 0 4px 0; font-weight: bold; color: #7b1fa2;">Resistor Band Legend</p>
+                        <p style="margin: 0 0 4px 0; font-weight: bold; color: #7b1fa2;">🎨 Resistor Band Legend 🎨</p>
                         <div style="font-size: 0.78rem; color: #555; margin-bottom: 5px;">Bands (left → right): 1st digit · 2nd digit · Multiplier · Tolerance</div>
                         <div style="font-size: 0.82rem; line-height: 1.6; color: #333;">
                             <div>
