@@ -13,7 +13,7 @@ A lightweight, serverless smart home IoT ecosystem built with ESP32-C3 mini and 
 <br><br>
 • <strong>Offline Sensor Data Buffering:</strong> Continuous environmental logging. Data is buffered offline if Wi-Fi drops and synced to the cloud upon reconnection.
 <br><br>
-• <strong>Web Dashboard & Alarm:</strong> Real-time data visualization via interactive charts and integrated security alarm logic.
+• <strong>Web Dashboard & Alarm:</strong> Real-time data visualization via interactive charts and integrated security alarm logic, utilizing Amazon Alexa/Echo devices as automated Alarm sirens.
 <br><br>
 </div>
 
@@ -61,5 +61,5 @@ A lightweight, serverless smart home IoT ecosystem built with ESP32-C3 mini and 
 -->
 
 <!-- 
-HTML, supabase, github, raspberry, esp32, telegram, dashboard, sql, charts, iot, smarthome-iot, home-automation, supabase-postgresql-integration, raspberry-pi-400-project, domotic, arduino-ide, data-logger, embedded-cpp, iot-dashboard, power-outage-monitoring, security-alarm, smart-home, telegram-bot, esp32-c3, esp32-c3-zero
+HTML, supabase, github, raspberry, esp32, telegram, dashboard, sql, charts, iot, smarthome-iot, home-automation, supabase-postgresql-integration, raspberry-pi-400-project, domotic, arduino-ide, data-logger, embedded-cpp, iot-dashboard, power-outage-monitoring, security-alarm, smart-home, telegram-bot, esp32-c3, esp32-c3-zero, alexa, alexa-home-automation
 -->

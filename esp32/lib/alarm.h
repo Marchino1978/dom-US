@@ -25,6 +25,10 @@ enum AlarmState {
 static AlarmState currentAlarmState = STATE_IDLE;
 static unsigned long preAlarmStartTime = 0;
 static unsigned long triggeredStartTime = 0;
+static bool latchedMotion = false;
+static bool latchedDistance = false;
+static bool latchedAddon = false;
+static bool preAlarmWaitRelease = false;
 const unsigned long preAlarmWindowMs = 5000;
 const unsigned long autoResetMs = 300000;
 
@@ -96,6 +100,10 @@ void checkAlarmSystem() {
 
   switch (currentAlarmState) {
     case STATE_IDLE:
+      if (preAlarmWaitRelease) {
+        if (!anyTriggered) preAlarmWaitRelease = false;
+        break;
+      }
       if (anyTriggered) {
         if (activeSensorsCount <= 1) {
           alarmTriggered = true;
@@ -105,13 +113,20 @@ void checkAlarmSystem() {
           sendLogToSupabase(ts, "⚪", "📁 ALARM sent to user");
         } else {
           currentAlarmState = STATE_PRE_ALARM;
-          preAlarmStartTime = millis();
+          latchedMotion = trigMotion;
+          latchedDistance = trigDistance;
+          latchedAddon = trigAddon;
           sendLogToSupabase(ts, "🟡", "⚠️ PRE-ALARM - MOTION DETECTED awaiting confirmation");
+          preAlarmStartTime = millis();
         }
       }
       break;
 
     case STATE_PRE_ALARM:
+      latchedMotion   = latchedMotion   || trigMotion;
+      latchedDistance = latchedDistance || trigDistance;
+      latchedAddon    = latchedAddon    || trigAddon;
+      triggeredCount  = (latchedMotion ? 1 : 0) + (latchedDistance ? 1 : 0) + (latchedAddon ? 1 : 0);
       if (triggeredCount >= 2) {
         currentAlarmState = STATE_IDLE;
         alarmTriggered = true;
@@ -122,6 +137,7 @@ void checkAlarmSystem() {
       } 
       else if (millis() - preAlarmStartTime > preAlarmWindowMs) {
         currentAlarmState = STATE_IDLE;
+        preAlarmWaitRelease = true;
         sendLogToSupabase(ts, "🟢", "🔍 PRE-ALARM TIMEOUT - INTRUSION NOT CONFIRMED system secured");
       }
       break;

@@ -126,4 +126,8 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 // Uncomment to print diagnostic messages on the serial monitor (115200 baud)
 //#define DEBUG_SERIAL
 
+// #######################################################
+// 7. SENSOR CONFIGURATION & THRESHOLDS
+// #######################################################
+
 #endif
