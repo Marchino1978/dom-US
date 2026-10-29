@@ -13,7 +13,7 @@ A lightweight, serverless smart home IoT ecosystem built with ESP32-C3 mini and 
 <br><br>
 • <strong>Offline Sensor Data Buffering:</strong> Continuous environmental logging. Data is buffered offline if Wi-Fi drops and synced to the cloud upon reconnection.
 <br><br>
-• <strong>Web Dashboard & Alarm:</strong> Real-time data visualization via interactive charts and integrated security alarm logic, utilizing Amazon Alexa/Echo devices as automated Alarm sirens.
+• <strong>Web Dashboard & Alarm:</strong> Real-time data visualization via interactive charts and integrated security alarm logic, utilizing Amazon Alexa/Echo devices as automated alarm sirens.
 <br><br>
 </div>
 
