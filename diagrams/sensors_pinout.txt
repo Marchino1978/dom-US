@@ -251,7 +251,6 @@ VOLTAGE DIVIDER 10kΩ+15kΩ RESISTOR
 ##############################
 HCSR501
 3 PIN VERSION
-VOLTAGE DIVIDER 10kΩ+15kΩ RESISTOR <- CHECK
 ##############################
 
 ╔═══════════╗

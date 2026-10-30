@@ -85,12 +85,12 @@ For more information, check the official <strong>Waveshare product page</strong>
         ❌ SHT31 - <small>Temp🌡️/Hum💧 [3.3V / 5V / I2C]</small><br><br>
         <div style="text-align: center;"><font color="cyan"><b>👥 MOTION & PRESENCE 👥</b></font></div>
         ⌛ AM312 - <small>Mini Passive Infrared🏃 [3.3V]</small><br>
-        ❌ HCSR501 - <small>Passive Infrared🏃 [5V (3.3V signal)]</small><br>
+        ✅ HCSR501 - <small>Passive Infrared🏃 [5V (3.3V signal)]</small><br>
         🗑️ LD2410 - <small>Micro-movements🧘 [5V]</small><br>
         🗑️ RCWL-0516 - <small>Doppler Microwave📡 [4V - 28V]</small><br>
         ✅ TE174 - <small>IR Beam🛑 [3.3V / 5V]</small><br><br>
         <div style="text-align: center;"><font color="cyan"><b>📏 DISTANCE 📏</b></font></div>
-        🗑️ HCSR04 - <small>Ultrasound🦇 [5V]</small><br>
+        ✅ HCSR04 - <small>Ultrasound🦇 [5V] - with voltage divider</small><br>
         ❌ HCSR04P - <small>Ultrasound🦇 [3.3V / 5V]</small><br>
         ❌ RCWL-1601 - <small>Ultrasound🦇 [3V - 5.5V]</small><br>
         ⌛ US100 - <small>Ultrasound + Temp (UART / PWM)📏 [3.3V / 5V]</small><br>
