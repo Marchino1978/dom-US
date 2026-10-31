@@ -8,6 +8,8 @@
   #include "motion_presence/HCSR501.h"
 #elif defined(SENSOR_MMWAVE_LD2410)
   #include "motion_presence/LD2410.h"
+#elif defined(SENSOR_MMWAVE_LD2410S)
+  #include "motion_presence/LD2410S.h"
 #elif defined(SENSOR_RADAR_RCWL0516)
   #include "motion_presence/RCWL-0516.h"
 #elif defined(SENSOR_IR_TE174)
@@ -18,6 +20,7 @@ inline void initMotion() {
   #if defined(SENSOR_PIR_AM312) || \
       defined(SENSOR_PIR_HCSR501) || \
       defined(SENSOR_MMWAVE_LD2410) || \
+      defined(SENSOR_MMWAVE_LD2410S) || \
       defined(SENSOR_RADAR_RCWL0516) || \
       defined(SENSOR_IR_TE174)
     initMotionHardware();
@@ -28,6 +31,7 @@ inline bool isMotionDetected() {
   #if defined(SENSOR_PIR_AM312) || \
       defined(SENSOR_PIR_HCSR501) || \
       defined(SENSOR_MMWAVE_LD2410) || \
+      defined(SENSOR_MMWAVE_LD2410S) || \
       defined(SENSOR_RADAR_RCWL0516) || \
       defined(SENSOR_IR_TE174)
     return readMotionState();

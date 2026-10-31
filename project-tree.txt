@@ -72,6 +72,7 @@
 │   │   │   │   ├── AM312.h
 │   │   │   │   ├── HCSR501.h
 │   │   │   │   ├── LD2410.h
+│   │   │   │   ├── LD2410S.h
 │   │   │   │   ├── RCWL-0516.h
 │   │   │   │   └── TE174.h
 │   │   │   ├── sensor_ambient.h
@@ -156,6 +157,6 @@
 ├── README.md
 └── robots.txt
 
-25 directories, 131 files
+25 directories, 132 files
 
 *** NOTE: some local files shown in this tree have been intentionally omitted from the repository ***

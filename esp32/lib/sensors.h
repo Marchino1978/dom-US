@@ -9,6 +9,7 @@
     defined(SENSOR_PIR_HCSR501) || \
     defined(SENSOR_RADAR_RCWL0516) || \
     defined(SENSOR_MMWAVE_LD2410) || \
+    defined(SENSOR_MMWAVE_LD2410S) || \
     defined(SENSOR_IR_TE174)
   #include "sensors/sensor_motion_presence.h"
 #endif
@@ -33,6 +34,7 @@ inline void initSensors() {
       defined(SENSOR_PIR_HCSR501) || \
       defined(SENSOR_RADAR_RCWL0516) || \
       defined(SENSOR_MMWAVE_LD2410) || \
+      defined(SENSOR_MMWAVE_LD2410S) || \
       defined(SENSOR_IR_TE174)
     initMotion();
   #endif
@@ -63,7 +65,8 @@ inline bool checkMotionTriggered() {
       defined(SENSOR_PIR_HCSR501) || \
       defined(SENSOR_RADAR_RCWL0516) || \
       defined(SENSOR_IR_TE174) || \
-      defined(SENSOR_MMWAVE_LD2410)
+      defined(SENSOR_MMWAVE_LD2410) || \
+      defined(SENSOR_MMWAVE_LD2410S)
     return isMotionDetected();
   #else
     return false;

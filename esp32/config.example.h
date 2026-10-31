@@ -66,7 +66,8 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 // --- Motion & Presence sensor (Uncomment ONLY ONE) ---
 #define SENSOR_PIR_AM312           // Mini Passive Infrared (3.3V)
 //#define SENSOR_PIR_HCSR501         // Passive Infrared (5V / 3.3V signal)
-//#define SENSOR_MMWAVE_LD2410       // Micro-movements (5V)
+//#define SENSOR_MMWAVE_LD2410       // Micro-movements (5V / 3.3V signal)
+//#define SENSOR_MMWAVE_LD2410S      // Micro-movements (3V - 3.6V)
 //#define SENSOR_RADAR_RCWL0516      // Doppler Microwave (4V - 28V)
 //#define SENSOR_IR_TE174            // IR Beam (3.3V / 5V)
 
