@@ -113,9 +113,6 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 #define SUPABASE_URL               "https://your-project.supabase.co"
 #define SUPABASE_KEY               "your_publishable_key"
 
-// User Config
-#define SENSOR_ALTITUDE            150  // [m]
-
 // Voice Monkey Config
 #define VOICEMONKEY_ALARM_URL      "https://api-v3.voicemonkey.io/trigger?token="
 #define VOICEMONKEY_RESET_URL      "https://api-v3.voicemonkey.io/trigger?token="
@@ -136,5 +133,6 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 // #######################################################
 // 7. SENSOR CONFIGURATION & THRESHOLDS
 // #######################################################
+#define SENSOR_ALTITUDE            195  // [m]
 
 #endif
