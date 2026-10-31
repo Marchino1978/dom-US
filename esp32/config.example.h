@@ -86,7 +86,7 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 #define SENSOR_LIGHT_VEML7700      // Lux High precision / Human eye (3.3V / I2C)
 
 // --- Ambient light threshold ---
-// Value from which the light is reported as ON. Defaults: 50 for lux sensors, 25 (percent) for the LDR
+// Value from which the light is reported as ON. Defaults: 50 for lux sensors, 3 (percent) for the LDR
 
 // #######################################################
 // 4. PIN MAPPING (Defaults for Waveshare ESP32-C3-Zero)
