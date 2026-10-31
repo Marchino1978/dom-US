@@ -16,6 +16,8 @@
 
 extern bool alarmEnabled;
 extern bool alarmTriggered;
+extern bool sirenEnabled;
+extern bool alarmPreAlert;
 extern Preferences preferences;
 
 inline void getCurrentIsoTimestamp(char* buffer, size_t maxLen) {
@@ -31,6 +33,23 @@ inline void getCurrentIsoTimestamp(char* buffer, size_t maxLen) {
   } else {
     snprintf(buffer, maxLen, "");
   }
+}
+
+inline void callVoiceMonkey(const char* url) {
+  if (!sirenEnabled) return;
+  if (WiFi.status() != WL_CONNECTED) return;
+  ledWork();
+
+  WiFiClientSecure client;
+  client.setInsecure();
+
+  HTTPClient http;
+  http.begin(client, url);
+  setNetworkTimeouts(client, http);
+  int httpCode = http.GET();
+  http.end();
+
+  DEBUG_LOG("VOICEMONKEY code: %d", httpCode);
 }
 
 inline void sendTelegramMessage(String message) {
@@ -282,7 +301,9 @@ inline void checkTelegramUpdates() {
         }
       } 
       else if (text == "/off" || text == "off") {
-        if (!alarmEnabled) {
+        if (alarmTriggered || alarmPreAlert) {
+          sendTelegramMessage("ℹ️ *ALARM OFF IGNORED* - alarm in progress");
+        } else if (!alarmEnabled) {
           sendTelegramMessage("ℹ️ *ALARM IS ALREADY OFF*");
           getCurrentIsoTimestamp(ts, sizeof(ts));
           sendLogToSupabase(ts, "⚪", "ALARM IS ALREADY OFF");
@@ -308,6 +329,7 @@ inline void checkTelegramUpdates() {
           sendLogToSupabase(ts, "⚪", "RESET requested but ALARM not triggered");
         } else {
           alarmTriggered = false;
+          callVoiceMonkey(VOICEMONKEY_RESET_URL);
           sendTelegramMessage("🟢 *ALARM RESET* by user - system re-armed");
           sendLogToSupabase(ts, "⚪", "ALARM RESET by user - system re-armed");
         }
@@ -326,6 +348,24 @@ inline void checkTelegramUpdates() {
           } else {
             sendTelegramMessage("🎚️ *LED STATUS TOGGLED TO OFF*");
             sendLogToSupabase(ts, "⚪", "🎚️ LED STATUS TOGGLED TO OFF by user");
+          }
+        }
+      }
+      else if (text == "/siren" || text == "siren") {
+        if (alarmTriggered || alarmPreAlert) {
+          sendTelegramMessage("🔇 *SIREN TOGGLE IGNORED* - alarm in progress");
+        } else {
+          getCurrentIsoTimestamp(ts, sizeof(ts));
+
+          sirenEnabled = !sirenEnabled;
+          preferences.putBool("siren_state", sirenEnabled);
+
+          if (sirenEnabled) {
+            sendTelegramMessage("🔊 *SIREN TOGGLED TO ON*");
+            sendLogToSupabase(ts, "⚪", "🔔 SIREN TOGGLED TO ON by user");
+          } else {
+            sendTelegramMessage("🔈 *SIREN TOGGLED TO OFF*");
+            sendLogToSupabase(ts, "⚪", "🔕 SIREN TOGGLED TO OFF by user");
           }
         }
       }
@@ -378,7 +418,8 @@ inline void checkTelegramUpdates() {
         snprintf(rigaPress, sizeof(rigaPress), "`%-5s : %4s %-3s`", "Press", pressStr.c_str(), "hPa");
         snprintf(rigaLux,   sizeof(rigaLux),   "`%-5s : %4s %-3s`", "Light", luxStr.c_str(),   AMBIENT_UNIT);
 
-        String statusMsg = "*ALARM STATUS:* " + icona_stato + " *" + stato + "*\n\n";
+        String statusMsg = "*ALARM STATUS:* " + icona_stato + " *" + stato + "*\n";
+        statusMsg += String("*SIREN:* ") + (sirenEnabled ? "🔊 *ON*" : "🔈 *OFF*") + "\n\n";
         statusMsg += "🌡️ " + String(rigaTemp) + "\n";
         statusMsg += "💧 " + String(rigaHum) + "\n";
         statusMsg += "🌀 " + String(rigaPress) + "\n";

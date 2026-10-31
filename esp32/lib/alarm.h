@@ -16,6 +16,7 @@
 
 extern bool alarmEnabled;
 extern bool alarmTriggered;
+extern bool alarmPreAlert;
 
 enum AlarmState {
   STATE_IDLE,
@@ -30,7 +31,10 @@ static bool latchedDistance = false;
 static bool latchedAddon = false;
 static bool preAlarmWaitRelease = false;
 const unsigned long preAlarmWindowMs = 5000;
-const unsigned long autoResetMs = 300000;
+#ifndef ALARM_AUTO_RESET_MS
+  #define ALARM_AUTO_RESET_MS 900000UL
+#endif
+const unsigned long autoResetMs = ALARM_AUTO_RESET_MS;
 
 void getFormattedTimestamp(char* buffer, size_t maxLen) {
   if (timeIsValid()) {
@@ -56,6 +60,16 @@ void checkAlarmSystem() {
   char ts[25];
   getFormattedTimestamp(ts, sizeof(ts));
 
+  if (alarmEnabled && alarmTriggered) {
+    if (millis() - triggeredStartTime > autoResetMs) {
+      alarmTriggered = false;
+      callVoiceMonkey(VOICEMONKEY_RESET_URL);
+      sendTelegramMessage("🟢 *ALARM AUTO-RESET* - system re-armed");
+      sendLogToSupabase(ts, "⚪", "ALARM AUTO-RESET - system re-armed");
+    }
+    return;
+  }
+
   bool trigMotion   = checkMotionTriggered();
   bool trigDistance = checkDistanceTriggered();
   #ifdef HAS_WAKEUP_ADDON
@@ -73,11 +87,14 @@ void checkAlarmSystem() {
   if (!alarmEnabled) {
     currentAlarmState = STATE_IDLE;
     alarmTriggered = false;
+    alarmPreAlert = false;
 
     static bool loggedOffMotion = false;
     if (anyTriggered && !loggedOffMotion) {
       loggedOffMotion = true;
-      sendLogToSupabase(ts, "🟢", "ℹ️ NOTICE - MOTION DETECTED ignored");
+      #ifdef DEBUG_INFO_LOG
+        sendLogToSupabase(ts, "🟢", "ℹ️ NOTICE - MOTION DETECTED ignored");
+      #endif
     } else if (!anyTriggered) {
       loggedOffMotion = false;
     }
@@ -87,15 +104,6 @@ void checkAlarmSystem() {
 // ----------------------------------------------------
 // CASE 2: ALARM ENABLED (ON)
 // ----------------------------------------------------
-  if (alarmTriggered) {
-    if (millis() - triggeredStartTime > autoResetMs) {
-      alarmTriggered = false;
-      sendTelegramMessage("🟢 *ALARM AUTO-RESET* - system re-armed");
-      sendLogToSupabase(ts, "⚪", "ALARM AUTO-RESET - system re-armed");
-    }
-    return;
-  }
-
   int triggeredCount = (trigMotion ? 1 : 0) + (trigDistance ? 1 : 0) + (trigAddon ? 1 : 0);
 
   switch (currentAlarmState) {
@@ -107,15 +115,21 @@ void checkAlarmSystem() {
       if (anyTriggered) {
         if (activeSensorsCount <= 1) {
           alarmTriggered = true;
+          callVoiceMonkey(VOICEMONKEY_PRE_ALERT_URL);
+          callVoiceMonkey(VOICEMONKEY_ALARM_URL);
           triggeredStartTime = millis();
           sendTelegramMessage("🚨 *ALARM* - INTRUSION DETECTED");
           sendLogToSupabase(ts, "🔴", "🚨 ALARM - INTRUSION DETECTED");
-          sendLogToSupabase(ts, "⚪", "📁 ALARM sent to user");
+          #ifdef DEBUG_INFO_LOG
+            sendLogToSupabase(ts, "⚪", "📁 ALARM sent to user");
+          #endif
         } else {
           currentAlarmState = STATE_PRE_ALARM;
+          alarmPreAlert = true;
           latchedMotion = trigMotion;
           latchedDistance = trigDistance;
           latchedAddon = trigAddon;
+          callVoiceMonkey(VOICEMONKEY_PRE_ALERT_URL);
           sendLogToSupabase(ts, "🟡", "⚠️ PRE-ALARM - MOTION DETECTED awaiting confirmation");
           preAlarmStartTime = millis();
         }
@@ -129,15 +143,21 @@ void checkAlarmSystem() {
       triggeredCount  = (latchedMotion ? 1 : 0) + (latchedDistance ? 1 : 0) + (latchedAddon ? 1 : 0);
       if (triggeredCount >= 2) {
         currentAlarmState = STATE_IDLE;
+        alarmPreAlert = false;
         alarmTriggered = true;
+        callVoiceMonkey(VOICEMONKEY_ALARM_URL);
         triggeredStartTime = millis();
         sendTelegramMessage("🚨 *ALARM* - INTRUSION DETECTED");
         sendLogToSupabase(ts, "🔴", "🚨 ALARM - INTRUSION DETECTED");
-        sendLogToSupabase(ts, "⚪", "📁 ALARM sent to user");
-      } 
+        #ifdef DEBUG_INFO_LOG
+          sendLogToSupabase(ts, "⚪", "📁 ALARM sent to user");
+        #endif
+      }
       else if (millis() - preAlarmStartTime > preAlarmWindowMs) {
         currentAlarmState = STATE_IDLE;
+        alarmPreAlert = false;
         preAlarmWaitRelease = true;
+        callVoiceMonkey(VOICEMONKEY_PRE_ALERT_URL);
         sendLogToSupabase(ts, "🟢", "🔍 PRE-ALARM TIMEOUT - INTRUSION NOT CONFIRMED system secured");
       }
       break;

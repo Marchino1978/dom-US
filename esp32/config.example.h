@@ -121,11 +121,17 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 #define VOICEMONKEY_RESET_URL      "https://api-v3.voicemonkey.io/trigger?token="
 #define VOICEMONKEY_PRE_ALERT_URL  "https://api-v3.voicemonkey.io/trigger?token="
 
+// Auto re-arm delay of a triggered alarm [ms]. Must match the siren duration set in the Alexa routine
+#define ALARM_AUTO_RESET_MS        900000UL
+
 // #######################################################
 // 6. DEBUG
 // #######################################################
 // Uncomment to print diagnostic messages on the serial monitor (115200 baud)
 //#define DEBUG_SERIAL
+
+// Uncomment to send the informational logs to Supabase: "ALARM sent to user" and "MOTION DETECTED ignored" (alarm off). Comment to disable
+#define DEBUG_INFO_LOG
 
 // #######################################################
 // 7. SENSOR CONFIGURATION & THRESHOLDS

@@ -17,6 +17,8 @@
 
 bool alarmEnabled = false;
 bool alarmTriggered = false;
+bool sirenEnabled = true;
+bool alarmPreAlert = false;
 Preferences preferences;
 
 enum WifiState {
@@ -374,6 +376,7 @@ void setup() {
 
   preferences.begin("domus-alarm", false);
   alarmEnabled = preferences.getBool("alarm_state", false);
+  sirenEnabled = preferences.getBool("siren_state", true);
 
   #ifdef MODULE_DISPLAY_ACTIVE
     initDisplay();
@@ -395,6 +398,10 @@ void loop() {
   ntpUpdate();
   bootSequenceTask();
   updateLed();
+
+  #ifdef MODULE_ALARM_ACTIVE
+    if (alarmEnabled) checkAlarmSystem();
+  #endif
 
   if (timeIsValid()) {
     struct tm timeinfo;
@@ -426,7 +433,7 @@ void loop() {
   checkTelegramUpdates();
 
   #ifdef MODULE_ALARM_ACTIVE
-    checkAlarmSystem();
+    if (!alarmEnabled) checkAlarmSystem();
   #endif
 
   sendHeartbeat();
