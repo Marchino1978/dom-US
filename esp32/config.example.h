@@ -133,6 +133,12 @@ const char* pass_hotspot = "YOUR_HOTSPOT_PASSWORD";
 // #######################################################
 // 7. SENSOR CONFIGURATION & THRESHOLDS
 // #######################################################
-#define SENSOR_ALTITUDE            195  // [m]
+// Altitude above sea level of the installation [m]. Used to reduce the measured pressure to sea level
+#define SENSOR_ALTITUDE            195
+
+// --- Ambient light threshold ---
+// Value from which the light is reported as ON. Unit: percent (0-100) for LDR and TCS34725, lux for the other sensors.
+// Defaults if not defined: 3 (percent) or 50 (lux)
+#define AMBIENT_LIGHT_ON_THRESHOLD 25.0f
 
 #endif
