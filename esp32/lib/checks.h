@@ -17,12 +17,9 @@
 #error "⚠️ BUILD BLOCKED: Do not enable the same sensor multiple times as both ADDON and SENSOR."
 #endif
 
-// Shared UART conflict: US100 and LD2410/LD2410S both use Serial1 on PIN_TRIG / PIN_ECHO
+// Shared UART conflict: US100 and LD2410 both use Serial1 on PIN_TRIG / PIN_ECHO
 #if defined(SENSOR_ULTRASONIC_US100) && defined(SENSOR_MMWAVE_LD2410)
 #error "⚠️ BUILD BLOCKED: US100 and LD2410 share the same UART (Serial1) and pins, enable only one of them."
-#endif
-#if defined(SENSOR_ULTRASONIC_US100) && defined(SENSOR_MMWAVE_LD2410S)
-#error "⚠️ BUILD BLOCKED: US100 and LD2410S share the same UART (Serial1) and pins, enable only one of them."
 #endif
 
 // Display uniqueness check
@@ -68,7 +65,6 @@
 #if (defined(SENSOR_PIR_AM312) + \
      defined(SENSOR_PIR_HCSR501) + \
      defined(SENSOR_MMWAVE_LD2410) + \
-     defined(SENSOR_MMWAVE_LD2410S) + \
      defined(SENSOR_RADAR_RCWL0516) + \
      defined(SENSOR_IR_TE174)) > 1
 #error "⚠️ BUILD BLOCKED: You can select ONLY ONE motion/presence sensor in config.h."
@@ -116,7 +112,6 @@
 #if defined(SENSOR_PIR_AM312) || \
     defined(SENSOR_PIR_HCSR501) || \
     defined(SENSOR_MMWAVE_LD2410) || \
-    defined(SENSOR_MMWAVE_LD2410S) || \
     defined(SENSOR_RADAR_RCWL0516) || \
     defined(SENSOR_IR_TE174) || \
     defined(SENSOR_ULTRASONIC_HCSR04) || \
@@ -144,7 +139,6 @@
   #if defined(SENSOR_PIR_AM312) || \
       defined(SENSOR_PIR_HCSR501) || \
       defined(SENSOR_MMWAVE_LD2410) || \
-      defined(SENSOR_MMWAVE_LD2410S) || \
       defined(SENSOR_RADAR_RCWL0516) || \
       defined(SENSOR_IR_TE174)
     #define ALARM_COUNT_MOTION 1

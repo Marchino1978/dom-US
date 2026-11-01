@@ -87,7 +87,6 @@ For more information, check the official <strong>Waveshare product page</strong>
         ⌛ AM312 - <small>Mini Passive Infrared🏃 [3.3V]</small><br>
         ✅ HCSR501 - <small>Passive Infrared🏃 [5V (3.3V signal)]</small><br>
         ❌ LD2410 - <small>Micro-movements🧘 [5V (3.3V signal)]</small><br>
-        ❌ LD2410S - <small>Micro-movements🧘 [3V - 3.6V]</small><br>
         🗑️ RCWL-0516 - <small>Doppler Microwave📡 [4V - 28V]</small><br>
         ✅ TE174 - <small>IR Beam🛑 [3.3V / 5V]</small><br><br>
         <div style="text-align: center;"><font color="cyan"><b>📏 DISTANCE 📏</b></font></div>
