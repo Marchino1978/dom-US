@@ -78,7 +78,7 @@ inline bool checkDistanceTriggered() {
       defined(SENSOR_LASER_VL53L0X) || \
       defined(SENSOR_LASER_VL53L1X)
     float distance = readDistanceCM();
-    //return (distance > 0 && distance < 200.0);
+    //return (distance > 0 && distance < 20.0);
     return (distance > 0 && distance < 20.0);
   #else
     return false;
