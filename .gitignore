@@ -65,6 +65,9 @@ old/
 # SQL backups
 backup_SQL/
 
+# LOG backups
+backup_LOG/
+
 # Data locali
 data/*.csv.bak
 data/*.json.bak
